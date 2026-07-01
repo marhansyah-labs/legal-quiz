@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nilai & Progress — LeksaLaw</title>
+<link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<div class="app-shell">
+  <aside class="sidebar" id="app-sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-logo">⚖️</div>
+      <div class="sidebar-name">LeksaLaw<small>Platform Belajar Hukum</small></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Menu Utama</div>
+      <a class="nav-item" href="index.html"><span class="nav-icon">🏠</span><span class="nav-label">Dashboard</span></a>
+      <div class="nav-section-label">Pembelajaran</div>
+      <div id="nav-semesters"></div>
+      <div class="nav-section-label">Lainnya</div>
+      <a class="nav-item active" href="nilai.html"><span class="nav-icon">📊</span><span class="nav-label">Nilai & Progress</span></a>
+      <a class="nav-item" href="favorit.html"><span class="nav-icon">⭐</span><span class="nav-label">Favorit</span></a>
+      <a class="nav-item" href="tentang.html"><span class="nav-icon">ℹ️</span><span class="nav-label">Tentang</span></a>
+    </nav>
+    <div style="padding:12px 16px;border-top:1px solid rgba(255,255,255,0.08)">
+      <div style="font-size:11px;color:#475569;text-align:center">LeksaLaw v1.0 · Offline</div>
+    </div>
+  </aside>
+
+  <div class="main-content" id="main-content">
+    <header class="top-header">
+      <button class="header-toggle" id="sidebar-toggle">☰</button>
+      <div class="header-breadcrumb"><span class="breadcrumb-current">Nilai & Progress</span></div>
+      <div class="header-actions">
+        <button class="icon-btn" id="theme-btn" title="Ganti Tema">🌙</button>
+      </div>
+    </header>
+
+    <main class="page-content">
+
+      <div class="hero-welcome animate-in">
+        <div class="hero-title">📊 Nilai & Progress Belajar</div>
+        <div class="hero-sub">Pantau perkembangan dan riwayat nilai kuis Anda. Data tersimpan secara lokal di perangkat ini.</div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#eff6ff">📝</div>
+          <div class="stat-info"><div class="num" id="ov-total">0</div><div class="label">Quiz Dikerjakan</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#f0fdf4">🎯</div>
+          <div class="stat-info"><div class="num" id="ov-avg">0%</div><div class="label">Rata-rata Nilai</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#fef3c7">🏆</div>
+          <div class="stat-info"><div class="num" id="ov-best">0%</div><div class="label">Nilai Terbaik</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#fce7f3">📈</div>
+          <div class="stat-info"><div class="num" id="ov-pct">0%</div><div class="label">Penyelesaian</div></div>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <h2 class="section-title">📋 Riwayat Nilai per Quiz</h2>
+        <button class="section-action" onclick="clearAllProgress()">🗑️ Hapus Semua Riwayat</button>
+      </div>
+      <div id="grade-list" class="quiz-list"></div>
+
+    </main>
+  </div>
+</div>
+
+<div class="toast" id="app-toast"></div>
+
+<script src="data/config.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+function renderGrades() {
+  const progress = getProgress();
+  const entries = Object.entries(progress);
+  const listEl = document.getElementById('grade-list');
+
+  document.getElementById('ov-total').textContent = entries.length;
+
+  if (!entries.length) {
+    listEl.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">📊</div>
+      <div class="empty-title">Belum ada riwayat nilai</div>
+      <div class="empty-sub">Mulai kerjakan quiz untuk melihat progress Anda di sini.</div>
+    </div>`;
+    return;
+  }
+
+  const scores = entries.map(([_, d]) => d.score);
+  const avg = Math.round(scores.reduce((a,b) => a+b, 0) / scores.length);
+  const best = Math.max(...scores);
+  const totalQuizzes = COURSES.reduce((s, c) => s + c.quizzes.length, 0);
+  const pct = Math.round(entries.length / totalQuizzes * 100);
+
+  document.getElementById('ov-avg').textContent = avg + '%';
+  document.getElementById('ov-best').textContent = best + '%';
+  document.getElementById('ov-pct').textContent = pct + '%';
+
+  const sorted = entries.sort((a,b) => new Date(b[1].updatedAt) - new Date(a[1].updatedAt));
+
+  let html = '';
+  sorted.forEach(([quizId, data]) => {
+    let found = null, foundCourse = null;
+    COURSES.forEach(c => { const q = c.quizzes.find(q => q.id === quizId); if (q) { found = q; foundCourse = c; } });
+    if (!found) return;
+    const date = new Date(data.updatedAt).toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' });
+    const time = new Date(data.updatedAt).toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit' });
+    const scoreColor = data.score >= 70 ? 'var(--correct)' : data.score >= 50 ? 'var(--flag)' : 'var(--wrong)';
+    html += `<a href="${found.file}" class="quiz-item">
+      <span style="font-size:22px">${foundCourse.icon}</span>
+      <div class="quiz-info">
+        <div class="quiz-title">${found.title}</div>
+        <div class="quiz-sub">${foundCourse.name} · ${data.correct}/${data.total} benar · ${date} ${time}</div>
+      </div>
+      <span class="quiz-score" style="background:${scoreColor}20;color:${scoreColor}">${data.score}%</span>
+      <span class="quiz-arrow">→</span>
+    </a>`;
+  });
+  listEl.innerHTML = html;
+}
+
+function clearAllProgress() {
+  if (!confirm('Yakin ingin menghapus seluruh riwayat nilai? Tindakan ini tidak dapat dibatalkan.')) return;
+  localStorage.removeItem('leksalaw_progress');
+  Toast.show('🗑️ Riwayat nilai telah dihapus');
+  renderGrades();
+}
+
+document.addEventListener('DOMContentLoaded', renderGrades);
+</script>
+</body>
+</html>

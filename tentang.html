@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tentang — LeksaLaw</title>
+<link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<div class="app-shell">
+  <aside class="sidebar" id="app-sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-logo">⚖️</div>
+      <div class="sidebar-name">LeksaLaw<small>Platform Belajar Hukum</small></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Menu Utama</div>
+      <a class="nav-item" href="index.html"><span class="nav-icon">🏠</span><span class="nav-label">Dashboard</span></a>
+      <div class="nav-section-label">Pembelajaran</div>
+      <div id="nav-semesters"></div>
+      <div class="nav-section-label">Lainnya</div>
+      <a class="nav-item" href="nilai.html"><span class="nav-icon">📊</span><span class="nav-label">Nilai & Progress</span></a>
+      <a class="nav-item" href="favorit.html"><span class="nav-icon">⭐</span><span class="nav-label">Favorit</span></a>
+      <a class="nav-item active" href="tentang.html"><span class="nav-icon">ℹ️</span><span class="nav-label">Tentang</span></a>
+    </nav>
+    <div style="padding:12px 16px;border-top:1px solid rgba(255,255,255,0.08)">
+      <div style="font-size:11px;color:#475569;text-align:center">LeksaLaw v1.0 · Offline</div>
+    </div>
+  </aside>
+
+  <div class="main-content" id="main-content">
+    <header class="top-header">
+      <button class="header-toggle" id="sidebar-toggle">☰</button>
+      <div class="header-breadcrumb"><span class="breadcrumb-current">Tentang</span></div>
+      <div class="header-actions">
+        <button class="icon-btn" id="theme-btn" title="Ganti Tema">🌙</button>
+      </div>
+    </header>
+
+    <main class="page-content" style="max-width:760px">
+      <div class="hero-welcome animate-in">
+        <div class="hero-title">ℹ️ Tentang LeksaLaw</div>
+        <div class="hero-sub">Platform belajar hukum offline berbasis HTML statis</div>
+      </div>
+
+      <div class="card" style="margin-bottom:16px">
+        <h3 style="margin-bottom:10px;font-size:16px">📖 Apa itu LeksaLaw?</h3>
+        <p style="color:var(--text-sec);font-size:14px;line-height:1.7">
+          LeksaLaw adalah sistem manajemen pembelajaran (LMS) offline yang dirancang khusus untuk
+          mahasiswa Ilmu Hukum. Seluruh aplikasi berjalan sepenuhnya di browser tanpa membutuhkan
+          koneksi internet, server, database, atau instalasi apa pun — cukup buka <code>index.html</code>.
+        </p>
+      </div>
+
+      <div class="card" style="margin-bottom:16px">
+        <h3 style="margin-bottom:10px;font-size:16px">✨ Fitur Utama</h3>
+        <ul style="color:var(--text-sec);font-size:14px;line-height:1.9;padding-left:20px">
+          <li>Kuis interaktif dengan Mode Belajar (feedback instan) & Mode Ujian</li>
+          <li>Pengacakan soal dan pilihan jawaban</li>
+          <li>Navigasi soal, tandai ragu, dan progress tracking</li>
+          <li>Penyimpanan nilai dan riwayat belajar otomatis (Local Storage)</li>
+          <li>Sistem favorit untuk quiz yang sering diakses</li>
+          <li>Pencarian cepat mata kuliah & quiz (Ctrl+K)</li>
+          <li>Mode gelap (Dark Mode)</li>
+          <li>Tampilan responsif — nyaman di desktop, tablet, dan ponsel</li>
+        </ul>
+      </div>
+
+      <div class="card" style="margin-bottom:16px">
+        <h3 style="margin-bottom:10px;font-size:16px">🛠️ Teknologi</h3>
+        <p style="color:var(--text-sec);font-size:14px;line-height:1.7">
+          Dibangun murni dengan HTML, CSS, dan JavaScript vanilla (tanpa framework, tanpa build tool).
+          Data progress disimpan secara lokal menggunakan <strong>Web Storage API</strong> milik browser,
+          sehingga privasi pengguna terjaga dan aplikasi tetap dapat dijalankan dari flashdisk maupun folder lokal mana pun.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-bottom:10px;font-size:16px">👤 Kontributor</h3>
+        <p style="color:var(--text-sec);font-size:14px;line-height:1.7">
+          Disusun dan dikembangkan oleh <strong>Marhansyah — 049875526</strong>.<br>
+          Versi aplikasi: <strong>1.0.0</strong> · Tahun: 2026
+        </p>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="data/config.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

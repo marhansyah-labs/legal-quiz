@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>README — Dokumentasi LeksaLaw</title>
+<link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/app.css">
+<style>
+  .doc-wrap { max-width: 860px; margin: 0 auto; padding: 32px 24px 80px; }
+  .doc-h1 { font-size: 28px; font-weight: 800; margin-bottom: 6px; }
+  .doc-sub { color: var(--text-muted); font-size: 14px; margin-bottom: 32px; }
+  .doc-section { margin-bottom: 36px; }
+  .doc-h2 { font-size: 20px; font-weight: 700; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid var(--blue); display:inline-block; }
+  .doc-h3 { font-size: 15px; font-weight: 700; margin: 20px 0 10px; color: var(--text); }
+  .doc-p { font-size: 14px; line-height: 1.8; color: var(--text-sec); margin-bottom: 12px; }
+  .doc-code { background: var(--navy); color: #e2e8f0; border-radius: 10px; padding: 16px 18px; font-family: 'Fira Mono', monospace; font-size: 12.5px; line-height: 1.7; overflow-x: auto; margin: 12px 0; white-space: pre; }
+  .doc-code .c1 { color: #64748b; }
+  .doc-code .str { color: #86efac; }
+  .doc-code .kw { color: #93c5fd; }
+  .doc-inline-code { background: var(--bg); border: 1px solid var(--border); padding: 2px 6px; border-radius: 5px; font-family: 'Fira Mono', monospace; font-size: 12.5px; color: var(--blue); }
+  .doc-tree { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; font-family: 'Fira Mono', monospace; font-size: 12.5px; line-height: 1.7; color: var(--text-sec); white-space: pre; overflow-x: auto; }
+  .doc-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+  .doc-table th, .doc-table td { padding: 10px 12px; border: 1px solid var(--border); text-align: left; }
+  .doc-table th { background: var(--bg); font-weight: 700; color: var(--text); }
+  .doc-table td { color: var(--text-sec); }
+  .doc-toc { background: var(--blue-dim); border: 1px solid #bfdbfe; border-radius: 12px; padding: 18px 20px; margin-bottom: 32px; }
+  .doc-toc-title { font-weight: 700; margin-bottom: 10px; color: var(--blue); font-size: 14px; }
+  .doc-toc a { display: block; font-size: 13px; padding: 4px 0; color: var(--text-sec); text-decoration: none; }
+  .doc-toc a:hover { color: var(--blue); }
+  .doc-callout { background: #fef3c7; border-left: 4px solid var(--flag); border-radius: 8px; padding: 12px 16px; font-size: 13px; color: #92400e; margin: 12px 0; }
+  .doc-callout-info { background: var(--blue-dim); border-left-color: var(--blue); color: var(--text-sec); }
+  ol.doc-steps { padding-left: 22px; }
+  ol.doc-steps li { font-size: 14px; line-height: 1.8; color: var(--text-sec); margin-bottom: 8px; }
+</style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<div class="app-shell">
+  <aside class="sidebar" id="app-sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-logo">⚖️</div>
+      <div class="sidebar-name">LeksaLaw<small>Platform Belajar Hukum</small></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Menu Utama</div>
+      <a class="nav-item" href="index.html"><span class="nav-icon">🏠</span><span class="nav-label">Dashboard</span></a>
+      <div class="nav-section-label">Pembelajaran</div>
+      <div id="nav-semesters"></div>
+      <div class="nav-section-label">Lainnya</div>
+      <a class="nav-item" href="nilai.html"><span class="nav-icon">📊</span><span class="nav-label">Nilai & Progress</span></a>
+      <a class="nav-item" href="favorit.html"><span class="nav-icon">⭐</span><span class="nav-label">Favorit</span></a>
+      <a class="nav-item" href="tentang.html"><span class="nav-icon">ℹ️</span><span class="nav-label">Tentang</span></a>
+    </nav>
+  </aside>
+
+  <div class="main-content" id="main-content">
+    <header class="top-header">
+      <button class="header-toggle" id="sidebar-toggle">☰</button>
+      <div class="header-breadcrumb"><span class="breadcrumb-current">README — Dokumentasi</span></div>
+      <div class="header-actions"><button class="icon-btn" id="theme-btn">🌙</button></div>
+    </header>
+
+    <main class="page-content">
+      <div class="doc-wrap">
+
+        <div class="doc-h1">📘 Dokumentasi LeksaLaw</div>
+        <div class="doc-sub">Panduan lengkap struktur, pengembangan, dan maintenance aplikasi — v1.0.0</div>
+
+        <div class="doc-toc">
+          <div class="doc-toc-title">📑 Daftar Isi</div>
+          <a href="#struktur">1. Struktur Folder</a>
+          <a href="#tambah-mk">2. Cara Menambah Mata Kuliah Baru</a>
+          <a href="#tambah-quiz">3. Cara Menambah Quiz Baru</a>
+          <a href="#format-soal">4. Format Data Soal</a>
+          <a href="#logo-warna">5. Mengganti Logo & Warna</a>
+          <a href="#localstorage">6. Cara Kerja Local Storage</a>
+          <a href="#backup">7. Backup & Restore Data</a>
+          <a href="#troubleshoot">8. Troubleshooting</a>
+        </div>
+
+        <!-- 1. STRUKTUR -->
+        <div class="doc-section" id="struktur">
+          <div class="doc-h2">1. Struktur Folder</div>
+          <p class="doc-p">Seluruh aplikasi disusun dengan prinsip <em>separation of concerns</em> — setiap jenis berkas memiliki rumahnya sendiri agar mudah ditemukan dan dipelihara.</p>
+          <div class="doc-tree">LeksaLaw/
+│
+├── index.html              ← Dashboard utama (halaman pembuka)
+├── nilai.html               ← Halaman riwayat nilai & progress
+├── favorit.html             ← Halaman daftar quiz favorit
+├── tentang.html              ← Halaman tentang aplikasi
+├── README.html               ← Dokumentasi ini
+│
+├── assets/
+│   ├── css/
+│   │   ├── app.css          ← Style global (sidebar, dashboard, kartu, dll)
+│   │   └── quiz.css         ← Style khusus halaman quiz
+│   ├── js/
+│   │   ├── app.js           ← Logic dashboard, sidebar, pencarian, tema
+│   │   ├── quiz-engine.js    ← Mesin quiz (skor, navigasi, sesi)
+│   │   └── build-quiz.js     ← (opsional) generator HTML quiz
+│   ├── img/                  ← Tempat logo/gambar
+│   └── icons/                 ← Tempat ikon kustom
+│
+├── data/
+│   └── config.js              ← ⭐ FILE UTAMA — daftar semua mata kuliah & quiz
+│
+└── quizzes/
+    ├── BIK_quiz1.html
+    ├── HDAGK_quiz1.html
+    ├── HIPA_quiz1.html
+    ├── TIPISUS_quiz1.html
+    ├── TIPISUS_quiz2.html
+    ├── TIPISUS_quiz3.html
+    ├── HPidIn_quiz1.html
+    ├── Perbankan_quiz1.html
+    ├── AKP_quiz1.html
+    └── AKP_quiz2.html  ... (dan seterusnya)</div>
+          <div class="doc-callout doc-callout-info">
+            💡 <strong>Catatan desain:</strong> Folder per-semester (Semester I, II, dst.) digantikan dengan
+            satu folder <span class="doc-inline-code">quizzes/</span> yang flat, karena pengelompokan semester
+            dan mata kuliah sudah ditangani sepenuhnya oleh <span class="doc-inline-code">data/config.js</span>.
+            Pendekatan ini menghindari duplikasi struktur dan membuat pencarian file lebih cepat —
+            terutama saat koleksi quiz sudah mencapai ratusan file.
+          </div>
+        </div>
+
+        <!-- 2. TAMBAH MATA KULIAH -->
+        <div class="doc-section" id="tambah-mk">
+          <div class="doc-h2">2. Cara Menambah Mata Kuliah Baru</div>
+          <p class="doc-p">Setiap mata kuliah didaftarkan sebagai satu objek di dalam array <span class="doc-inline-code">COURSES</span> pada file <span class="doc-inline-code">data/config.js</span>.</p>
+          <ol class="doc-steps">
+            <li>Buka file <span class="doc-inline-code">data/config.js</span></li>
+            <li>Tambahkan objek baru ke dalam array <span class="doc-inline-code">COURSES</span> dengan format di bawah</li>
+            <li>Simpan file — Dashboard akan otomatis menampilkan mata kuliah baru tanpa perlu mengubah file lain</li>
+          </ol>
+          <div class="doc-code">{
+  id: <span class="str">"HUKACP"</span>,              <span class="c1">// kode unik, huruf kapital, tanpa spasi</span>
+  slug: <span class="str">"hukum-acara-perdata"</span>, <span class="c1">// untuk URL (opsional dipakai)</span>
+  name: <span class="str">"Hukum Acara Perdata"</span>,
+  semester: 7,                  <span class="c1">// nomor semester</span>
+  code: <span class="str">"HKUM4302"</span>,           <span class="c1">// kode mata kuliah resmi</span>
+  color: <span class="str">"#2563eb"</span>,            <span class="c1">// warna aksen kartu (hex)</span>
+  icon: <span class="str">"⚖️"</span>,                  <span class="c1">// emoji ikon</span>
+  description: <span class="str">"Deskripsi singkat..."</span>,
+  quizzes: []                    <span class="c1">// lihat bagian 3 untuk mengisi ini</span>
+}</div>
+          <div class="doc-callout">
+            ⚠️ Pastikan nilai <span class="doc-inline-code">id</span> tidak sama dengan mata kuliah lain yang sudah ada — ini digunakan sebagai kunci penyimpanan progress.
+          </div>
+        </div>
+
+        <!-- 3. TAMBAH QUIZ -->
+        <div class="doc-section" id="tambah-quiz">
+          <div class="doc-h2">3. Cara Menambah Quiz Baru</div>
+          <ol class="doc-steps">
+            <li>Salin salah satu file di folder <span class="doc-inline-code">quizzes/</span> sebagai titik awal (misalnya <span class="doc-inline-code">BIK_quiz1.html</span>)</li>
+            <li>Ubah nama file sesuai konvensi: <span class="doc-inline-code">{ID_MATAKULIAH}_quiz{N}.html</span>, contoh: <span class="doc-inline-code">HUKACP_quiz1.html</span></li>
+            <li>Di dalam file, cari blok <span class="doc-inline-code">const QUIZ_DATA = {...}</span> di bagian paling bawah</li>
+            <li>Ubah <span class="doc-inline-code">quizId</span>, <span class="doc-inline-code">courseId</span>, <span class="doc-inline-code">courseName</span>, <span class="doc-inline-code">title</span>, dan array <span class="doc-inline-code">questions</span> sesuai kebutuhan</li>
+            <li>Daftarkan quiz baru ini ke dalam array <span class="doc-inline-code">quizzes</span> milik mata kuliah terkait di <span class="doc-inline-code">data/config.js</span></li>
+          </ol>
+          <div class="doc-code">quizzes: [
+  {
+    id: <span class="str">"HUKACP_Q1"</span>,                      <span class="c1">// harus unik di seluruh aplikasi</span>
+    title: <span class="str">"Quiz 1 — Gugatan & Jawaban"</span>,
+    subtitle: <span class="str">"60 soal · Tingkat Sedang"</span>,
+    totalQuestions: 60,
+    level: <span class="str">"sedang"</span>,                       <span class="c1">// "sedang" | "menengah" | "advance"</span>
+    file: <span class="str">"quizzes/HUKACP_quiz1.html"</span>,
+    createdAt: <span class="str">"2026-08-01"</span>
+  }
+]</div>
+        </div>
+
+        <!-- 4. FORMAT SOAL -->
+        <div class="doc-section" id="format-soal">
+          <div class="doc-h2">4. Format Data Soal</div>
+          <p class="doc-p">Setiap quiz menyimpan soalnya di dalam array <span class="doc-inline-code">questions</span> pada bagian <span class="doc-inline-code">QUIZ_DATA</span>. Format setiap soal:</p>
+          <div class="doc-code">{
+  topic: <span class="str">"Nama Topik / Modul"</span>,        <span class="c1">// tampil sebagai tag di atas soal</span>
+  q: <span class="str">"Teks pertanyaan di sini..."</span>,
+  opts: [<span class="str">"Pilihan A"</span>, <span class="str">"Pilihan B"</span>, <span class="str">"Pilihan C"</span>, <span class="str">"Pilihan D"</span>],
+  correct: 2,                          <span class="c1">// index 0-based dari opsi yang benar (di atas = "Pilihan C")</span>
+  source: <span class="str">"Modul 3, Hal. 45"</span>,         <span class="c1">// opsional, referensi sumber</span>
+  explanation: <span class="str">"Penjelasan tambahan..."</span> <span class="c1">// opsional, tampil di Mode Belajar</span>
+}</div>
+          <table class="doc-table">
+            <tr><th>Field</th><th>Wajib?</th><th>Keterangan</th></tr>
+            <tr><td><span class="doc-inline-code">topic</span></td><td>Tidak</td><td>Label kategori soal, tampil sebagai badge</td></tr>
+            <tr><td><span class="doc-inline-code">q</span></td><td>Ya</td><td>Teks pertanyaan (boleh mengandung HTML seperti &lt;b&gt;, &lt;em&gt;)</td></tr>
+            <tr><td><span class="doc-inline-code">opts</span></td><td>Ya</td><td>Array pilihan jawaban, minimal 2 opsi</td></tr>
+            <tr><td><span class="doc-inline-code">correct</span></td><td>Ya</td><td>Index (mulai dari 0) jawaban yang benar</td></tr>
+            <tr><td><span class="doc-inline-code">source</span></td><td>Tidak</td><td>Referensi sumber/halaman modul</td></tr>
+            <tr><td><span class="doc-inline-code">explanation</span></td><td>Tidak</td><td>Penjelasan tambahan jawaban</td></tr>
+          </table>
+        </div>
+
+        <!-- 5. LOGO & WARNA -->
+        <div class="doc-section" id="logo-warna">
+          <div class="doc-h2">5. Mengganti Logo & Warna</div>
+          <div class="doc-h3">Mengganti Logo</div>
+          <p class="doc-p">Logo saat ini menggunakan emoji (⚖️) sebagai placeholder ringan tanpa file gambar. Untuk mengganti dengan gambar:</p>
+          <ol class="doc-steps">
+            <li>Letakkan file logo (PNG/SVG) di <span class="doc-inline-code">assets/img/logo.png</span></li>
+            <li>Cari elemen <span class="doc-inline-code">&lt;div class="sidebar-logo"&gt;⚖️&lt;/div&gt;</span> di setiap halaman</li>
+            <li>Ganti dengan <span class="doc-inline-code">&lt;img src="assets/img/logo.png" style="width:36px;height:36px;border-radius:10px"&gt;</span></li>
+          </ol>
+          <div class="doc-h3">Mengganti Warna Tema</div>
+          <p class="doc-p">Seluruh palet warna terpusat di bagian atas <span class="doc-inline-code">assets/css/app.css</span> dalam blok <span class="doc-inline-code">:root</span>:</p>
+          <div class="doc-code"><span class="kw">:root</span> {
+  --navy: <span class="str">#0f2557</span>;   <span class="c1">// warna sidebar & header gelap</span>
+  --blue: <span class="str">#2563eb</span>;   <span class="c1">// warna aksen utama (tombol, link)</span>
+  --teal: <span class="str">#0891b2</span>;   <span class="c1">// aksen sekunder</span>
+}</div>
+          <p class="doc-p">Cukup ubah nilai hex pada variabel tersebut — seluruh komponen di aplikasi akan otomatis menyesuaikan.</p>
+        </div>
+
+        <!-- 6. LOCAL STORAGE -->
+        <div class="doc-section" id="localstorage">
+          <div class="doc-h2">6. Cara Kerja Local Storage</div>
+          <p class="doc-p">Aplikasi menyimpan data pengguna di <strong>Local Storage</strong> browser (tidak memerlukan server/database). Berikut kunci yang digunakan:</p>
+          <table class="doc-table">
+            <tr><th>Kunci</th><th>Isi</th></tr>
+            <tr><td><span class="doc-inline-code">leksalaw_progress</span></td><td>Riwayat nilai setiap quiz yang pernah dikerjakan</td></tr>
+            <tr><td><span class="doc-inline-code">leksalaw_favorites</span></td><td>Daftar ID quiz yang ditandai favorit</td></tr>
+            <tr><td><span class="doc-inline-code">leksalaw_theme</span></td><td>Preferensi tema (light/dark)</td></tr>
+            <tr><td><span class="doc-inline-code">sidebar_collapsed</span></td><td>Status sidebar (terbuka/tertutup)</td></tr>
+            <tr><td><span class="doc-inline-code">leksalaw_session_{quizId}</span></td><td>Sesi quiz yang belum selesai (auto-resume)</td></tr>
+          </table>
+          <div class="doc-callout doc-callout-info">
+            💡 Data ini tersimpan per-browser dan per-perangkat. Jika dipindah ke flashdisk dan dibuka di komputer lain, riwayat nilai tidak akan ikut terbawa kecuali menggunakan fitur Backup di bawah.
+          </div>
+        </div>
+
+        <!-- 7. BACKUP -->
+        <div class="doc-section" id="backup">
+          <div class="doc-h2">7. Backup & Restore Data</div>
+          <p class="doc-p">Untuk membackup progress belajar secara manual, buka Developer Console browser (tekan F12), lalu jalankan:</p>
+          <div class="doc-h3">Backup (Export)</div>
+          <div class="doc-code"><span class="kw">console</span>.log(JSON.stringify({
+  progress: localStorage.getItem(<span class="str">'leksalaw_progress'</span>),
+  favorites: localStorage.getItem(<span class="str">'leksalaw_favorites'</span>)
+}));</div>
+          <p class="doc-p">Salin hasil output dan simpan ke file teks sebagai cadangan.</p>
+          <div class="doc-h3">Restore (Import)</div>
+          <div class="doc-code"><span class="kw">const</span> backup = /* tempel JSON hasil backup di sini */;
+localStorage.setItem(<span class="str">'leksalaw_progress'</span>, backup.progress);
+localStorage.setItem(<span class="str">'leksalaw_favorites'</span>, backup.favorites);
+location.reload();</div>
+        </div>
+
+        <!-- 8. TROUBLESHOOTING -->
+        <div class="doc-section" id="troubleshoot">
+          <div class="doc-h2">8. Troubleshooting</div>
+          <table class="doc-table">
+            <tr><th>Masalah</th><th>Solusi</th></tr>
+            <tr><td>Mata kuliah baru tidak muncul di Dashboard</td><td>Pastikan tidak ada kesalahan sintaks (koma/kurung) di <span class="doc-inline-code">data/config.js</span>; cek Developer Console (F12) untuk error</td></tr>
+            <tr><td>Quiz menampilkan halaman kosong</td><td>Periksa apakah path <span class="doc-inline-code">file</span> pada config sesuai dengan nama file di folder <span class="doc-inline-code">quizzes/</span></td></tr>
+            <tr><td>Nilai tidak tersimpan</td><td>Pastikan browser tidak dalam mode Incognito/Private — mode ini menghapus Local Storage saat ditutup</td></tr>
+            <tr><td>Tampilan rusak setelah edit CSS</td><td>Periksa kembali tanda kurung kurawal <span class="doc-inline-code">{ }</span> pada file CSS yang diedit</td></tr>
+          </table>
+        </div>
+
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="data/config.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

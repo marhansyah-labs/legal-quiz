@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz 1 — Latihan Menengah — LeksaLaw</title>
+<link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/app.css">
+<link rel="stylesheet" href="../assets/css/quiz.css">
+</head>
+<body>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<div class="app-shell">
+  <aside class="sidebar" id="app-sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-logo">⚖️</div>
+      <div class="sidebar-name">LeksaLaw<small>Platform Belajar Hukum</small></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Menu Utama</div>
+      <a class="nav-item" href="../index.html"><span class="nav-icon">🏠</span><span class="nav-label">Dashboard</span></a>
+      <div class="nav-section-label">Pembelajaran</div>
+      <div id="nav-semesters"></div>
+      <div class="nav-section-label">Lainnya</div>
+      <a class="nav-item" href="../nilai.html"><span class="nav-icon">📊</span><span class="nav-label">Nilai & Progress</span></a>
+      <a class="nav-item" href="../favorit.html"><span class="nav-icon">⭐</span><span class="nav-label">Favorit</span></a>
+    </nav>
+    <div style="padding:12px 16px;border-top:1px solid rgba(255,255,255,0.08)">
+      <div style="font-size:11px;color:#475569;text-align:center">LeksaLaw v1.0 · Offline</div>
+    </div>
+  </aside>
+  <div class="main-content" id="main-content">
+    <header class="top-header">
+      <button class="header-toggle" id="sidebar-toggle">☰</button>
+      <div class="header-breadcrumb">
+        <a href="../index.html" style="color:var(--text-muted);text-decoration:none">Dashboard</a>
+        <span class="breadcrumb-sep">›</span>
+        <span style="color:var(--text-muted)">Advokasi Kebijakan Publik</span>
+        <span class="breadcrumb-sep">›</span>
+        <span class="breadcrumb-current">Quiz 1 — Latihan Menengah</span>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" id="theme-btn" title="Ganti Tema">🌙</button>
+      </div>
+    </header>
+    <div class="quiz-top-bar" id="quiz-top-bar" style="display:none">
+      <span class="quiz-progress-text" id="progress-label">Soal 1 / 1</span>
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quiz-progress-fill" style="width:0%"></div></div>
+      <span id="quiz-label" style="font-size:12px;color:var(--text-muted);white-space:nowrap"></span>
+    </div>
+
+    <!-- SETUP -->
+    <div id="quiz-setup-screen">
+      <div class="quiz-setup">
+        <div class="setup-card">
+          <a href="../index.html" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text-muted);margin-bottom:20px;text-decoration:none" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color='var(--text-muted)'">← Kembali ke Dashboard</a>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-muted);margin-bottom:6px">Advokasi Kebijakan Publik</div>
+          <h1 class="setup-title" id="setup-quiz-title">Quiz 1 — Latihan Menengah</h1>
+          <p class="setup-sub" id="setup-quiz-course"></p>
+          <div id="score-history" style="display:none" class="score-history"></div>
+          <div class="setup-stat-row">
+            <div class="setup-stat"><div class="n" id="setup-stat-q">—</div><div class="l">Total Soal</div></div>
+            <div class="setup-stat"><div class="n" id="setup-stat-t">—</div><div class="l">Topik</div></div>
+            <div class="setup-stat"><div class="n" id="setup-stat-level">menengah</div><div class="l">Tingkat</div></div>
+          </div>
+          <hr class="divider">
+          <div style="font-size:13px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px">Mode Pengerjaan</div>
+          <div class="mode-opts">
+            <label class="mode-opt selected">
+              <input type="radio" name="mode" value="study" checked>
+              <div><div class="mode-opt-name">📖 Mode Belajar</div><div class="mode-opt-desc">Feedback & penjelasan langsung setelah tiap jawaban</div></div>
+            </label>
+            <label class="mode-opt">
+              <input type="radio" name="mode" value="exam">
+              <div><div class="mode-opt-name">📝 Mode Ujian</div><div class="mode-opt-desc">Hasil & pembahasan muncul di akhir saja</div></div>
+            </label>
+          </div>
+          <hr class="divider">
+          <label class="shuffle-toggle">
+            <input type="checkbox" id="opt-shuffle">
+            <div>
+              <div class="shuffle-toggle-label">🔀 Acak Soal & Pilihan Jawaban</div>
+              <div class="shuffle-toggle-desc">Urutan soal dan opsi akan diacak setiap sesi</div>
+            </div>
+          </label>
+          <button class="btn-start-quiz" id="btn-start-quiz">Mulai Quiz →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUIZ MAIN -->
+    <div id="quiz-main-screen" style="display:none">
+      <div class="page-content" style="padding-top:16px;padding-bottom:100px">
+        <div class="quiz-layout">
+          <div><div id="q-container"></div></div>
+          <div class="quiz-sidebar-panel">
+            <div class="quiz-nav-card">
+              <div class="quiz-nav-title">Navigasi Soal</div>
+              <div class="nav-grid" id="nav-grid"></div>
+              <div class="nav-legend">
+                <div class="legend-item"><div class="legend-dot dot-answered"></div>Dijawab</div>
+                <div class="legend-item"><div class="legend-dot dot-flagged"></div>Ragu</div>
+                <div class="legend-item"><div class="legend-dot dot-unanswered"></div>Belum</div>
+              </div>
+            </div>
+            <div class="quiz-nav-card">
+              <div class="quiz-nav-title">Aksi</div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <button onclick="QuizEngine.finish()" class="btn btn-primary btn-sm" style="justify-content:center">✓ Selesai & Lihat Hasil</button>
+                <button onclick="if(confirm('Mulai ulang quiz?'))QuizEngine.restart()" class="btn btn-secondary btn-sm" style="justify-content:center">🔁 Mulai Ulang</button>
+              </div>
+            </div>
+            <div class="quiz-nav-card" style="font-size:12px;color:var(--text-muted)">
+              <div class="quiz-nav-title">Pintasan Keyboard</div>
+              <div style="display:flex;flex-direction:column;gap:5px">
+                <div><kbd style="background:var(--bg);border:1px solid var(--border);padding:1px 5px;border-radius:4px;font-size:10px">1–5</kbd> Pilih jawaban</div>
+                <div><kbd style="background:var(--bg);border:1px solid var(--border);padding:1px 5px;border-radius:4px;font-size:10px">←→</kbd> Navigasi soal</div>
+                <div><kbd style="background:var(--bg);border:1px solid var(--border);padding:1px 5px;border-radius:4px;font-size:10px">F</kbd> Tandai ragu</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULT -->
+    <div id="quiz-result-screen" style="display:none">
+      <div class="result-screen">
+        <div class="result-card">
+          <div class="score-center">
+            <div class="score-circle">
+              <div class="score-pct" id="result-pct">0%</div>
+              <div class="score-lbl">Skor Akhir</div>
+            </div>
+            <div class="score-detail" id="result-detail"></div>
+            <div class="score-verdict" id="result-verdict"></div>
+          </div>
+          <hr class="divider">
+          <div class="result-section-title">📊 Performa Per Topik</div>
+          <div id="result-topics"></div>
+          <div class="result-section-title">❌ Ringkasan Jawaban Salah</div>
+          <div id="result-wrongs"></div>
+          <div class="result-actions">
+            <button class="btn btn-primary" onclick="QuizEngine.restart()">🔁 Ulangi Quiz</button>
+            <button class="btn btn-secondary" onclick="QuizEngine.review()">📋 Tinjau Jawaban</button>
+            <a href="../index.html" class="btn btn-secondary">🏠 Dashboard</a>
+            <button class="btn btn-secondary" onclick="window.print()">🖨️ Cetak</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER NAV -->
+<div class="quiz-footer" id="quiz-footer">
+  <div class="footer-inner">
+    <button class="btn btn-secondary" id="btn-prev" onclick="QuizEngine.prev()">← Sebelumnya</button>
+    <button class="btn-flag-toggle" id="btn-flag-toggle" onclick="QuizEngine.toggleFlag()">🚩 Tandai Ragu</button>
+    <button class="btn btn-primary" id="btn-next" onclick="QuizEngine.next()">Berikutnya →</button>
+    <button class="btn-finish-quiz" id="btn-finish" style="display:none" onclick="QuizEngine.finish()">Selesai ✓</button>
+  </div>
+</div>
+<div class="toast" id="app-toast"></div>
+
+<script src="../data/config.js"></script>
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/quiz-engine.js"></script>
+<script>
+const QUIZ_DATA = {
+  quizId: "AKP_Q1",
+  courseId: "AKP",
+  courseName: "Advokasi Kebijakan Publik",
+  title: "Quiz 1 — Latihan Menengah",
+  level: "menengah",
+  questions: [
+  {
+    topic: "Soal 1",
+    q: "Berdasarkan definisi Thomas R. Dye, implikasi dari pernyataan bahwa kebijakan adalah “apa pun yang dipilih pemerintah untuk tidak dilakukan” adalah...",
+    opts: ["Pemerintah hanya bertanggung jawab atas regulasi tertulis.", "Keputusan pasif pemerintah tetap dianggap sebagai kebijakan.", "Kebijakan publik tidak mencakup pembiaran masalah sosial.", "Hanya tindakan aktif yang disebut kebijakan."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 2",
+    q: "Dalam konteks kebijakan sebagai variabel bebas (independent variable), fokus utama pengamatan seorang analis adalah pada...",
+    opts: ["Faktor-faktor lingkungan yang memengaruhi isi kebijakan.", "Distribusi kekuasaan antar kelompok.", "Dampak kebijakan terhadap sistem politik dan lingkungan.", "Asal-muasal sejarah tradisional."],
+    correct: 2,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 3",
+    q: "Mengapa model perumusan kebijakan Pilihan Publik (Public Choice) sering digunakan untuk menjelaskan fenomena di mana pemenang pemilu tidak melakukan yang terbaik bagi masyarakat umum?",
+    opts: ["Karena kebijakan berjalan secara otonom tanpa interaksi.", "Karena kebijakan adalah kelanjutan praktis dari masa lampau.", "Karena politik dipandang sebagai hubungan ekonomi “buyer meet seller”.", "Karena kebijakan hanya preferensi elit."],
+    correct: 2,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 4",
+    q: "Perbedaan mendasar antara kebijakan publik yang bersifat regulatif dan alokatif terletak pada...",
+    opts: ["Pihak yang mengesahkan.", "Regulatif membatasi/membebaskan, alokatif terkait anggaran.", "Hierarki hukumnya.", "Durasi berlakunya."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 5",
+    q: "Situasi “prisoner-dilemma” dalam dilema kebijakan publik menurut Dennis Muller terjadi ketika...",
+    opts: ["Masyarakat menolak pembangunan infrastruktur.", "Pemerintah tidak mampu mengidentifikasi masalah publik.", "Individu mengutamakan keuntungan pribadi meski merugikan kelompoknya.", "Terjadi konflik legislatif–eksekutif."],
+    correct: 2,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 6",
+    q: "Menurut Mustopadidjaja AR, kaitan antara unsur “input” dan “output” dalam sistem kebijakan publik adalah...",
+    opts: ["Input = tindakan kebijakan, output = dampak.", "Input = masalah dari lingkungan, output = tindakan pemecahan.", "Input = proses politis, output = anggaran.", "Input = keputusan yudikatif."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 7",
+    q: "Mengapa kualitas kebijakan publik sangat bergantung pada watak “disposisi” pelaksana menurut model Edward III?",
+    opts: ["Karena disposisi menentukan jumlah staf.", "Karena komitmen & kejujuran pelaksana menjamin kepatuhan.", "Karena tanpa disposisi, komunikasi tidak efektif.", "Karena disposisi terkait desain struktur organisasi."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 8",
+    q: "Dalam pergeseran paradigma administrasi, apa yang membedakan posisi masyarakat dalam New Public Management (NPM) dibandingkan New Public Service (NPS)?",
+    opts: ["NPM: atasan birokrasi, NPS: mitra bisnis.", "NPM: pembayar pajak, NPS: penerima subsidi.", "NPM: customer, NPS: owner.", "NPM: pembuat kebijakan, NPS: pelaksana."],
+    correct: 2,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 9",
+    q: "Konsep “government by amateurs” menurut Sidney Low merujuk pada fenomena...",
+    opts: ["Rekrutmen birokrasi tanpa merit.", "Kesenjangan kompetensi pembuat UU terhadap tuntutan masyarakat.", "Pengambil kebijakan hanya mengandalkan intuisi.", "Ketidakmampuan masyarakat memberi masukan."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 10",
+    q: "Advokasi kebijakan publik secara keilmuan dimaknai sebagai alat aksi yang “Terstruktur, Sistematis, dan Terencana” untuk...",
+    opts: ["Menggalang dana dari donor internasional.", "Memaksa masyarakat tunduk pada peraturan.", "Mendesak pembuat keputusan mengubah atau mencabut kebijakan yang menekan rakyat kecil.", "Menghilangkan peran partai politik."],
+    correct: 2,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 11",
+    q: "Menurut Sharma (2008), unsur “Membentuk Koalisi” dalam advokasi dianggap strategis karena...",
+    opts: ["Dapat memberikan jaminan keamanan dan dukungan politik yang lebih luas.", "Mengurangi biaya riset.", "Menjamin pesan langsung diterima media.", "Menjamin keuntungan finansial yang sama."],
+    correct: 0,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 12",
+    q: "Apa perbedaan orientasi antara riset untuk kepentingan akademik dan riset advokasi kebijakan?",
+    opts: ["Akademik mengutamakan data primer, advokasi hanya sekunder.", "Akademik mencari kesalahan pemerintah.", "Akademik mementingkan orisinalitas & formalitas, advokasi mementingkan manfaat praktis untuk perubahan.", "Akademik dilarang kualitatif."],
+    correct: 2,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 13",
+    q: "Pada kasus korupsi buku ajar di Sleman (2004–2005), faktor utama yang memuluskan praktik penyimpangan anggaran adalah...",
+    opts: ["Lemahnya sistem pengadaan elektronik.", "Penyalahgunaan wewenang melalui penunjukan langsung oleh Bupati dengan persetujuan pimpinan DPRD.", "Ketidaktahuan masyarakat tentang harga standar.", "Intervensi pihak swasta asing."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 14",
+    q: "Dalam pemetaan stakeholder, kelompok pemangku kepentingan (interest group) seringkali bertindak sebagai “penentu” advokasi karena...",
+    opts: ["Mereka dapat membatalkan UU secara sepihak.", "Mereka memiliki visi kolektif dan mengakomodir hak serta keinginan publik untuk menekan pemerintah.", "Mereka satu-satunya penyedia dana kampanye.", "Mereka bertugas menyusun counter draft di seminar."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 15",
+    q: "Mengapa peran media massa dianggap mampu membuka “sekat” antara pemerintah dan publik dalam proses advokasi?",
+    opts: ["Karena media berwenang mengaudit keuangan negara.", "Karena media memiliki saluran luas yang memengaruhi pemikiran dan tindakan khalayak secara masif.", "Karena media bagian dari struktur birokrasi.", "Karena jurnalis wajib menjadi anggota tim advokasi."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 16",
+    q: "Pengaruh “Legal Standing” dalam strategi advokasi reaktif memungkinkan individu atau kelompok untuk...",
+    opts: ["Membakar ban sebagai ekspresi penolakan.", "Bertindak mewakili kepentingan publik di pengadilan tanpa harus dirugikan langsung.", "Melakukan lobi rahasia terhadap hakim.", "Menuntut ganti rugi finansial eksklusif bagi anggota."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 17",
+    q: "Karakteristik utama yang membedakan Riset Aksi Partisipatoris (RAP) dengan riset konvensional dalam hal posisi peneliti adalah...",
+    opts: ["Peneliti RAP harus bebas nilai dan menjaga jarak.", "Peneliti RAP melebur dan bekerja bersama masyarakat untuk mendorong aksi transformatif.", "Peneliti RAP hanya mengumpulkan data mentah.", "Peneliti RAP dilarang memiliki ideologi."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 18",
+    q: "Dalam teknik advokasi, mengapa penggunaan “Lobbying” seringkali disebut sebagai pendekatan tokoh atau “bincang-bincang”?",
+    opts: ["Karena dilakukan formal di ruang sidang.", "Karena pelobi perlu mengenal sasaran secara mendalam (kebiasaan, hobi, kelemahan).", "Karena lobbying hanya untuk aktor tanpa pengaruh.", "Karena lobbying dilarang menggunakan data ilmiah."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 19",
+    q: "Analisis kebijakan dalam konteks pembuatan kebijakan menurut Patton dan Sawicki (1993) dimulai dengan langkah...",
+    opts: ["Mengurai karakteristik alternatif secara matematis.", "Memonitor implementasi kebijakan.", "Memverifikasi, mendefinisikan, dan mendalami masalah secara serius.", "Menentukan kriteria evaluasi berbasis efisiensi anggaran."],
+    correct: 2,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 20",
+    q: "Strategi advokasi non fisik dikatakan bersifat “proaktif” atau “reaktif” tergantung pada...",
+    opts: ["Jumlah massa yang dilibatkan.", "Waktu pelaksanaannya, apakah sebelum atau sesudah kebijakan mendapatkan legitimasi hukum.", "Media massa yang digunakan.", "Besar anggaran yang dialokasikan."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 21",
+    q: "Pendekatan “Pluralism” dalam formulasi kebijakan publik menekankan pada...",
+    opts: ["Kekuasaan mutlak elit.", "Eksplorasi ilmiah murni oleh ilmuwan.", "Keterlibatan berbagai kelompok untuk mencegah dominasi satu golongan.", "Persekongkolan penguasa dan pengusaha kapitalis."],
+    correct: 2,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 22",
+    q: "Dalam teknik negosiasi advokasi, taktik “Mengganti Panggung” dilakukan dengan cara...",
+    opts: ["Menurunkan konsep lawan agar berada di bawah kendali konsep kita.", "Memindahkan lokasi pertempuran ke area di mana kita memiliki penguasaan lebih besar.", "Menggabungkan konsep kita dengan konsep lawan.", "Memberikan informasi menyesatkan kepada lawan."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 23",
+    q: "Faktor kritis yang harus dipahami pelobi dalam menganalisis probabilitas pengesahan rancangan undang-undang adalah...",
+    opts: ["Keabsahan tanda tangan seluruh anggota komite.", "Kegunaan undang-undang dan popularitasnya di kalangan rakyat luas.", "Jumlah halaman draf.", "Biaya publikasi naskah akademik."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 24",
+    q: "Apa perbedaan antara “Aspek Isi Hukum” (content of law) dengan “Aspek Tata Laksana Hukum” (structure of law) dalam sistem hukum kebijakan?",
+    opts: ["Isi hukum adalah persepsi masyarakat, tata laksana adalah draf tertulis.", "Isi hukum adalah naskah tertulis (UU/Peraturan), tata laksana adalah perangkat kelembagaan dan aparat pelaksana.", "Isi hukum disusun eksekutif, tata laksana disusun yudikatif.", "Isi hukum bersifat kualitatif, tata laksana kuantitatif."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 25",
+    q: "Teori S-O-R (Stimulus-Organism-Response) yang dikemukakan De Fleur dalam advokasi menekankan bahwa perubahan sikap pemerintah dapat dicapai jika...",
+    opts: ["Stimulus berupa tekanan fisik ekstrem.", "Stimulus diberikan secara sopan sehingga menimbulkan respon positif dari pembuat kebijakan.", "Respon diukur dari jumlah peserta demonstrasi.", "Organisme tidak dilibatkan dalam dialog."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 26",
+    q: "Dalam analisis kebijakan, model “Incrementalism” menurut Lindblom menekankan bahwa...",
+    opts: ["Kebijakan harus berubah secara radikal.", "Perubahan kebijakan dilakukan secara bertahap dan terbatas.", "Kebijakan harus mengikuti preferensi elit.", "Kebijakan harus disusun dari nol setiap periode."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 27",
+    q: "Dalam konteks advokasi, “Agenda Setting” berarti...",
+    opts: ["Menentukan siapa yang berhak membuat kebijakan.", "Menentukan isu mana yang layak masuk ke meja pembuat kebijakan.", "Menentukan anggaran untuk implementasi kebijakan.", "Menentukan sanksi bagi pelanggar kebijakan."],
+    correct: 3,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 28",
+    q: "Dalam teori implementasi kebijakan, “street-level bureaucrats” menurut Lipsky adalah...",
+    opts: ["Pejabat tinggi yang merumuskan kebijakan.", "Aparat lapangan yang berinteraksi langsung dengan masyarakat.", "Konsultan kebijakan independen.", "Auditor internal pemerintah."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 29",
+    q: "Dalam advokasi kebijakan, “frame building” berarti...",
+    opts: ["Menyusun struktur organisasi advokasi.", "Membangun cara pandang tertentu agar publik memahami isu sesuai tujuan advokasi.", "Menyusun anggaran kampanye.", "Menentukan lokasi demonstrasi."],
+    correct: 2,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 30",
+    q: "Dalam model kebijakan Easton, “feedback” berfungsi untuk...",
+    opts: ["Menghentikan seluruh proses kebijakan.", "Memberikan informasi balik kepada sistem untuk memperbaiki kebijakan.", "Menggantikan peran legislatif.", "Menghapus input dari masyarakat."],
+    correct: 0,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 31",
+    q: "Dalam model kebijakan publik Easton, “input” merujuk pada...",
+    opts: ["Hasil akhir kebijakan.", "Tuntutan dan dukungan dari lingkungan.", "Evaluasi kebijakan.", "Struktur birokrasi."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 32",
+    q: "Dalam analisis kebijakan, istilah “policy window” menurut Kingdon berarti...",
+    opts: ["Periode ketika kebijakan harus dihentikan.", "Momen ketika peluang perubahan kebijakan terbuka.", "Masa reses legislatif.", "Waktu pengesahan anggaran."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 33",
+    q: "Dalam teori implementasi kebijakan, “compliance” berarti...",
+    opts: ["Penolakan masyarakat terhadap kebijakan.", "Kepatuhan pelaksana terhadap aturan kebijakan.", "Evaluasi dampak kebijakan.", "Penyusunan naskah akademik."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 34",
+    q: "Dalam advokasi, “policy brief” digunakan untuk...",
+    opts: ["Mengumpulkan tanda tangan publik.", "Menyampaikan ringkasan isu dan rekomendasi kebijakan secara padat.", "Mengatur jadwal kampanye.", "Menentukan lokasi demonstrasi."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 35",
+    q: "Dalam model rasional, kebijakan terbaik adalah...",
+    opts: ["Kebijakan yang paling menguntungkan kelompok tertentu.", "Kebijakan yang memaksimalkan manfaat dan meminimalkan biaya.", "Kebijakan yang paling cepat disahkan.", "Kebijakan yang paling populer di media."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 36",
+    q: "Dalam advokasi, “grassroots movement” berarti...",
+    opts: ["Gerakan yang dipimpin oleh elit politik.", "Gerakan yang tumbuh dari masyarakat bawah secara organik.", "Gerakan yang hanya dilakukan di media sosial.", "Gerakan yang wajib didanai pemerintah."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 37",
+    q: "Dalam analisis kebijakan, “cost-benefit analysis” digunakan untuk...",
+    opts: ["Mengukur tingkat kepatuhan pelaksana.", "Membandingkan biaya dan manfaat dari suatu kebijakan.", "Menentukan siapa yang harus melaksanakan kebijakan.", "Menentukan lokasi implementasi kebijakan."],
+    correct: 2,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 38",
+    q: "Dalam teori kebijakan publik, “policy cycle” menggambarkan...",
+    opts: ["Siklus hidup organisasi pemerintah.", "Tahapan-tahapan dalam proses pembuatan kebijakan.", "Siklus anggaran tahunan.", "Proses pemilihan umum."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 39",
+    q: "Dalam advokasi, “coalition building” penting karena...",
+    opts: ["Koalisi dapat mengurangi legitimasi isu.", "Koalisi memperkuat posisi tawar dan memperluas dukungan.", "Koalisi wajib dibentuk oleh undang-undang.", "Koalisi hanya berfungsi untuk menggalang dana."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 40",
+    q: "Dalam implementasi kebijakan, “fragmentasi birokrasi” dapat menyebabkan...",
+    opts: ["Koordinasi yang lebih cepat.", "Kebingungan peran dan tumpang tindih kewenangan.", "Efisiensi anggaran meningkat.", "Pelayanan publik menjadi lebih sederhana."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 41",
+    q: "Dalam analisis kebijakan, “policy learning” berarti...",
+    opts: ["Mengulang kebijakan lama tanpa perubahan.", "Proses belajar dari pengalaman untuk memperbaiki kebijakan.", "Menghapus seluruh kebijakan sebelumnya.", "Menghindari evaluasi kebijakan."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 42",
+    q: "Dalam advokasi, “issue framing” bertujuan untuk...",
+    opts: ["Menyembunyikan fakta dari publik.", "Mengarahkan cara publik memahami suatu isu.", "Mengatur jadwal kampanye.", "Menentukan lokasi demonstrasi."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 43",
+    q: "Dalam teori kebijakan publik, “policy output” merujuk pada...",
+    opts: ["Dampak jangka panjang kebijakan.", "Produk langsung dari keputusan pemerintah.", "Persepsi masyarakat terhadap kebijakan.", "Evaluasi akademik terhadap kebijakan."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 44",
+    q: "Dalam advokasi, “public campaign” dilakukan untuk...",
+    opts: ["Mengurangi partisipasi publik.", "Membangun dukungan publik secara luas terhadap isu tertentu.", "Menggantikan peran legislatif.", "Mengatur anggaran pemerintah."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 45",
+    q: "Dalam implementasi kebijakan, “street-level discretion” berarti...",
+    opts: ["Pelaksana lapangan tidak boleh mengambil keputusan.", "Pelaksana lapangan memiliki ruang untuk menafsirkan kebijakan sesuai kondisi.", "Pelaksana lapangan wajib mengikuti instruksi tanpa adaptasi.", "Pelaksana lapangan hanya bertugas mencatat data."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 46",
+    q: "Dalam analisis kebijakan, “policy diffusion” menggambarkan...",
+    opts: ["Penyebaran kebijakan dari satu wilayah ke wilayah lain.", "Penghapusan kebijakan secara massal.", "Penolakan kebijakan oleh publik.", "Evaluasi kebijakan oleh akademisi."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 47",
+    q: "Dalam advokasi, “policy entrepreneur” adalah...",
+    opts: ["Individu yang pasif terhadap perubahan kebijakan.", "Individu yang aktif mendorong perubahan kebijakan dengan memanfaatkan peluang.", "Pejabat yang hanya menjalankan instruksi.", "Auditor internal pemerintah."],
+    correct: 2,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 48",
+    q: "Dalam teori kebijakan, “evaluation” dilakukan untuk...",
+    opts: ["Menghentikan seluruh kebijakan.", "Menilai efektivitas, efisiensi, dan dampak kebijakan.", "Menggantikan peran legislatif.", "Menentukan lokasi implementasi."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 49",
+    q: "Dalam advokasi, “evidence-based advocacy” berarti...",
+    opts: ["Advokasi yang hanya mengandalkan opini.", "Advokasi yang didasarkan pada data, riset, dan bukti kuat.", "Advokasi yang tidak memerlukan riset.", "Advokasi yang hanya dilakukan oleh akademisi."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 50",
+    q: "Dalam implementasi kebijakan, “policy resistance” terjadi ketika...",
+    opts: ["Publik menerima kebijakan tanpa kritik.", "Publik atau pelaksana menolak atau menghambat kebijakan.", "Kebijakan berjalan tanpa hambatan.", "Kebijakan tidak memiliki dampak apa pun."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 51",
+    q: "Dalam analisis kebijakan, “policy subsystem” merujuk pada...",
+    opts: ["Seluruh warga negara.", "Aktor-aktor yang terlibat langsung dalam isu kebijakan tertentu.", "Semua lembaga negara tanpa kecuali.", "Kelompok yang tidak memiliki kepentingan pada isu."],
+    correct: 2,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 52",
+    q: "Dalam teori kebijakan, “policy feedback” dapat memengaruhi...",
+    opts: ["Hanya proses legislasi.", "Persepsi publik dan perilaku politik aktor kebijakan.", "Hanya anggaran tahunan.", "Hanya proses pemilu."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 53",
+    q: "Dalam implementasi kebijakan, “standard operating procedures (SOP)” berfungsi untuk...",
+    opts: ["Membatasi kreativitas pelaksana.", "Menyeragamkan tindakan pelaksana agar sesuai tujuan kebijakan.", "Menggantikan peran pimpinan.", "Mengurangi partisipasi publik."],
+    correct: 2,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 54",
+    q: "Dalam advokasi, “strategic litigation” digunakan untuk...",
+    opts: ["Menghindari proses hukum.", "Menggugat kebijakan atau tindakan pemerintah untuk menciptakan perubahan sistemik.", "Mengatur kampanye politik.", "Menggantikan peran legislatif."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 55",
+    q: "Dalam analisis kebijakan, “problem structuring” berarti...",
+    opts: ["Menentukan siapa yang harus dihukum.", "Mendefinisikan masalah secara jelas sebelum mencari solusi.", "Menghapus masalah dari agenda publik.", "Menentukan anggaran implementasi."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 56",
+    q: "Dalam teori kebijakan, “multiple streams framework” menekankan bahwa kebijakan lahir ketika...",
+    opts: ["Pemerintah menghindari masalah.", "Tiga aliran (masalah, kebijakan, politik) bertemu pada waktu yang tepat.", "Anggaran negara surplus.", "Media menolak isu tersebut."],
+    correct: 2,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 57",
+    q: "Dalam advokasi, “capacity building” bertujuan untuk...",
+    opts: ["Mengurangi kemampuan organisasi.", "Meningkatkan kemampuan teknis dan strategis aktor advokasi.", "Menghapus struktur organisasi.", "Mengurangi partisipasi masyarakat."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 58",
+    q: "Dalam implementasi kebijakan, “street-level constraints” merujuk pada...",
+    opts: ["Keterbatasan yang dihadapi pelaksana lapangan seperti waktu, sumber daya, dan beban kerja.", "Keterbatasan yang hanya dialami pejabat tinggi.", "Hambatan yang hanya muncul di tahap evaluasi.", "Hambatan yang tidak memengaruhi implementasi."],
+    correct: 0,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 61",
+    q: "Dalam analisis kebijakan, “policy advocacy coalition” menurut Sabatier terdiri dari...",
+    opts: ["Kelompok yang tidak memiliki kepentingan pada isu.", "Aktor-aktor yang berbagi keyakinan, nilai, dan tujuan kebijakan yang sama.", "Semua lembaga negara tanpa kecuali.", "Kelompok yang hanya fokus pada anggaran."],
+    correct: 2,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 62",
+    q: "Dalam implementasi kebijakan, “policy ambiguity” dapat menyebabkan...",
+    opts: ["Pelaksana memiliki ruang interpretasi yang luas.", "Kebijakan menjadi otomatis berjalan.", "Tidak diperlukan SOP.", "Semua pelaksana memahami kebijakan secara identik."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 63",
+    q: "Dalam advokasi, “issue prioritization” penting karena...",
+    opts: ["Semua isu harus diperjuangkan sekaligus.", "Sumber daya terbatas sehingga isu harus dipilih berdasarkan urgensi dan dampak.", "Advokasi tidak membutuhkan fokus.", "Isu yang tidak populer harus dihindari."],
+    correct: 2,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 64",
+    q: "Dalam teori kebijakan, “policy termination” berarti...",
+    opts: ["Mengganti pelaksana kebijakan.", "Mengakhiri atau mencabut kebijakan yang tidak efektif.", "Menghapus anggaran tahunan.", "Mengurangi partisipasi publik."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 65",
+    q: "Dalam advokasi, “stakeholder mapping” dilakukan untuk...",
+    opts: ["Menentukan siapa yang harus dihindari.", "Mengidentifikasi aktor yang berpengaruh, kepentingannya, dan tingkat dukungannya.", "Menghapus kelompok yang tidak setuju.", "Menentukan anggaran kampanye."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 66",
+    q: "Dalam analisis kebijakan, “evidence hierarchy” menunjukkan bahwa...",
+    opts: ["Semua bukti memiliki bobot yang sama.", "Bukti ilmiah yang kuat lebih dapat diandalkan daripada opini.", "Bukti tidak diperlukan dalam kebijakan.", "Bukti hanya berasal dari survei."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 67",
+    q: "Dalam implementasi kebijakan, “organizational capacity” mencakup...",
+    opts: ["Kemampuan organisasi untuk menolak kebijakan.", "Sumber daya, struktur, dan kemampuan pelaksana untuk menjalankan kebijakan.", "Hanya kemampuan finansial.", "Hanya kemampuan komunikasi."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 68",
+    q: "Dalam advokasi, “media engagement” efektif ketika...",
+    opts: ["Pesan disampaikan tanpa data.", "Pesan disusun jelas, berbasis bukti, dan relevan dengan kepentingan publik.", "Media dihindari.", "Pesan hanya disampaikan secara tertutup."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 69",
+    q: "Dalam teori kebijakan, “policy diffusion” terjadi ketika...",
+    opts: ["Kebijakan menyebar dari satu wilayah ke wilayah lain.", "Kebijakan hanya berlaku lokal.", "Kebijakan tidak dapat ditiru.", "Kebijakan hanya berlaku nasional."],
+    correct: 0,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 70",
+    q: "Dalam advokasi, “policy brief” yang efektif harus...",
+    opts: ["Panjang dan penuh teori.", "Singkat, jelas, berbasis bukti, dan menawarkan rekomendasi.", "Berisi opini tanpa data.", "Ditulis tanpa mempertimbangkan audiens."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 71",
+    q: "Dalam analisis kebijakan, “policy externalities” merujuk pada...",
+    opts: ["Dampak kebijakan yang hanya dirasakan oleh pembuat kebijakan.", "Dampak sampingan yang tidak direncanakan, baik positif maupun negatif.", "Dampak yang hanya muncul pada tahap evaluasi.", "Dampak yang tidak memengaruhi masyarakat."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 72",
+    q: "Dalam advokasi, “policy narrative” digunakan untuk...",
+    opts: ["Menyampaikan cerita yang memperkuat argumen kebijakan.", "Menghindari penggunaan data.", "Menghapus fakta yang tidak sesuai.", "Menentukan struktur organisasi."],
+    correct: 0,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 73",
+    q: "Dalam teori kebijakan, “bounded rationality” berarti...",
+    opts: ["Pembuat kebijakan selalu memiliki informasi lengkap.", "Pembuat kebijakan membuat keputusan dengan keterbatasan informasi dan waktu.", "Kebijakan selalu optimal.", "Kebijakan tidak memerlukan analisis."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 74",
+    q: "Dalam implementasi kebijakan, “policy compliance gap” terjadi ketika...",
+    opts: ["Pelaksana menjalankan kebijakan secara sempurna.", "Terdapat perbedaan antara aturan kebijakan dan pelaksanaannya di lapangan.", "Kebijakan tidak memiliki tujuan.", "Semua pelaksana memahami kebijakan secara identik."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 75",
+    q: "Dalam advokasi, “coalition strengthening” dilakukan untuk...",
+    opts: ["Mengurangi jumlah anggota koalisi.", "Memperkuat koordinasi, strategi, dan kesamaan tujuan antar anggota koalisi.", "Menghapus perbedaan pendapat.", "Menghindari komunikasi publik."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 76",
+    q: "Dalam analisis kebijakan, “sensitivity analysis” digunakan untuk...",
+    opts: ["Menguji seberapa sensitif pembuat kebijakan terhadap kritik.", "Menguji bagaimana perubahan asumsi memengaruhi hasil kebijakan.", "Menghapus variabel kebijakan.", "Menentukan struktur organisasi."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 77",
+    q: "Dalam advokasi, “public hearing” bertujuan untuk...",
+    opts: ["Menutup akses publik terhadap informasi.", "Memberikan ruang bagi masyarakat untuk menyampaikan pendapat secara resmi.", "Menghindari partisipasi publik.", "Menghapus proses legislasi."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 78",
+    q: "Dalam teori kebijakan, “policy layering” berarti...",
+    opts: ["Menghapus seluruh kebijakan lama.", "Menambahkan aturan baru di atas kebijakan lama tanpa mencabutnya.", "Mengganti seluruh struktur organisasi.", "Menghindari perubahan kebijakan."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 79",
+    q: "Dalam advokasi, “evidence packaging” berarti...",
+    opts: ["Menyembunyikan data yang tidak sesuai.", "Menyajikan bukti secara ringkas, jelas, dan mudah dipahami oleh pembuat kebijakan.", "Menghapus data kuantitatif.", "Menghindari penggunaan grafik."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 80",
+    q: "Dalam implementasi kebijakan, “policy bottleneck” terjadi ketika...",
+    opts: ["Semua proses berjalan lancar.", "Ada hambatan signifikan yang memperlambat atau menghentikan implementasi.", "Kebijakan tidak memiliki tujuan.", "Pelaksana memiliki sumber daya berlebih."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 81",
+    q: "Dalam analisis kebijakan, “policy paradox” menurut Deborah Stone menunjukkan bahwa...",
+    opts: ["Kebijakan selalu bersifat objektif.", "Nilai, simbol, dan interpretasi sering lebih dominan daripada data teknis.", "Kebijakan tidak pernah berubah.", "Kebijakan hanya dipengaruhi anggaran."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 82",
+    q: "Dalam advokasi, “agenda denial” dilakukan oleh aktor yang...",
+    opts: ["Ingin mempercepat perubahan kebijakan.", "Berusaha mencegah suatu isu masuk ke agenda kebijakan.", "Selalu mendukung isu publik.", "Tidak memiliki kepentingan politik."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 83",
+    q: "Dalam teori kebijakan, “policy drift” terjadi ketika...",
+    opts: ["Kebijakan dicabut secara resmi.", "Kebijakan tetap sama tetapi kondisi sosial berubah sehingga efektivitasnya menurun.", "Kebijakan diperkuat dengan anggaran baru.", "Kebijakan diganti total."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 84",
+    q: "Dalam implementasi kebijakan, “street-level innovation” berarti...",
+    opts: ["Pelaksana lapangan dilarang berinovasi.", "Pelaksana lapangan menciptakan solusi kreatif untuk mengatasi keterbatasan implementasi.", "Inovasi hanya boleh dilakukan pejabat tinggi.", "Inovasi tidak berpengaruh pada implementasi."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 85",
+    q: "Dalam advokasi, “issue reframing” digunakan untuk...",
+    opts: ["Mengubah cara publik memandang isu agar lebih mendukung tujuan advokasi.", "Menghapus isu dari pembahasan.", "Menghindari penggunaan data.", "Mengurangi partisipasi publik."],
+    correct: 0,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 86",
+    q: "Dalam teori kebijakan, “policy feedback loop” menunjukkan bahwa...",
+    opts: ["Kebijakan tidak pernah memengaruhi perilaku publik.", "Kebijakan yang ada dapat membentuk preferensi, identitas, dan tindakan politik masyarakat.", "Kebijakan hanya berdampak pada anggaran.", "Kebijakan tidak memiliki dampak jangka panjang."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 87",
+    q: "Dalam advokasi, “elite capture” terjadi ketika...",
+    opts: ["Kepentingan publik mendominasi proses kebijakan.", "Kelompok elit menguasai proses kebijakan sehingga mengabaikan kepentingan masyarakat luas.", "Semua kelompok memiliki pengaruh yang sama.", "Kebijakan dibuat tanpa aktor elit."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 88",
+    q: "Dalam implementasi kebijakan, “policy overload” terjadi ketika...",
+    opts: ["Pelaksana memiliki terlalu banyak kebijakan untuk dijalankan sehingga efektivitas menurun.", "Kebijakan hanya sedikit.", "Kebijakan tidak memiliki tujuan.", "Pelaksana memiliki sumber daya berlebih."],
+    correct: 0,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 89",
+    q: "Dalam advokasi, “evidence-informed decision making” berarti...",
+    opts: ["Keputusan dibuat tanpa mempertimbangkan bukti.", "Keputusan mempertimbangkan bukti ilmiah, konteks politik, dan nilai sosial.", "Keputusan hanya berdasarkan intuisi.", "Keputusan hanya berdasarkan survei."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 90",
+    q: "Dalam teori kebijakan, “policy inertia” berarti...",
+    opts: ["Kebijakan mudah berubah.", "Kebijakan sulit berubah meskipun kondisi sudah tidak relevan.", "Kebijakan selalu optimal.", "Kebijakan tidak memiliki dampak."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 91",
+    q: "Dalam analisis kebijakan, “policy robustness” berarti...",
+    opts: ["Kebijakan mudah berubah.", "Kebijakan tetap efektif meskipun menghadapi berbagai kondisi yang tidak pasti.", "Kebijakan hanya berlaku lokal.", "Kebijakan tidak memiliki dampak."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 92",
+    q: "Dalam advokasi, “policy champion” adalah...",
+    opts: ["Aktor yang menolak perubahan kebijakan.", "Individu berpengaruh yang aktif mendorong perubahan kebijakan.", "Pejabat yang hanya menjalankan instruksi.", "Kelompok yang tidak memiliki kepentingan."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 93",
+    q: "Dalam teori kebijakan, “policy sequencing” berarti...",
+    opts: ["Kebijakan disusun secara acak.", "Urutan kebijakan memengaruhi efektivitas hasil akhir.", "Kebijakan tidak memerlukan tahapan.", "Kebijakan hanya berlaku jangka pendek."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 94",
+    q: "Dalam implementasi kebijakan, “policy fragmentation” dapat menyebabkan...",
+    opts: ["Koordinasi antar lembaga menjadi lemah.", "Kebijakan berjalan lebih cepat.", "Semua pelaksana memahami kebijakan secara identik.", "Anggaran meningkat otomatis."],
+    correct: 0,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 95",
+    q: "Dalam advokasi, “evidence triangulation” dilakukan untuk...",
+    opts: ["Menghapus data yang tidak sesuai.", "Memperkuat bukti dengan menggabungkan berbagai sumber data.", "Menghindari penggunaan data kualitatif.", "Mengurangi kredibilitas riset."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 96",
+    q: "Dalam teori kebijakan, “policy learning” dapat terjadi ketika...",
+    opts: ["Pemerintah mengabaikan hasil evaluasi.", "Pemerintah memperbaiki kebijakan berdasarkan pengalaman dan bukti baru.", "Kebijakan tidak pernah berubah.", "Evaluasi tidak dilakukan."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 97",
+    q: "Dalam advokasi, “strategic communication” berarti...",
+    opts: ["Komunikasi tanpa tujuan.", "Komunikasi yang dirancang untuk memengaruhi pembuat kebijakan dan publik secara efektif.", "Komunikasi yang hanya menggunakan opini.", "Komunikasi yang menghindari data."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 98",
+    q: "Dalam implementasi kebijakan, “policy misalignment” terjadi ketika...",
+    opts: ["Tujuan kebijakan selaras dengan pelaksanaannya.", "Tujuan kebijakan tidak sesuai dengan tindakan pelaksana di lapangan.", "Kebijakan tidak memiliki tujuan.", "Pelaksana memiliki sumber daya berlebih."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 99",
+    q: "Dalam advokasi, “policy window exploitation” berarti...",
+    opts: ["Mengabaikan peluang perubahan kebijakan.", "Memanfaatkan momen ketika peluang perubahan kebijakan terbuka.", "Menghindari pembuat kebijakan.", "Menghapus isu dari agenda."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Soal 100",
+    q: "Dalam teori kebijakan, “policy sustainability” berarti...",
+    opts: ["Kebijakan hanya berlaku jangka pendek.", "Kebijakan mampu bertahan dan memberikan manfaat jangka panjang.", "Kebijakan tidak memiliki dampak.", "Kebijakan hanya menguntungkan elit."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  }
+]
+};
+document.addEventListener('DOMContentLoaded', () => {
+  QuizEngine.init(QUIZ_DATA);
+  const obs = new MutationObserver(() => {
+    const bar = document.getElementById('quiz-top-bar');
+    const main = document.getElementById('quiz-main-screen');
+    if (bar && main) bar.style.display = main.style.display !== 'none' ? 'flex' : 'none';
+  });
+  const target = document.getElementById('quiz-main-screen');
+  if (target) obs.observe(target, { attributes: true, attributeFilter: ['style'] });
+});
+</script>
+</body>
+</html>

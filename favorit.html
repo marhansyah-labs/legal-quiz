@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Favorit — LeksaLaw</title>
+<link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<div class="app-shell">
+  <aside class="sidebar" id="app-sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-logo">⚖️</div>
+      <div class="sidebar-name">LeksaLaw<small>Platform Belajar Hukum</small></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Menu Utama</div>
+      <a class="nav-item" href="index.html"><span class="nav-icon">🏠</span><span class="nav-label">Dashboard</span></a>
+      <div class="nav-section-label">Pembelajaran</div>
+      <div id="nav-semesters"></div>
+      <div class="nav-section-label">Lainnya</div>
+      <a class="nav-item" href="nilai.html"><span class="nav-icon">📊</span><span class="nav-label">Nilai & Progress</span></a>
+      <a class="nav-item active" href="favorit.html"><span class="nav-icon">⭐</span><span class="nav-label">Favorit</span></a>
+      <a class="nav-item" href="tentang.html"><span class="nav-icon">ℹ️</span><span class="nav-label">Tentang</span></a>
+    </nav>
+    <div style="padding:12px 16px;border-top:1px solid rgba(255,255,255,0.08)">
+      <div style="font-size:11px;color:#475569;text-align:center">LeksaLaw v1.0 · Offline</div>
+    </div>
+  </aside>
+
+  <div class="main-content" id="main-content">
+    <header class="top-header">
+      <button class="header-toggle" id="sidebar-toggle">☰</button>
+      <div class="header-breadcrumb"><span class="breadcrumb-current">Favorit</span></div>
+      <div class="header-actions">
+        <button class="icon-btn" id="theme-btn" title="Ganti Tema">🌙</button>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="hero-welcome animate-in">
+        <div class="hero-title">⭐ Quiz Favorit</div>
+        <div class="hero-sub">Kumpulan quiz yang Anda tandai untuk diakses dengan cepat.</div>
+      </div>
+
+      <div id="fav-list" class="quiz-list"></div>
+    </main>
+  </div>
+</div>
+
+<div class="toast" id="app-toast"></div>
+
+<script src="data/config.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+function renderFavPage() {
+  const favs = getFavorites();
+  const listEl = document.getElementById('fav-list');
+  if (!favs.length) {
+    listEl.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">⭐</div>
+      <div class="empty-title">Belum ada quiz favorit</div>
+      <div class="empty-sub">Tandai bintang pada quiz yang sering Anda kerjakan dari halaman Dashboard.</div>
+    </div>`;
+    return;
+  }
+  let html = '';
+  favs.forEach(quizId => {
+    let found = null, foundCourse = null;
+    COURSES.forEach(c => { const q = c.quizzes.find(q => q.id === quizId); if (q) { found = q; foundCourse = c; } });
+    if (!found) return;
+    const progress = getQuizProgress(quizId);
+    html += `<div class="quiz-item">
+      <span style="font-size:22px">${foundCourse.icon}</span>
+      <div class="quiz-info">
+        <div class="quiz-title">${found.title}</div>
+        <div class="quiz-sub">${foundCourse.name} · ${found.subtitle}</div>
+      </div>
+      ${progress ? `<span class="quiz-score">Nilai: ${progress.score}%</span>` : ''}
+      <a href="${found.file}" class="btn btn-primary btn-sm">Buka →</a>
+      <button onclick="removeFav('${quizId}')" style="background:none;border:none;cursor:pointer;font-size:18px" title="Hapus favorit">⭐</button>
+    </div>`;
+  });
+  listEl.innerHTML = html;
+}
+
+function removeFav(quizId) {
+  toggleFavorite(quizId);
+  Toast.show('☆ Dihapus dari Favorit');
+  renderFavPage();
+}
+
+document.addEventListener('DOMContentLoaded', renderFavPage);
+</script>
+</body>
+</html>

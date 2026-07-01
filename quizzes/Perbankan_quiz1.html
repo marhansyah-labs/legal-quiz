@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz 1 — Persiapan UAS — LeksaLaw</title>
+<link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/app.css">
+<link rel="stylesheet" href="../assets/css/quiz.css">
+</head>
+<body>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<div class="app-shell">
+  <aside class="sidebar" id="app-sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-logo">⚖️</div>
+      <div class="sidebar-name">LeksaLaw<small>Platform Belajar Hukum</small></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Menu Utama</div>
+      <a class="nav-item" href="../index.html"><span class="nav-icon">🏠</span><span class="nav-label">Dashboard</span></a>
+      <div class="nav-section-label">Pembelajaran</div>
+      <div id="nav-semesters"></div>
+      <div class="nav-section-label">Lainnya</div>
+      <a class="nav-item" href="../nilai.html"><span class="nav-icon">📊</span><span class="nav-label">Nilai & Progress</span></a>
+      <a class="nav-item" href="../favorit.html"><span class="nav-icon">⭐</span><span class="nav-label">Favorit</span></a>
+    </nav>
+    <div style="padding:12px 16px;border-top:1px solid rgba(255,255,255,0.08)">
+      <div style="font-size:11px;color:#475569;text-align:center">LeksaLaw v1.0 · Offline</div>
+    </div>
+  </aside>
+  <div class="main-content" id="main-content">
+    <header class="top-header">
+      <button class="header-toggle" id="sidebar-toggle">☰</button>
+      <div class="header-breadcrumb">
+        <a href="../index.html" style="color:var(--text-muted);text-decoration:none">Dashboard</a>
+        <span class="breadcrumb-sep">›</span>
+        <span style="color:var(--text-muted)">Perbankan Umum & Syariah</span>
+        <span class="breadcrumb-sep">›</span>
+        <span class="breadcrumb-current">Quiz 1 — Persiapan UAS</span>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" id="theme-btn" title="Ganti Tema">🌙</button>
+      </div>
+    </header>
+    <div class="quiz-top-bar" id="quiz-top-bar" style="display:none">
+      <span class="quiz-progress-text" id="progress-label">Soal 1 / 1</span>
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quiz-progress-fill" style="width:0%"></div></div>
+      <span id="quiz-label" style="font-size:12px;color:var(--text-muted);white-space:nowrap"></span>
+    </div>
+
+    <!-- SETUP -->
+    <div id="quiz-setup-screen">
+      <div class="quiz-setup">
+        <div class="setup-card">
+          <a href="../index.html" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text-muted);margin-bottom:20px;text-decoration:none" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color='var(--text-muted)'">← Kembali ke Dashboard</a>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-muted);margin-bottom:6px">Perbankan Umum & Syariah</div>
+          <h1 class="setup-title" id="setup-quiz-title">Quiz 1 — Persiapan UAS</h1>
+          <p class="setup-sub" id="setup-quiz-course"></p>
+          <div id="score-history" style="display:none" class="score-history"></div>
+          <div class="setup-stat-row">
+            <div class="setup-stat"><div class="n" id="setup-stat-q">—</div><div class="l">Total Soal</div></div>
+            <div class="setup-stat"><div class="n" id="setup-stat-t">—</div><div class="l">Topik</div></div>
+            <div class="setup-stat"><div class="n" id="setup-stat-level">sedang</div><div class="l">Tingkat</div></div>
+          </div>
+          <hr class="divider">
+          <div style="font-size:13px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px">Mode Pengerjaan</div>
+          <div class="mode-opts">
+            <label class="mode-opt selected">
+              <input type="radio" name="mode" value="study" checked>
+              <div><div class="mode-opt-name">📖 Mode Belajar</div><div class="mode-opt-desc">Feedback & penjelasan langsung setelah tiap jawaban</div></div>
+            </label>
+            <label class="mode-opt">
+              <input type="radio" name="mode" value="exam">
+              <div><div class="mode-opt-name">📝 Mode Ujian</div><div class="mode-opt-desc">Hasil & pembahasan muncul di akhir saja</div></div>
+            </label>
+          </div>
+          <hr class="divider">
+          <label class="shuffle-toggle">
+            <input type="checkbox" id="opt-shuffle">
+            <div>
+              <div class="shuffle-toggle-label">🔀 Acak Soal & Pilihan Jawaban</div>
+              <div class="shuffle-toggle-desc">Urutan soal dan opsi akan diacak setiap sesi</div>
+            </div>
+          </label>
+          <button class="btn-start-quiz" id="btn-start-quiz">Mulai Quiz →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUIZ MAIN -->
+    <div id="quiz-main-screen" style="display:none">
+      <div class="page-content" style="padding-top:16px;padding-bottom:100px">
+        <div class="quiz-layout">
+          <div><div id="q-container"></div></div>
+          <div class="quiz-sidebar-panel">
+            <div class="quiz-nav-card">
+              <div class="quiz-nav-title">Navigasi Soal</div>
+              <div class="nav-grid" id="nav-grid"></div>
+              <div class="nav-legend">
+                <div class="legend-item"><div class="legend-dot dot-answered"></div>Dijawab</div>
+                <div class="legend-item"><div class="legend-dot dot-flagged"></div>Ragu</div>
+                <div class="legend-item"><div class="legend-dot dot-unanswered"></div>Belum</div>
+              </div>
+            </div>
+            <div class="quiz-nav-card">
+              <div class="quiz-nav-title">Aksi</div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <button onclick="QuizEngine.finish()" class="btn btn-primary btn-sm" style="justify-content:center">✓ Selesai & Lihat Hasil</button>
+                <button onclick="if(confirm('Mulai ulang quiz?'))QuizEngine.restart()" class="btn btn-secondary btn-sm" style="justify-content:center">🔁 Mulai Ulang</button>
+              </div>
+            </div>
+            <div class="quiz-nav-card" style="font-size:12px;color:var(--text-muted)">
+              <div class="quiz-nav-title">Pintasan Keyboard</div>
+              <div style="display:flex;flex-direction:column;gap:5px">
+                <div><kbd style="background:var(--bg);border:1px solid var(--border);padding:1px 5px;border-radius:4px;font-size:10px">1–5</kbd> Pilih jawaban</div>
+                <div><kbd style="background:var(--bg);border:1px solid var(--border);padding:1px 5px;border-radius:4px;font-size:10px">←→</kbd> Navigasi soal</div>
+                <div><kbd style="background:var(--bg);border:1px solid var(--border);padding:1px 5px;border-radius:4px;font-size:10px">F</kbd> Tandai ragu</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULT -->
+    <div id="quiz-result-screen" style="display:none">
+      <div class="result-screen">
+        <div class="result-card">
+          <div class="score-center">
+            <div class="score-circle">
+              <div class="score-pct" id="result-pct">0%</div>
+              <div class="score-lbl">Skor Akhir</div>
+            </div>
+            <div class="score-detail" id="result-detail"></div>
+            <div class="score-verdict" id="result-verdict"></div>
+          </div>
+          <hr class="divider">
+          <div class="result-section-title">📊 Performa Per Topik</div>
+          <div id="result-topics"></div>
+          <div class="result-section-title">❌ Ringkasan Jawaban Salah</div>
+          <div id="result-wrongs"></div>
+          <div class="result-actions">
+            <button class="btn btn-primary" onclick="QuizEngine.restart()">🔁 Ulangi Quiz</button>
+            <button class="btn btn-secondary" onclick="QuizEngine.review()">📋 Tinjau Jawaban</button>
+            <a href="../index.html" class="btn btn-secondary">🏠 Dashboard</a>
+            <button class="btn btn-secondary" onclick="window.print()">🖨️ Cetak</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER NAV -->
+<div class="quiz-footer" id="quiz-footer">
+  <div class="footer-inner">
+    <button class="btn btn-secondary" id="btn-prev" onclick="QuizEngine.prev()">← Sebelumnya</button>
+    <button class="btn-flag-toggle" id="btn-flag-toggle" onclick="QuizEngine.toggleFlag()">🚩 Tandai Ragu</button>
+    <button class="btn btn-primary" id="btn-next" onclick="QuizEngine.next()">Berikutnya →</button>
+    <button class="btn-finish-quiz" id="btn-finish" style="display:none" onclick="QuizEngine.finish()">Selesai ✓</button>
+  </div>
+</div>
+<div class="toast" id="app-toast"></div>
+
+<script src="../data/config.js"></script>
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/quiz-engine.js"></script>
+<script>
+const QUIZ_DATA = {
+  quizId: "PERBANKAN_Q1",
+  courseId: "PERBANKAN",
+  courseName: "Perbankan Umum & Syariah",
+  title: "Quiz 1 — Persiapan UAS",
+  level: "sedang",
+  questions: [
+  {
+    topic: "Kelembagaan & Sejarah Perbankan",
+    q: "Berdasarkan UU No. 23 Tahun 1999, apa konsekuensi yuridis utama dari status Bank Indonesia sebagai lembaga negara yang independen?",
+    opts: ["BI memiliki kedudukan yang sejajar dengan departemen pemerintah.", "Kebijakan BI dapat diintervensi oleh lembaga tinggi negara dalam keadaan darurat ekonomi.", "BI berada di luar struktur pemerintahan dan pihak luar dilarang mencampuri kebijakannya.", "BI diperbolehkan kembali melakukan kegiatan komersial untuk menunjang operasionalnya.", "BI bertanggung jawab langsung kepada Kementerian Keuangan dalam menetapkan suku bunga."],
+    correct: 2,
+    source: "Halaman, Paragraf 1.",
+    explanation: ""
+  },
+  {
+    topic: "Kelembagaan & Sejarah Perbankan",
+    q: "Dalam evolusi sejarah perbankan Islam, apa perbedaan mendasar antara praktik \"Individu\" pada zaman Sahabat dengan profesi \"Jihbiz\" pada zaman Bani Abbasiyah?",
+    opts: ["Individu melakukan ketiga fungsi perbankan sekaligus, sedangkan Jihbiz hanya satu fungsi.", "Sahabat dilarang memanfaatkan harta titipan, sedangkan Jihbiz diizinkan sepenuhnya.", "Jihbiz melakukan ketiga fungsi perbankan (deposit, penyaluran, transfer) dalam satu individu, sementara sebelumnya satu orang biasanya hanya melakukan satu fungsi.", "Individu menggunakan basis bunga, sedangkan Jihbiz mulai menggunakan basis bagi hasil.", "Jihbiz merupakan institusi formal, sedangkan praktik pada zaman Sahabat bersifat informal."],
+    correct: 2,
+    source: "Halaman, Paragraf 2; Halaman, Paragraf 1.",
+    explanation: ""
+  },
+  {
+    topic: "Kelembagaan & Sejarah Perbankan",
+    q: "Apa yang menjadi penyebab utama kegagalan operasional Mit Ghamr Local Saving Bank di Mesir (1963-1967) meskipun sempat meraih kesuksesan luar biasa dengan peningkatan jumlah deposan?",
+    opts: ["Ketidakmampuan manajemen dalam menyalurkan dana ke sektor riil.", "Rendahnya nisbah bagi hasil yang ditawarkan kepada petani perdesaan.", "Kekacauan politik di Mesir yang menyebabkan pengambilalihan oleh bank sentral dan penghapusan prinsip nir-bunga.", "Adanya fatwa ulama setempat yang mengharamkan operasional bank tersebut.", "Terjadinya penarikan dana besar-besaran (rush) oleh nasabah akibat krisis kepercayaan."],
+    correct: 2,
+    source: "Halaman, Paragraf Tabel 1.4 (No. 3).",
+    explanation: ""
+  },
+  {
+    topic: "Kelembagaan & Sejarah Perbankan",
+    q: "Berdasarkan Undang-Undang No. 21 Tahun 2008, apa kriteria operasional yang membedakan antara Bank Umum Syariah dan Bank Pembiayaan Rakyat Syariah?",
+    opts: ["Bank Umum Syariah berdasarkan prinsip bagi hasil, BPRS berdasarkan prinsip margin.", "Bank Umum Syariah memberikan jasa dalam lalu lintas pembayaran, sedangkan BPRS tidak.", "Bank Umum Syariah diperuntukkan bagi nasabah korporasi, BPRS hanya untuk nasabah individu.", "Bank Umum Syariah boleh memiliki Unit Usaha Syariah, BPRS dilarang.", "Bank Umum Syariah menggunakan sistem bunga, BPRS menggunakan sistem bagi hasil."],
+    correct: 1,
+    source: "Halaman, Paragraf 6 & 7.",
+    explanation: ""
+  },
+  {
+    topic: "Produk Dana, Giro & Kliring",
+    q: "Dalam mekanisme perputaran dana bank konvensional, apa yang dimaksud dengan istilah \"Negative Spread\"?",
+    opts: ["Kondisi di mana suku bunga pinjaman jauh lebih tinggi dari suku bunga simpanan.", "Kondisi di mana bank gagal menyalurkan dana simpanan ke dalam bentuk kredit.", "Kondisi di mana suku bunga simpanan yang dibayarkan bank lebih tinggi dibandingkan suku bunga pinjaman yang diterima bank.", "Selisih antara pendapatan bunga dan biaya operasional bank yang bernilai nol.", "Pengurangan saldo nasabah akibat biaya administrasi yang melebihi pendapatan bunga harian."],
+    correct: 2,
+    source: "Halaman, Paragraf 1.",
+    explanation: ""
+  },
+  {
+    topic: "Jasa Perbankan & Akad Syariah",
+    q: "Pada sistem bagi hasil bank syariah, jika disepakati menggunakan metode \"Revenue Sharing\" dalam akad mudarabah, apa implikasi utamanya bagi nasabah jika bank mengalami kerugian operasional?",
+    opts: ["Saldo pokok nasabah akan dipotong untuk menutup kerugian operasional bank.", "Nasabah tetap mendapatkan bagi hasil karena didasarkan pada laba bruto (pendapatan sebelum dikurangi biaya operasional bank).", "Nasabah dan bank berbagi kerugian sesuai dengan nisbah yang telah ditetapkan di awal.", "Nasabah hanya mendapatkan bonus sukarela (athaya) sebagai pengganti bagi hasil yang nihil.", "Nasabah wajib menambah modal untuk membantu bank mencapai titik impas."],
+    correct: 1,
+    source: "Halaman, Paragraf 1; Halaman, Paragraf 1.",
+    explanation: ""
+  },
+  {
+    topic: "Kelembagaan & Sejarah Perbankan",
+    q: "Mengapa status \"Zubair bin al Awwam\" dalam praktik perbankan awal dianggap lebih fleksibel dibandingkan praktik simpanan titipan biasa (wadi'ah)?",
+    opts: ["Karena beliau mengalihkan status titipan menjadi pinjaman sehingga beliau berhak memanfaatkan dana tersebut.", "Karena beliau memberikan jaminan bunga tetap kepada nasabah yang menitipkan dana.", "Karena beliau bertindak sebagai perantara resmi yang ditunjuk oleh pemerintah.", "Karena beliau tidak diwajibkan mengembalikan dana titipan jika terjadi kerugian bisnis.", "Karena beliau menggunakan sistem cek untuk mempermudah transfer antar wilayah."],
+    correct: 0,
+    source: "Halaman, Paragraf Tabel 1.2 (No. 2).",
+    explanation: ""
+  },
+  {
+    topic: "Produk Dana, Giro & Kliring",
+    q: "Apa perbedaan mendasar dalam perlakuan aset antara prinsip Wadiah Yad al-Amanah dan Wadiah Yad ad-Dhamanah dalam perbankan syariah?",
+    opts: ["Dalam Amanah, bank wajib menjamin pengembalian, sedangkan Dhamanah tidak.", "Dalam Dhamanah, bank diperbolehkan menggunakan aset titipan untuk mencari keuntungan, sementara dalam Amanah aset harus tetap utuh dan tidak boleh digunakan.", "Dalam Amanah, nasabah mendapatkan bagi hasil, sedangkan dalam Dhamanah hanya bonus.", "Dalam Dhamanah, semua kerugian aset ditanggung nasabah, sedangkan Amanah ditanggung bank.", "Dhamanah hanya berlaku untuk benda tidak bergerak, sedangkan Amanah untuk uang tunai."],
+    correct: 1,
+    source: "Halaman, Paragraf 1 & 2.",
+    explanation: ""
+  },
+  {
+    topic: "Produk Dana, Giro & Kliring",
+    q: "Dalam perhitungan bunga Sertifikat Deposito pada bank konvensional, mengapa jumlah uang yang dibayarkan pembeli saat pembukaan rekening selalu lebih kecil dari nilai nominalnya?",
+    opts: ["Karena adanya biaya administrasi dan provisi yang dipotong di muka.", "Karena bank menerapkan sistem diskonto, di mana bunga dibayarkan di muka kepada nasabah.", "Karena adanya pajak penghasilan sebesar 20% yang langsung dipotong dari pokok deposito.", "Karena nilai sertifikat deposito akan meningkat seiring dengan fluktuasi pasar uang.", "Karena nasabah hanya diwajibkan menyetor minimal 80% dari nilai nominal sebagai jaminan."],
+    correct: 1,
+    source: "Halaman, Paragraf 2.",
+    explanation: ""
+  },
+  {
+    topic: "Produk Dana, Giro & Kliring",
+    q: "Berdasarkan ketentuan kliring, apa yang akan terjadi jika seorang nasabah giro menarik \"Cek Kosong\" sebanyak tiga kali dalam periode tertentu?",
+    opts: ["Bank akan mengenakan biaya denda sebesar 50% dari nilai cek.", "Rekening giro nasabah akan dibekukan sementara selama enam bulan.", "Nasabah akan dimasukkan ke dalam daftar hitam (black list) yang disebarkan ke seluruh perbankan melalui Bank Indonesia.", "Bank diwajibkan memberikan fasilitas overdraft untuk menutup kekurangan dana tersebut.", "Nasabah hanya diberikan peringatan lisan tanpa konsekuensi administrasi lebih lanjut."],
+    correct: 2,
+    source: "Halaman, Paragraf 1.",
+    explanation: ""
+  },
+  {
+    topic: "Produk Dana, Giro & Kliring",
+    q: "Apa karakteristik unik dari \"Bilyet Giro\" yang membedakannya dengan alat penarikan dana \"Cek\"?",
+    opts: ["Bilyet giro dapat dicairkan secara tunai di loket teller bank manapun.", "Bilyet giro adalah surat perintah pemindahbukuan dana yang tidak dapat dicairkan secara tunai.", "Bilyet giro memiliki masa kedaluwarsa yang lebih singkat dibandingkan cek.", "Bilyet giro diterbitkan \"kepada pembawa\" sehingga siapa saja bisa menguangkannya.", "Bilyet giro tidak memerlukan tanda tangan basah penerbit, cukup dengan stempel perusahaan."],
+    correct: 1,
+    source: "Halaman, Paragraf 1; Halaman, Paragraf 1.",
+    explanation: ""
+  },
+  {
+    topic: "Produk Dana, Giro & Kliring",
+    q: "Dalam akad Tabungan Mudarabah, apa yang menjadi dasar penentuan nisbah bagi hasil antara nasabah dan bank syariah?",
+    opts: ["Tingkat suku bunga acuan dari Bank Indonesia (BI Rate).", "Jenis produk, perkiraan pendapatan investasi di sektor riil, dan biaya operasional bank.", "Besar kecilnya modal dasar bank yang tercantum dalam akta pendirian.", "Persentase tetap yang diatur oleh Dewan Pengawas Syariah tanpa melihat profit bank.", "Rata-rata saldo terendah nasabah dalam periode satu tahun berjalan."],
+    correct: 1,
+    source: "Halaman, Paragraf 1; Halaman, Paragraf 1.",
+    explanation: ""
+  },
+  {
+    topic: "Analisis & Manajemen Perkreditan",
+    q: "Menurut penggolongan kualitas kredit, seorang debitur masuk dalam kategori \"Diragukan (Doubtful)\" apabila memenuhi kriteria berikut:",
+    opts: ["Terdapat tunggakan angsuran pokok/bunga yang belum melampaui 90 hari.", "Terjadi wanprestasi dan tunggakan angsuran telah melampaui 180 hari.", "Pembayaran angsuran tepat waktu namun mutasi rekening tidak aktif.", "Debitur baru mengalami kesulitan keuangan akibat bencana alam skala kecil.", "Terdapat tunggakan yang telah melampaui 270 hari dan jaminan tidak dapat dicairkan."],
+    correct: 1,
+    source: "Halaman, Paragraf 4.",
+    explanation: ""
+  },
+  {
+    topic: "Analisis & Manajemen Perkreditan",
+    q: "Apa perbedaan utama antara fasilitas Kredit Modal Kerja (KMK) tipe \"Revolving\" dan KMK tipe \"Aflopend\"?",
+    opts: ["Revolving diberikan untuk investasi jangka panjang, Aflopend untuk jangka pendek.", "Revolving dapat dipergunakan kembali setelah dilakukan pelunasan dalam siklusnya, sedangkan Aflopend hanya untuk satu kali siklus usaha dan habis saat jatuh tempo.", "Revolving menggunakan sistem bunga tetap, Aflopend menggunakan sistem bunga efektif.", "Revolving hanya untuk nasabah korporasi besar, Aflopend untuk pengusaha mikro.", "Revolving memerlukan jaminan tanah, Aflopend diperbolehkan tanpa jaminan."],
+    correct: 1,
+    source: "Halaman, Paragraf 1; Halaman, Paragraf 2.",
+    explanation: ""
+  },
+  {
+    topic: "Analisis & Manajemen Perkreditan",
+    q: "Dalam prinsip pemberian kredit 6C, apa yang diukur melalui aspek \"Capacity\"?",
+    opts: ["Kejujuran dan integritas pribadi calon debitur dalam menjalankan bisnis.", "Kemampuan nasabah mengelola faktor produksi dan menghasilkan laba untuk melunasi utang.", "Besarnya modal sendiri nasabah yang disertakan dalam pembiayaan proyek.", "Kondisi ekonomi makro yang memengaruhi kelangsungan usaha nasabah.", "Kepatuhan nasabah terhadap peraturan perundang-undangan yang berlaku."],
+    correct: 1,
+    source: "Halaman, Paragraf 2.",
+    explanation: ""
+  },
+  {
+    topic: "Analisis & Manajemen Perkreditan",
+    q: "Mengapa bank menetapkan \"Lending Rate\" (LR) dengan menjumlahkan Cost of Money, Risk Cost, dan Spread?",
+    opts: ["Agar bank mendapatkan keuntungan maksimal tanpa mempertimbangkan risiko kredit.", "Untuk memastikan suku bunga yang dikenakan minimal dapat menutup seluruh biaya dana, biaya overhead, risiko kegagalan, dan target keuntungan.", "Agar suku bunga bank bersaing dengan kompetitor di pasar uang antarbank.", "Untuk mengikuti instruksi pemerintah dalam menekan angka inflasi nasional.", "Sebagai syarat formalitas untuk memenuhi standar akuntansi perbankan internasional."],
+    correct: 1,
+    source: "Halaman, Paragraf 1; Halaman, Paragraf 1.",
+    explanation: ""
+  },
+  {
+    topic: "Analisis & Manajemen Perkreditan",
+    q: "Dalam analisis pemberian kredit kepada \"Yayasan\", apa risiko hukum yang harus diantisipasi bank terkait tanggung jawab pengurus jika terjadi kepailitan?",
+    opts: ["Pengurus tidak bertanggung jawab sama sekali karena yayasan bukan badan hukum.", "Pengurus bertanggung jawab secara tanggung renteng jika kepailitan terjadi karena kesalahan pengurus dan kekayaan yayasan tidak mencukupi.", "Kekayaan yayasan otomatis menjadi milik negara sehingga bank kehilangan hak tagih.", "Setiap perbuatan pengurus harus mendapatkan persetujuan dari Menteri Hukum dan HAM setiap saat.", "Yayasan hanya boleh menggunakan dana hibah untuk melunasi utang bank."],
+    correct: 1,
+    source: "Halaman, Paragraf 5.",
+    explanation: ""
+  },
+  {
+    topic: "Analisis & Manajemen Perkreditan",
+    q: "Apa tujuan bank menggunakan sistem \"Floating Rate\" (Bunga Efektif) dalam pembebanan bunga kredit?",
+    opts: ["Agar nasabah dapat membayar jumlah angsuran yang sama persis setiap bulannya.", "Memungkinkan penyesuaian suku bunga secara periodik sesuai dengan fluktuasi suku bunga pasar yang berlaku.", "Memberikan kepastian kepada nasabah bahwa bunga tidak akan pernah naik selama masa pinjaman.", "Mempercepat proses pelunasan pokok di awal masa pinjaman bagi debitur kecil.", "Menghindari pajak bunga yang tinggi dari otoritas keuangan."],
+    correct: 1,
+    source: "Halaman, Paragraf 3.",
+    explanation: ""
+  },
+  {
+    topic: "Analisis & Manajemen Perkreditan",
+    q: "Analis kredit melakukan \"Trade Checking\" dalam proses penilaian \"Character\" calon debitur dengan tujuan:",
+    opts: ["Menghitung neraca laba rugi perusahaan selama tiga tahun terakhir.", "Mencari informasi ke rekan bisnis atau pesaing mengenai reputasi, etika, dan perilaku bisnis calon debitur.", "Meninjau lokasi gudang dan mesin produksi secara langsung.", "Mengukur nilai taksiran agunan yang dijaminkan ke bank.", "Memastikan nasabah tidak memiliki hobi berjudi atau berfoya-foya."],
+    correct: 1,
+    source: "Halaman, Paragraf 2.",
+    explanation: ""
+  },
+  {
+    topic: "Jasa Perbankan & Akad Syariah",
+    q: "Apa yang membedakan \"Back to Back L/C\" dengan jenis Letter of Credit lainnya dalam transaksi perdagangan internasional?",
+    opts: ["Pembayarannya dilakukan secara tunai tanpa dokumen pengapalan.", "L/C ini dibuka berdasarkan dan dijamin dengan L/C lain (Master L/C) yang diterima oleh penerima yang biasanya hanya bertindak sebagai perantara.", "Penerima dapat menarik uang sebelum barang dikirimkan kepada pembeli.", "L/C ini hanya berlaku untuk perdagangan barang-barang mewah lintas benua.", "Bank pembuka L/C menjamin pembayaran meskipun dokumen tidak lengkap."],
+    correct: 1,
+    source: "Halaman, Paragraf n.",
+    explanation: ""
+  },
+  {
+    topic: "Jasa Perbankan & Akad Syariah",
+    q: "Dalam layanan perbankan digital, apa perbedaan utama antara \"Layanan Informatif\" dan \"Layanan Transaksional\" menurut regulasi POJK?",
+    opts: ["Informatif hanya untuk nasabah individu, Transaksional untuk korporasi.", "Informatif tidak melibatkan eksekusi transaksi keuangan, sedangkan Transaksional melibatkan eksekusi keuangan dan interaksi pengambilan keputusan.", "Informatif tidak memerlukan akses internet, Transaksional wajib online.", "Informatif hanya melalui mesin ATM, Transaksional hanya melalui handphone.", "Informatif dilakukan oleh bank sendiri, Transaksional wajib dilakukan oleh mitra bank non-LJK."],
+    correct: 1,
+    source: "Halaman, Paragraf a & b.",
+    explanation: ""
+  },
+  {
+    topic: "Jasa Perbankan & Akad Syariah",
+    q: "Pada produk \"Bank Garansi\", siapa yang dimaksud dengan \"Terjamin (Pihak Ke-2)\" dalam struktur perjanjiannya?",
+    opts: ["Bank yang menerbitkan atau mengeluarkan warkat jaminan.", "Nasabah atau leveransir yang memohon penerbitan jaminan kepada bank.", "Pihak ketiga yang akan menerima pembayaran jika terjadi wanprestasi.", "Perusahaan asuransi yang menjamin risiko kredit bank.", "Otoritas Jasa Keuangan yang mengawasi transaksi perbankan."],
+    correct: 1,
+    source: "Halaman, Paragraf 2.",
+    explanation: ""
+  },
+  {
+    topic: "Jasa Perbankan & Akad Syariah",
+    q: "Apa karakteristik dasar dari akad \"Wakalah bil Ujrah\" yang sering diaplikasikan pada layanan transfer dan L/C di bank syariah?",
+    opts: ["Bank bertindak sebagai pengelola modal dan nasabah sebagai pemilik dana.", "Nasabah memberikan kuasa kepada bank untuk mewakili urusannya dengan imbalan pemberian fee atau ujrah.", "Bank memberikan pinjaman tanpa imbalan untuk kebutuhan mendesak nasabah.", "Terjadi pertukaran mata uang asing secara tidak tunai dengan margin tinggi.", "Bank menjamin pembayaran nasabah tanpa adanya jaminan aset sama sekali."],
+    correct: 1,
+    source: "Halaman, Paragraf 2; Halaman, Paragraf b.",
+    explanation: ""
+  },
+  {
+    topic: "Jasa Perbankan & Akad Syariah",
+    q: "Dalam transaksi \"Sharf\" (valuta asing) di bank syariah, mengapa transaksi jenis \"Swap\" dan \"Option\" dilarang secara syariah?",
+    opts: ["Karena biaya administrasinya terlalu mahal bagi nasabah kecil.", "Karena penyerahannya dilakukan pada masa mendatang dan mengandung unsur maysir atau spekulasi.", "Karena tidak melibatkan mata uang rupiah dalam setiap transaksinya.", "Karena bank syariah dilarang memiliki persediaan mata uang asing.", "Karena transaksi tersebut memerlukan izin khusus dari Kementerian Keuangan."],
+    correct: 1,
+    source: "Halaman, Paragraf b & c; Halaman, Paragraf 1.",
+    explanation: ""
+  },
+  {
+    topic: "Jasa Perbankan & Akad Syariah",
+    q: "Bagaimana mekanisme \"Hawalah iB\" membantu seorang supplier dalam mengelola likuiditas bisnisnya menurut praktik perbankan syariah?",
+    opts: ["Bank memberikan pinjaman lunak untuk pembelian bahan baku baru.", "Bank mengambil alih piutang supplier kepada pemilik proyek sehingga supplier mendapatkan modal tunai lebih cepat.", "Bank menjamin ketersediaan barang di gudang supplier selama satu tahun.", "Supplier menitipkan modalnya di bank untuk mendapatkan bagi hasil yang tinggi.", "Bank membayar gaji karyawan supplier secara otomatis setiap bulan."],
+    correct: 1,
+    source: "Halaman, Paragraf 2.",
+    explanation: ""
+  },
+  {
+    topic: "Jasa Perbankan & Akad Syariah",
+    q: "Apa fungsi utama dari \"Setoran Jaminan Kunci\" pada layanan Safe Deposit Box (SDB) di sebuah bank?",
+    opts: ["Sebagai biaya sewa tahunan yang tidak dapat dikembalikan.", "Sebagai dana cadangan jika nasabah ingin menambah ukuran box.", "Untuk mengganti biaya jika kunci kotak penyimpanan tersebut hilang oleh nasabah.", "Sebagai modal bank untuk diinvestasikan kembali ke sektor riil.", "Sebagai premi asuransi atas barang berharga yang disimpan di dalam box."],
+    correct: 2,
+    source: "Halaman, Paragraf 2; Halaman, Paragraf 1.",
+    explanation: ""
+  },
+  {
+    topic: "Jasa Perbankan & Akad Syariah",
+    q: "Dalam akuntansi transfer masuk, apa yang dilakukan bank jika menerima dana transfer untuk seseorang yang \"Bukan Nasabah\" bank tersebut?",
+    opts: ["Bank wajib menolak transfer dan mengembalikannya ke bank pengirim saat itu juga.", "Bank membukukannya sementara ke dalam akun \"Hasil Transfer yang Dapat Dibayar\" sampai penerima datang mencairkannya.", "Bank secara otomatis membukakan rekening tabungan baru atas nama penerima tersebut.", "Dana transfer tersebut dianggap sebagai pendapatan operasional bank jika tidak diambil dalam 24 jam.", "Bank mengirimkan dana tersebut ke kas negara sebagai dana temuan."],
+    correct: 1,
+    source: "Halaman, Paragraf Contoh 3.",
+    explanation: ""
+  },
+  {
+    topic: "Akad & Margin Pembiayaan Syariah",
+    q: "Pada pembiayaan \"Rahn\" (Gadai Emas), bagaimana bank syariah memperoleh pendapatan jika bunga dilarang?",
+    opts: ["Bank mengambil sebagian kecil emas nasabah sebagai biaya komisi.", "Bank mengenakan biaya penyimpanan dan pemeliharaan (ujrah) atas barang jaminan yang dihitung secara harian atau bulanan.", "Bank menjual emas tersebut di pasar sekunder untuk mendapatkan capital gain.", "Bank mewajibkan nasabah menyetor uang muka sebesar 50% dari nilai taksiran.", "Nasabah wajib memberikan bagi hasil dari usaha yang menggunakan modal gadai tersebut."],
+    correct: 1,
+    source: "Halaman, Paragraf d; Halaman, Paragraf 1.",
+    explanation: ""
+  },
+  {
+    topic: "Jasa Perbankan & Akad Syariah",
+    q: "Mengapa \"Travellers Cheque\" (TC) dianggap lebih aman bagi pelancong dibandingkan membawa uang tunai (cash)?",
+    opts: ["Karena TC tidak memiliki nilai nominal sehingga tidak menarik bagi pencuri.", "Karena jika TC hilang atau tercuri, pemegang akan memperoleh penggantian (refund) dalam waktu singkat oleh bank penerbit.", "Karena TC hanya bisa digunakan di negara asal penerbitannya saja.", "Karena nasabah mendapatkan bunga harian selama membawa TC tersebut.", "Karena TC dapat dipindahtangankan secara bebas tanpa landa tangan."],
+    correct: 1,
+    source: "Halaman, Paragraf 2.",
+    explanation: ""
+  },
+  {
+    topic: "Jasa Perbankan & Akad Syariah",
+    q: "Dalam layanan \"Intercity Clearing iB\", apa keunggulan utama yang ditawarkan kepada nasabah korporasi?",
+    opts: ["Nasabah bisa menarik uang tunai di luar negeri tanpa biaya administrasi.", "Penagihan warkat (cek/BG) dari luar wilayah kliring dapat dicairkan lebih cepat (biasanya keesokan harinya).", "Bank menjamin keamanan data nasabah dari serangan hacker internasional.", "Nasabah mendapatkan pembebasan pajak atas hasil tagihan tersebut.", "Penagihan dapat dilakukan meskipun saldo pihak tertarik tidak mencukupi."],
+    correct: 1,
+    source: "Halaman, Paragraf i; Halaman, Paragraf 1.",
+    explanation: ""
+  },
+  {
+    topic: "Akad & Margin Pembiayaan Syariah",
+    q: "Dalam penentuan nisbah bagi hasil, apa fungsi dari \"Expected Profit Rate\" (EPR) bagi bank syariah?",
+    opts: ["Sebagai jaminan persentase keuntungan yang pasti diterima nasabah setiap bulan.", "Digunakan untuk menentukan perbandingan porsi bagi hasil antara bank dan nasabah berdasarkan tingkat keuntungan industri dan RPR bank.", "Sebagai dasar penghitungan denda bagi nasabah yang terlambat membayar angsuran.", "Untuk menghitung selisih harga beli dan harga jual pada akad murabahah.", "Sebagai pembatas maksimal kerugian yang boleh ditanggung oleh bank syariah."],
+    correct: 1,
+    source: "Halaman, Paragraf 1; Halaman, Paragraf 1.",
+    explanation: ""
+  },
+  {
+    topic: "Akad & Margin Pembiayaan Syariah",
+    q: "Apa perbedaan fundamental antara akad \"Salam\" dan akad \"Istisna\" dalam hal mekanisme pembayaran oleh bank kepada nasabah?",
+    opts: ["Dalam Salam pembayaran dilakukan secara cicilan, dalam Istisna wajib lunas di muka.", "Dalam Salam pembayaran wajib dilakukan secara penuh di muka, sedangkan dalam Istisna pembayaran dapat dilakukan secara bertahap (termin) sesuai progres pengerjaan.", "Salam hanya untuk barang manufaktur, Istisna hanya untuk hasil pertanian.", "Dalam Istisna barang harus sudah tersedia saat akad, dalam Salam barang dipesan.", "Salam menggunakan sistem bunga, Istisna menggunakan sistem margin."],
+    correct: 1,
+    source: "Halaman, Paragraf a; Halaman, Paragraf 1.",
+    explanation: ""
+  },
+  {
+    topic: "Akad & Margin Pembiayaan Syariah",
+    q: "Pada pembiayaan \"Ijarah Muntahiya Bittamlik\" (IMBT), apa solusi yang ditawarkan bank jika nasabah mengalami kesulitan membayar \"Ballon Payment\" di akhir periode?",
+    opts: ["Bank langsung menyita aset tanpa kompensasi apapun kepada nasabah.", "Bank dapat memberikan solusi dengan memperpanjang jangka waktu sewa (re-scheduling).", "Nasabah wajib menyerahkan seluruh tabungannya untuk menutup kekurangan.", "Aset tersebut otomatis dikembalikan kepada penjual asli (supplier).", "Bank mengenakan bunga tambahan atas sisa tagihan yang belum dibayar."],
+    correct: 1,
+    source: "Halaman, Paragraf 2; Halaman, Paragraf Solusi.",
+    explanation: ""
+  },
+  {
+    topic: "Akad & Margin Pembiayaan Syariah",
+    q: "Dalam menetapkan margin keuntungan, mengapa bank syariah mempertimbangkan \"Indirect Competitor's Market Rate\" (ICMR)?",
+    opts: ["Untuk memantau pergerakan harga komoditas global seperti emas dan minyak.", "Untuk memastikan tingkat keuntungan bank tetap kompetitif dibandingkan suku bunga kredit bank konvensional di pasar.", "Sebagai syarat mutlak untuk mendapatkan sertifikasi halal dari DSN-MUI.", "Untuk menghitung biaya promosi dana yang dikeluarkan oleh bank pesaing terdekat.", "Sebagai acuan dalam menentukan zakat perusahaan di akhir tahun."],
+    correct: 1,
+    source: "Halaman, Paragraf 2.",
+    explanation: ""
+  },
+  {
+    topic: "Akad & Margin Pembiayaan Syariah",
+    q: "Apa konsekuensi bagi \"Mudarib\" (nasabah pengelola) dalam pembiayaan mudarabah jika terjadi kerugian bisnis yang diakibatkan oleh \"Kelalaian\" atau \"Mismanagement\"?",
+    opts: ["Kerugian ditanggung sepenuhnya oleh bank sebagai pemilik modal.", "Mudarib harus bertanggung jawab penuh atas kerugian tersebut dan mengembalikan modal bank.", "Bank dan Mudarib berbagi kerugian 50:50 tanpa melihat penyebabnya.", "Kerugian dikonversi menjadi utang jangka panjang dengan margin nol persen.", "Mudarib dibebaskan dari segala kewajiban sesuai prinsip \"Loss Sharing\"."],
+    correct: 1,
+    source: "Halaman, Paragraf 3; Halaman, Paragraf 2.",
+    explanation: ""
+  },
+  {
+    topic: "Akad & Margin Pembiayaan Syariah",
+    q: "Dalam akad pembiayaan \"Musyarakah\", bagaimana pembagian kerugian dilakukan jika proyek mengalami kegagalan bisnis murni?",
+    opts: ["Kerugian dibagi berdasarkan nisbah keuntungan yang disepakati di awal.", "Kerugian dibagi sesuai dengan porsi kontribusi modal masing-masing pihak.", "Kerugian ditanggung sepenuhnya oleh pihak bank sebagai lembaga keuangan.", "Kerugian ditanggung sepenuhnya oleh nasabah pengelola sebagai pihak teknis.", "Kerugian ditutupi oleh dana kebajikan (qardhul hasan) milik bank."],
+    correct: 1,
+    source: "Halaman, Paragraf 6; Halaman, Paragraf 9.",
+    explanation: ""
+  },
+  {
+    topic: "Akad & Margin Pembiayaan Syariah",
+    q: "Mengapa metode \"Margin Keuntungan Anuitas\" menghasilkan pola angsuran yang berbeda dengan \"Margin Keuntungan Flat\"?",
+    opts: ["Anuitas menghasilkan cicilan pokok yang tetap, sedangkan Flat semakin besar.", "Anuitas menghasilkan cicilan pokok yang semakin membesar dan margin yang semakin menurun, sementara total angsuran bulanan tetap.", "Flat menghasilkan bunga yang lebih murah di akhir masa pinjaman nasabah.", "Anuitas hanya boleh digunakan untuk pembiayaan konsumtif di bawah 10 juta rupiah.", "Flat mengharuskan nasabah membayar seluruh margin di awal masa akad."],
+    correct: 1,
+    source: "Halaman, Paragraf 4.",
+    explanation: ""
+  },
+  {
+    topic: "Akad & Margin Pembiayaan Syariah",
+    q: "Menurut Fatwa DSN No. 14/2000, bank syariah diperbolehkan menggunakan sistem \"Accrual Basis\" dalam pembukuan, namun dalam \"Distribusi Hasil Usaha\" wajib menggunakan:",
+    opts: ["Market Basis (berdasarkan harga pasar saat itu).", "Cash Basis (berdasarkan pendapatan yang benar-benar telah diterima secara kas).", "Budget Basis (berdasarkan target yang ditetapkan di awal tahun).", "Fairness Basis (berdasarkan kebijakan direksi yang dianggap adil).", "Hybrid Basis (gabungan antara sistem bunga dan bagi hasil)."],
+    correct: 1,
+    source: "Halaman, Paragraf 2; Halaman, Paragraf 2.",
+    explanation: ""
+  },
+  {
+    topic: "Bagi Hasil Syariah",
+    q: "Dalam perhitungan pembagian hasil usaha, mengapa pendapatan dari \"Dana Wadiah\" dihitung namun seluruhnya menjadi milik bank syariah?",
+    opts: ["Karena nasabah wadiah menanggung risiko kerugian investasi yang dilakukan bank.", "Karena prinsip wadiah adalah titipan murni di mana bank menjamin keamanan dana namun hasil pemanfaatan adalah hak bank sebagai pengelola titipan.", "Sebagai kompensasi atas pembebasan biaya administrasi bagi nasabah wadiah.", "Karena dana wadiah tidak boleh digunakan untuk pembiayaan sektor riil sama sekali.", "Dana tersebut otomatis dikonversi menjadi zakat perusahaan oleh pihak bank."],
+    correct: 1,
+    source: "Halaman, Paragraf b; Halaman, Paragraf 1.",
+    explanation: ""
+  },
+  {
+    topic: "Bagi Hasil Syariah",
+    q: "Apa tantangan utama dalam menerapkan sistem \"Profit Sharing\" (Bagi Untung) dibandingkan \"Revenue Sharing\" di bank syariah saat ini?",
+    opts: ["Profit sharing lebih menguntungkan nasabah karena bagi hasilnya lebih stabil.", "Profit sharing menuntut transparansi biaya operasional yang sangat tinggi dan risiko modal nasabah berkurang jika bank rugi.", "Revenue sharing dilarang oleh Bank Indonesia untuk diaplikasikan di Unit Usaha Syariah.", "Nasabah lebih menyukai profit sharing karena tidak perlu membayar biaya administrasi.", "Sistem IT perbankan saat ini belum mampu menghitung laba bruto perusahaan."],
+    correct: 1,
+    source: "Halaman, Paragraf 1; Halaman, Paragraf 1.",
+    explanation: ""
+  },
+  {
+    topic: "Bagi Hasil Syariah",
+    q: "Apa yang dimaksud dengan istilah \"Equivalen Rate\" (Indikasi Rate) dalam laporan bagi hasil bank syariah kepada nasabah?",
+    opts: ["Suku bunga tetap yang dijamin akan dibayarkan setiap tahunnya.", "Tingkat kesetaraan return yang diperoleh nasabah jika dihitung dalam persentase per tahun untuk memudahkan perbandingan dengan bunga bank.", "Nilai tukar mata uang rupiah terhadap dolar pada saat pembagian hasil usaha.", "Batas maksimal bagi hasil yang boleh diberikan bank menurut aturan syariah.", "Selisih antara pendapatan margin dan pendapatan bagi hasil dalam satu periode."],
+    correct: 1,
+    source: "Halaman, Paragraf 2; Halaman, Paragraf 3.",
+    explanation: ""
+  },
+  {
+    topic: "Bagi Hasil Syariah",
+    q: "Dalam mekanisme \"Pooling Fund\" bank syariah, bagaimana porsi pendapatan untuk bagi hasil ditentukan jika sumber dana lebih kecil dari total penyaluran dana?",
+    opts: ["Seluruh pendapatan bank dibagihasilkan kepada nasabah tanpa kecuali.", "Pendapatan yang dibagikan hanya sebanding (proporsional) dengan porsi sumber dana mudarabah yang digunakan dalam penyaluran tersebut.", "Bank wajib mengambil dana dari modal inti untuk menutupi kekurangan bagi hasil.", "Nasabah mendapatkan bagi hasil tetap sebesar 10% dari nilai simpanannya.", "Penyaluran dana tersebut dianggap tidak sah secara syariah dan harus dibatalkan."],
+    correct: 1,
+    source: "Halaman, Paragraf c; Halaman, Paragraf a.",
+    explanation: ""
+  },
+  {
+    topic: "Analisis & Manajemen Perkreditan",
+    q: "Dalam proses penilaian aspek \"Yuridis\" bagi calon debitur badan hukum (PT), apa dokumen paling krusial yang harus diverifikasi keasliannya oleh bank?",
+    opts: ["Laporan laba rugi yang sudah diaudit oleh akuntan publik ternama.", "Akta pendirian perusahaan dan anggaran dasar beserta pengesahan dari Menteri Hukum dan HAM.", "Surat referensi dari bank kompetitor mengenai bonafiditas perusahaan.", "Daftar riwayat hidup seluruh karyawan tetap yang bekerja di perusahaan.", "Bukti pembayaran pajak bumi dan bangunan atas lokasi kantor pusat."],
+    correct: 1,
+    source: "Halaman, Paragraf b; Halaman, Paragraf 4.",
+    explanation: ""
+  },
+  {
+    topic: "Analisis & Manajemen Perkreditan",
+    q: "Mengapa \"Nomor Pokok Wajib Pajak\" (NPWP) menjadi persyaratan wajib bagi permohonan kredit di atas Rp 50 juta?",
+    opts: ["Sebagai bukti bahwa nasabah memiliki aset tanah yang sangat luas.", "Mencerminkan karakter nasabah sebagai warga negara yang baik dan menunjukkan tingkat penghasilan di atas rata-rata.", "Agar bank dapat menarik setoran pajak secara otomatis dari rekening nasabah.", "Sebagai syarat formalitas untuk mencairkan dana subsidi bunga dari pemerintah.", "Menjamin bahwa nasabah tidak memiliki utang di lembaga keuangan non-bank."],
+    correct: 1,
+    source: "Halaman, Paragraf 4.",
+    explanation: ""
+  },
+  {
+    topic: "Analisis & Manajemen Perkreditan",
+    q: "Dalam prosedur \"On The Spot\" (OTS), mengapa financing officer disarankan untuk tidak memberitahukan waktu kunjungan kepada nasabah?",
+    opts: ["Untuk menghemat biaya transportasi yang dikeluarkan oleh pihak bank.", "Agar nasabah tidak merasa terintimidasi oleh kehadiran petugas bank secara tiba-tiba.", "Untuk melihat kondisi riil usaha dan objek jaminan apa adanya tanpa ada upaya rekayasa atau persiapan khusus dari nasabah.", "Menghindari adanya upaya penyuapan dari nasabah kepada petugas di lapangan.", "Sebagai bagian dari strategi pemasaran bank untuk mengejutkan kompetitor lokal."],
+    correct: 2,
+    source: "Halaman, Paragraf 3.",
+    explanation: ""
+  },
+  {
+    topic: "Analisis & Manajemen Perkreditan",
+    q: "Apa kegunaan utama dari pengecekan melalui \"SLIK\" (Sistem Layanan Informasi Keuangan) OJK dalam proses analisis kredit?",
+    opts: ["Menghitung proyeksi arus kas usaha nasabah untuk lima tahun ke depan.", "Mengetahui profil risiko, riwayat pinjaman, dan kolektibilitas (tingkat kesehatan) kredit nasabah di seluruh lembaga keuangan.", "Memastikan bahwa nasabah tidak memiliki hubungan keluarga dengan pegawai bank.", "Memverifikasi keabsahan sertifikat tanah yang dijaminkan nasabah ke bank.", "Menetapkan jumlah limit kartu kredit yang pantas diberikan kepada nasabah baru."],
+    correct: 1,
+    source: "Halaman, Paragraf 2; Halaman, Paragraf 1.",
+    explanation: ""
+  },
+  {
+    topic: "Analisis & Manajemen Perkreditan",
+    q: "Dalam aspek penilaian \"Manajemen\", faktor apa yang dievaluasi untuk meminimalkan risiko gagal bayar akibat kesalahan internal perusahaan?",
+    opts: ["Luasnya jaringan pemasaran produk hingga ke luar negeri (ekspor).", "Struktur organisasi, sumber daya manusia, pengalaman, dan integritas orang-orang yang mengelola usaha.", "Nilai jual agunan yang dijaminkan jika sewaktu-waktu terjadi kredit macet.", "Besarnya saldo rata-rata harian nasabah di bank kompetitor dalam setahun.", "Kedekatan hubungan antara pengurus perusahaan dengan pejabat pemerintah."],
+    correct: 1,
+    source: "Halaman, Paragraf b; Halaman, Paragraf b.",
+    explanation: ""
+  },
+  {
+    topic: "Analisis & Manajemen Perkreditan",
+    q: "Apa perbedaan peran antara \"Wawancara Pertama\" dan \"Wawancara Kedua\" dalam mekanisme pemberian kredit?",
+    opts: ["Wawancara pertama untuk menolak kredit, wawancara kedua untuk menyetujui.", "Wawancara pertama untuk menggali informasi awal, wawancara kedua untuk perbaikan berkas setelah dilakukan kunjungan lapangan (OTS).", "Wawancara pertama dilakukan di rumah nasabah, kedua dilakukan di kantor pusat.", "Wawancara pertama dengan direktur utama, kedua dengan seluruh karyawan.", "Tidak ada perbedaan, keduanya dilakukan oleh account officer yang berbeda."],
+    correct: 1,
+    source: "Halaman, Paragraf 4; Halaman, Paragraf 6.",
+    explanation: ""
+  },
+  {
+    topic: "Analisis & Manajemen Perkreditan",
+    q: "Dalam kriteria penilaian aktivitas rekening, sebuah rekening koran dikategorikan \"Tidak Aktif\" jika jumlah hari mutasi transaksinya dalam satu bulan adalah:",
+    opts: ["0 hari sampai dengan 5 hari.", "6 hari sampai dengan 9 hari.", "10 hari sampai dengan 13 hari.", "Kurang dari 15 hari secara berturut-turut.", "Tidak ada transaksi kredit sama sekali meskipun ada transaksi debit."],
+    correct: 0,
+    source: "Halaman, Paragraf Tabel 3.",
+    explanation: ""
+  },
+  {
+    topic: "Akad & Margin Pembiayaan Syariah",
+    q: "Pada pembiayaan \"KPR Syariah\", mengapa bank memerlukan dokumen \"IMB\" dan \"PBB Terakhir\" sebagai kelengkapan data?",
+    opts: ["Untuk memastikan nasabah sanggup membayar pajak negara setiap tahunnya.", "Sebagai syarat administrasi untuk mendaftarkan nasabah dalam program asuransi jiwa.", "Memastikan legalitas bangunan serta membantu dalam penilaian (appraisal) nilai agunan yang akan dibiayai.", "Agar bank mendapatkan diskon dari developer perumahan setempat.", "Sebagai bukti bahwa nasabah adalah warga asli di wilayah tempat rumah berada."],
+    correct: 2,
+    source: "Halaman, Paragraf c; Halaman, Paragraf 4.",
+    explanation: ""
+  },
+  {
+    topic: "Manajemen Risiko Perbankan",
+    q: "Apa yang dimaksud dengan \"Risiko Kredit\" (Credit Risk) pada sebuah bank menurut regulasi Bank Indonesia?",
+    opts: ["Risiko akibat kegagalan sistem IT bank yang menyebabkan hilangnya data nasabah.", "Risiko akibat kegagalan debitur atau pihak lain dalam memenuhi kewajiban pembayaran kepada bank.", "Risiko menurunnya laba bank akibat persaingan suku bunga dengan bank lain.", "Risiko kerugian yang timbul karena perubahan kebijakan moneter pemerintah.", "Risiko yang muncul akibat bank terlalu banyak menyimpan uang tunai di khazanah."],
+    correct: 1,
+    source: "Halaman, Paragraf a.",
+    explanation: ""
+  },
+  {
+    topic: "Manajemen Risiko Perbankan",
+    q: "Dalam pengelolaan \"Risiko Pasar\", apa yang dimaksud dengan \"Repricing Risk\"?",
+    opts: ["Risiko kegagalan nasabah dalam membayar kembali pokok pinjamannya tepat waktu.", "Risiko akibat perubahan harga instrumen keuangan atau nilai ekonomis aset/kewajiban yang disebabkan perubahan suku bunga.", "Risiko yang timbul karena nasabah mencairkan depositonya sebelum jatuh tempo.", "Risiko kerugian akibat kesalahan input data oleh staf unit treasury bank.", "Risiko menurunnya reputasi bank di mata masyarakat akibat pemberitaan negatif."],
+    correct: 1,
+    source: "Halaman, Paragraf 1 & 2.",
+    explanation: ""
+  },
+  {
+    topic: "Manajemen Risiko Perbankan",
+    q: "Bagaimana bank mengelola \"Risiko Likuiditas\" melalui instrumen \"Rencana Pendanaan Darurat\" (Contingency Funding Plan)?",
+    opts: ["Bank menyiapkan dana cadangan di Bank Indonesia untuk dibagi-bagikan kepada karyawan saat krisis.", "Menetapkan strategi, indikator krisis, dan langkah-langkah untuk memastikan kemampuan bank memperoleh sumber dana pada kondisi sulit dengan biaya wajar.", "Mewajibkan nasabah untuk tidak mengambil uangnya selama minimal lima tahun.", "Mengalihkan seluruh aset lancar bank ke dalam bentuk emas batangan yang disimpan di luar negeri.", "Mengajukan permohonan kepailitan kepada pengadilan segera setelah likuiditas menurun."],
+    correct: 1,
+    source: "Halaman, Paragraf 6.",
+    explanation: ""
+  },
+  {
+    topic: "Manajemen Risiko Perbankan",
+    q: "Apa yang dimaksud dengan \"Displaced Commercial Risk\" yang merupakan risiko unik bagi bank syariah?",
+    opts: ["Risiko kegagalan penyerahan barang pada pembiayaan salam akibat gagal panen.", "Risiko di mana bank terpaksa memberikan bagi hasil yang lebih tinggi dari pendapatan riilnya agar deposan tidak memindahkan dananya ke bank lain.", "Risiko sengketa hukum di pengadilan agama terkait akad musyarakah.", "Risiko hilangnya pasar nasabah mikro akibat munculnya bank konvensional baru.", "Risiko yang timbul karena bank syariah dilarang melakukan sekuritisasi aset."],
+    correct: 1,
+    source: "Halaman, Paragraf f (konsep penarikan dana); Halaman, Paragraf 2.",
+    explanation: ""
+  },
+  {
+    topic: "Manajemen Risiko Perbankan",
+    q: "Menurut pedoman manajemen risiko, apa tugas utama dari unit \"Legal Watch\" di sebuah bank?",
+    opts: ["Menagih utang nasabah yang sudah masuk kategori macet (loss).", "Menyediakan analisis dan advis hukum kepada seluruh pegawai serta memantau perubahan regulasi agar bank terhindar dari risiko hukum.", "Mengawasi gerak-gerik nasabah di dalam kantor cabang melalui CCTV.", "Mendaftarkan hak cipta logo bank ke Direktorat Jenderal HKI.", "Melakukan audit keuangan internal setiap akhir bulan berjalan."],
+    correct: 1,
+    source: "Halaman, Paragraf a.",
+    explanation: ""
+  },
+  {
+    topic: "Manajemen Risiko Perbankan",
+    q: "Dalam risiko operasional, apa yang dimaksud dengan \"Human Error\"?",
+    opts: ["Kegagalan sistem perangkat lunak yang diserang oleh virus komputer.", "Kesalahan manusiawi dalam proses internal, seperti salah input transaksi atau kelalaian dalam mengikuti prosedur operasional standar.", "Kerusakan fisik gedung bank akibat bencana gempa bumi dan banjir.", "Perubahan kebijakan suku bunga oleh dewan gubernur Bank Indonesia.", "Ketidakmampuan nasabah memahami instruksi penggunaan mesin ATM."],
+    correct: 1,
+    source: "Halaman, Paragraf a; Halaman, Paragraf 1.",
+    explanation: ""
+  },
+  {
+    topic: "Manajemen Risiko Perbankan",
+    q: "Apa peran \"Dewan Pengawas Syariah\" (DPS) dalam mitigasi risiko kepatuhan (compliance risk) di bank syariah?",
+    opts: ["Menghitung rasio kecukupan modal bank (CAR) secara bulanan.", "Mengawasi operasional dan produk bank agar selalu sesuai dengan fatwa dan prinsip-prinsip syariah yang ditetapkan DSN-MUI.", "Menetapkan target laba tahunan yang harus dicapai oleh divisi pembiayaan.", "Melakukan investigasi terhadap nasabah yang diduga melakukan pencucian uang.", "Mewakili bank dalam persidangan sengketa bisnis di Basyarnas."],
+    correct: 1,
+    source: "Halaman, Paragraf a; Halaman, Paragraf 3.",
+    explanation: ""
+  },
+  {
+    topic: "Manajemen Risiko Perbankan",
+    q: "Mengapa bank menetapkan \"Limit Risiko\" dalam setiap aktivitas fungsionalnya?",
+    opts: ["Sebagai batas minimal nasabah boleh meminjam uang di bank.", "Untuk memastikan eksposur risiko yang diambil bank tidak melampaui toleransi risiko dan kemampuan permodalan bank.", "Agar bank tidak perlu membayar pajak yang terlalu besar kepada pemerintah.", "Sebagai syarat formalitas untuk mendapatkan peringkat akreditasi dari lembaga independen.", "Membatasi jumlah karyawan yang boleh bekerja di divisi manajemen risiko."],
+    correct: 1,
+    source: "Halaman, Paragraf 3; Halaman, Paragraf 3.",
+    explanation: ""
+  },
+  {
+    topic: "Manajemen Risiko Perbankan",
+    q: "Dalam konteks risiko likuiditas bank syariah, mengapa larangan \"Sekuritisasi Aset\" menjadi tantangan tersendiri?",
+    opts: ["Karena bank syariah tidak boleh menjual produk tabungan kepada nasabah non-muslim.", "Karena aset bank syariah (yang berupa piutang) menjadi tidak likuid (sulit dijual segera) dibandingkan aset bank konvensional yang bisa diperdagangkan.", "Karena bank syariah diwajibkan memberikan seluruh asetnya kepada fakir miskin.", "Karena hal tersebut menyebabkan biaya operasional bank menjadi sangat murah.", "Karena memicu kemarahan para pemilik modal internasional di pasar modal."],
+    correct: 1,
+    source: "Halaman, Paragraf 1.",
+    explanation: ""
+  },
+  {
+    topic: "Manajemen Risiko Perbankan",
+    q: "Apa tujuan dilakukannya \"Stress Testing\" secara berkala oleh manajemen risiko bank?",
+    opts: ["Untuk menguji tingkat kesabaran nasabah saat mengantre di kantor cabang.", "Menguji kemampuan bank dalam menghadapi kondisi krisis atau skenario pasar yang sangat tidak menguntungkan.", "Memastikan semua komputer di bank tahan terhadap serangan listrik statis.", "Sebagai sarana latihan bagi karyawan baru sebelum menghadapi nasabah nyata.", "Menentukan kenaikan gaji karyawan berdasarkan tingkat stres pekerjaan."],
+    correct: 1,
+    source: "Halaman, Paragraf 4; Halaman, Paragraf i.",
+    explanation: ""
+  },
+  {
+    topic: "Laporan Keuangan & Rasio",
+    q: "Apa perbedaan mendasar antara laporan \"Neraca\" bank konvensional dengan bank syariah terkait posisi \"Pasiva\"?",
+    opts: ["Bank konvensional mencatat dana zakat, bank syariah tidak mencatatnya.", "Bank syariah memisahkan antara \"Kewajiban\" (Wadiah) dan \"Dana Syirkah Temporer\" (Mudarabah), sementara konvensional menyatukan semua simpanan dalam kewajiban/dana pihak ketiga.", "Bank konvensional tidak memiliki modal disetor, sedangkan bank syariah memiliki.", "Pos pasiva bank syariah selalu lebih besar dibandingkan pos aktivanya.", "Bank syariah dilarang mencatat utang kepada bank lain dalam laporan neracanya."],
+    correct: 1,
+    source: "Halaman, Paragraf Gambar 9.1; Halaman, Paragraf m.",
+    explanation: ""
+  },
+  {
+    topic: "Laporan Keuangan & Rasio",
+    q: "Mengapa bank syariah wajib menyajikan \"Laporan Sumber dan Penggunaan Dana Kebajikan\"?",
+    opts: ["Untuk melaporkan seluruh keuntungan investasi yang diperoleh dari nasabah korporasi.", "Sebagai bentuk transparansi atas pengelolaan dana sosial (seperti infak, sedekah, denda, dan pendapatan non-halal) yang bukan merupakan milik bank.", "Sebagai syarat utama untuk pengajuan pinjaman likuiditas dari Bank Indonesia.", "Untuk mencatat pengeluaran biaya promosi dan iklan bank selama satu tahun.", "Melaporkan gaji dan bonus yang diterima oleh dewan pengawas syariah."],
+    correct: 1,
+    source: "Halaman, Paragraf b; Halaman, Paragraf h.",
+    explanation: ""
+  },
+  {
+    topic: "Laporan Keuangan & Rasio",
+    q: "Dalam analisis rasio CAMELS, apa yang diukur melalui rasio \"Capital Adequacy Ratio\" (CAR)?",
+    opts: ["Kemampuan manajemen dalam menekan biaya operasional sekecil mungkin.", "Kewajiban pemenuhan modal minimum yang harus dimiliki bank untuk menutup risiko aktiva tertimbang menurut risiko (ATMR).", "Persentase laba bersih yang dibagikan sebagai dividen kepada pemegang saham.", "Rasio antara jumlah karyawan dengan jumlah nasabah simpanan yang dimiliki.", "Tingkat kepatuhan bank terhadap prinsip-prinsip pelestarian lingkungan hidup."],
+    correct: 1,
+    source: "Halaman, Paragraf 1.",
+    explanation: ""
+  },
+  {
+    topic: "Laporan Keuangan & Rasio",
+    q: "Apa fungsi utama dari \"Laporan Rekonsiliasi Pendapatan dan Bagi Hasil\" pada bank syariah?",
+    opts: ["Menghitung selisih antara harga jual dan harga beli pada akad murabahah.", "Menjembatani perbedaan antara pengakuan pendapatan dasar akrual (untuk laporan keuangan) dan dasar kas (untuk pembagian hasil usaha nasabah).", "Melaporkan rincian aset tetap bank yang sudah mengalami penyusutan nilai.", "Sebagai bukti pembayaran pajak penghasilan perusahaan kepada kantor pajak.", "Menentukan porsi kepemilikan saham asing di dalam struktur permodalan bank."],
+    correct: 1,
+    source: "Halaman, Paragraf f; Halaman, Paragraf 2.",
+    explanation: ""
+  },
+  {
+    topic: "Laporan Keuangan & Rasio",
+    q: "Rasio \"Loan to Deposit Ratio\" (LDR) pada bank konvensional atau \"Financing to Deposit Ratio\" (FDR) pada bank syariah digunakan untuk menilai:",
+    opts: ["Tingkat efisiensi karyawan dalam melayani transaksi pembukaan rekening.", "Kemampuan bank dalam memenuhi kewajiban likuiditasnya dengan membandingkan total kredit/pembiayaan terhadap dana pihak ketiga yang dihimpun.", "Besarnya biaya iklan yang dikeluarkan bank dibandingkan dengan jumlah nasabah baru.", "Persentase aset tetap yang digunakan sebagai jaminan utang luar negeri.", "Jumlah laba bersih yang dihasilkan dari setiap satu rupiah modal yang disetor."],
+    correct: 1,
+    source: "Halaman, Paragraf 4; Halaman, Paragraf 1.",
+    explanation: ""
+  }
+]
+};
+document.addEventListener('DOMContentLoaded', () => {
+  QuizEngine.init(QUIZ_DATA);
+  const obs = new MutationObserver(() => {
+    const bar = document.getElementById('quiz-top-bar');
+    const main = document.getElementById('quiz-main-screen');
+    if (bar && main) bar.style.display = main.style.display !== 'none' ? 'flex' : 'none';
+  });
+  const target = document.getElementById('quiz-main-screen');
+  if (target) obs.observe(target, { attributes: true, attributeFilter: ['style'] });
+});
+</script>
+</body>
+</html>

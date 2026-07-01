@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz 1 — Test Formatif & Variation — LeksaLaw</title>
+<link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/app.css">
+<link rel="stylesheet" href="../assets/css/quiz.css">
+</head>
+<body>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<div class="app-shell">
+  <aside class="sidebar" id="app-sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-logo">⚖️</div>
+      <div class="sidebar-name">LeksaLaw<small>Platform Belajar Hukum</small></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Menu Utama</div>
+      <a class="nav-item" href="../index.html"><span class="nav-icon">🏠</span><span class="nav-label">Dashboard</span></a>
+      <div class="nav-section-label">Pembelajaran</div>
+      <div id="nav-semesters"></div>
+      <div class="nav-section-label">Lainnya</div>
+      <a class="nav-item" href="../nilai.html"><span class="nav-icon">📊</span><span class="nav-label">Nilai & Progress</span></a>
+      <a class="nav-item" href="../favorit.html"><span class="nav-icon">⭐</span><span class="nav-label">Favorit</span></a>
+    </nav>
+    <div style="padding:12px 16px;border-top:1px solid rgba(255,255,255,0.08)">
+      <div style="font-size:11px;color:#475569;text-align:center">LeksaLaw v1.0 · Offline</div>
+    </div>
+  </aside>
+  <div class="main-content" id="main-content">
+    <header class="top-header">
+      <button class="header-toggle" id="sidebar-toggle">☰</button>
+      <div class="header-breadcrumb">
+        <a href="../index.html" style="color:var(--text-muted);text-decoration:none">Dashboard</a>
+        <span class="breadcrumb-sep">›</span>
+        <span style="color:var(--text-muted)">Bahasa Inggris Komunikasi II</span>
+        <span class="breadcrumb-sep">›</span>
+        <span class="breadcrumb-current">Quiz 1 — Test Formatif & Variation</span>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" id="theme-btn" title="Ganti Tema">🌙</button>
+      </div>
+    </header>
+    <div class="quiz-top-bar" id="quiz-top-bar" style="display:none">
+      <span class="quiz-progress-text" id="progress-label">Soal 1 / 1</span>
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quiz-progress-fill" style="width:0%"></div></div>
+      <span id="quiz-label" style="font-size:12px;color:var(--text-muted);white-space:nowrap"></span>
+    </div>
+
+    <!-- SETUP -->
+    <div id="quiz-setup-screen">
+      <div class="quiz-setup">
+        <div class="setup-card">
+          <a href="../index.html" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text-muted);margin-bottom:20px;text-decoration:none" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color='var(--text-muted)'">← Kembali ke Dashboard</a>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-muted);margin-bottom:6px">Bahasa Inggris Komunikasi II</div>
+          <h1 class="setup-title" id="setup-quiz-title">Quiz 1 — Test Formatif & Variation</h1>
+          <p class="setup-sub" id="setup-quiz-course"></p>
+          <div id="score-history" style="display:none" class="score-history"></div>
+          <div class="setup-stat-row">
+            <div class="setup-stat"><div class="n" id="setup-stat-q">—</div><div class="l">Total Soal</div></div>
+            <div class="setup-stat"><div class="n" id="setup-stat-t">—</div><div class="l">Topik</div></div>
+            <div class="setup-stat"><div class="n" id="setup-stat-level">sedang</div><div class="l">Tingkat</div></div>
+          </div>
+          <hr class="divider">
+          <div style="font-size:13px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px">Mode Pengerjaan</div>
+          <div class="mode-opts">
+            <label class="mode-opt selected">
+              <input type="radio" name="mode" value="study" checked>
+              <div><div class="mode-opt-name">📖 Mode Belajar</div><div class="mode-opt-desc">Feedback & penjelasan langsung setelah tiap jawaban</div></div>
+            </label>
+            <label class="mode-opt">
+              <input type="radio" name="mode" value="exam">
+              <div><div class="mode-opt-name">📝 Mode Ujian</div><div class="mode-opt-desc">Hasil & pembahasan muncul di akhir saja</div></div>
+            </label>
+          </div>
+          <hr class="divider">
+          <label class="shuffle-toggle">
+            <input type="checkbox" id="opt-shuffle">
+            <div>
+              <div class="shuffle-toggle-label">🔀 Acak Soal & Pilihan Jawaban</div>
+              <div class="shuffle-toggle-desc">Urutan soal dan opsi akan diacak setiap sesi</div>
+            </div>
+          </label>
+          <button class="btn-start-quiz" id="btn-start-quiz">Mulai Quiz →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUIZ MAIN -->
+    <div id="quiz-main-screen" style="display:none">
+      <div class="page-content" style="padding-top:16px;padding-bottom:100px">
+        <div class="quiz-layout">
+          <div><div id="q-container"></div></div>
+          <div class="quiz-sidebar-panel">
+            <div class="quiz-nav-card">
+              <div class="quiz-nav-title">Navigasi Soal</div>
+              <div class="nav-grid" id="nav-grid"></div>
+              <div class="nav-legend">
+                <div class="legend-item"><div class="legend-dot dot-answered"></div>Dijawab</div>
+                <div class="legend-item"><div class="legend-dot dot-flagged"></div>Ragu</div>
+                <div class="legend-item"><div class="legend-dot dot-unanswered"></div>Belum</div>
+              </div>
+            </div>
+            <div class="quiz-nav-card">
+              <div class="quiz-nav-title">Aksi</div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <button onclick="QuizEngine.finish()" class="btn btn-primary btn-sm" style="justify-content:center">✓ Selesai & Lihat Hasil</button>
+                <button onclick="if(confirm('Mulai ulang quiz?'))QuizEngine.restart()" class="btn btn-secondary btn-sm" style="justify-content:center">🔁 Mulai Ulang</button>
+              </div>
+            </div>
+            <div class="quiz-nav-card" style="font-size:12px;color:var(--text-muted)">
+              <div class="quiz-nav-title">Pintasan Keyboard</div>
+              <div style="display:flex;flex-direction:column;gap:5px">
+                <div><kbd style="background:var(--bg);border:1px solid var(--border);padding:1px 5px;border-radius:4px;font-size:10px">1–5</kbd> Pilih jawaban</div>
+                <div><kbd style="background:var(--bg);border:1px solid var(--border);padding:1px 5px;border-radius:4px;font-size:10px">←→</kbd> Navigasi soal</div>
+                <div><kbd style="background:var(--bg);border:1px solid var(--border);padding:1px 5px;border-radius:4px;font-size:10px">F</kbd> Tandai ragu</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULT -->
+    <div id="quiz-result-screen" style="display:none">
+      <div class="result-screen">
+        <div class="result-card">
+          <div class="score-center">
+            <div class="score-circle">
+              <div class="score-pct" id="result-pct">0%</div>
+              <div class="score-lbl">Skor Akhir</div>
+            </div>
+            <div class="score-detail" id="result-detail"></div>
+            <div class="score-verdict" id="result-verdict"></div>
+          </div>
+          <hr class="divider">
+          <div class="result-section-title">📊 Performa Per Topik</div>
+          <div id="result-topics"></div>
+          <div class="result-section-title">❌ Ringkasan Jawaban Salah</div>
+          <div id="result-wrongs"></div>
+          <div class="result-actions">
+            <button class="btn btn-primary" onclick="QuizEngine.restart()">🔁 Ulangi Quiz</button>
+            <button class="btn btn-secondary" onclick="QuizEngine.review()">📋 Tinjau Jawaban</button>
+            <a href="../index.html" class="btn btn-secondary">🏠 Dashboard</a>
+            <button class="btn btn-secondary" onclick="window.print()">🖨️ Cetak</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER NAV -->
+<div class="quiz-footer" id="quiz-footer">
+  <div class="footer-inner">
+    <button class="btn btn-secondary" id="btn-prev" onclick="QuizEngine.prev()">← Sebelumnya</button>
+    <button class="btn-flag-toggle" id="btn-flag-toggle" onclick="QuizEngine.toggleFlag()">🚩 Tandai Ragu</button>
+    <button class="btn btn-primary" id="btn-next" onclick="QuizEngine.next()">Berikutnya →</button>
+    <button class="btn-finish-quiz" id="btn-finish" style="display:none" onclick="QuizEngine.finish()">Selesai ✓</button>
+  </div>
+</div>
+<div class="toast" id="app-toast"></div>
+
+<script src="../data/config.js"></script>
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/quiz-engine.js"></script>
+<script>
+const QUIZ_DATA = {
+  quizId: "BIK_Q1",
+  courseId: "BIK",
+  courseName: "Bahasa Inggris Komunikasi II",
+  title: "Quiz 1 — Test Formatif & Variation",
+  level: "sedang",
+  questions: [
+  {
+    topic: "Test Formatif",
+    q: "Manakah contoh kata kerja (verb)?",
+    opts: ["Write", "paper", "fast", "beautiful"],
+    correct: 0,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Kata ganti (pronoun) yang benar untuk menggantikan 'Maria and I' adalah ....",
+    opts: ["she", "them", "me", "we"],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Manakah yang termasuk kata benda (noun)?",
+    opts: ["go", "happiness", "quickly", "tall"],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Manakah yang termasuk kata keterangan (adverb)?",
+    opts: ["student", "loudly", "he", "orange"],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Manakah yang termasuk kata sifat (adjective)?",
+    opts: ["speak", "microphone", "careful", "run"],
+    correct: 2,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Which sentence uses a modal auxiliary?",
+    opts: ["She runs fast.", "He reads books.", "They are students.", "You must finish your assignment."],
+    correct: 3,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Choose the correct modal verb to compelet this sentence: You ____ study hard to pass the exam.",
+    opts: ["can", "must", "is", "will"],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Choose the correct conjunction to join these sentences: I want to join the seminar, ____ I have no time.",
+    opts: ["because", "and", "or", "but"],
+    correct: 3,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Which sentence is correct?",
+    opts: ["She can speak English well.", "She can spoke English well.", "She can speaking English well.", "She can speaks English well."],
+    correct: 0,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Which one is the correct negative sentence with auxiliary verb 'do'?",
+    opts: ["They do not like loud music.", "They do like not loud music.", "They no like loud music.", "They not do like loud music."],
+    correct: 0,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Which is the correct indirect speech for this question? She asked, \"Why are you late?\"",
+    opts: ["She asked why I am late.", "She asked why I was late.", "She asked why were you late.", "She asked why are you late."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Convert this direct question into indirect speech: He asked, \"Where do you live?\"",
+    opts: ["He asked where do I live.", "He asked where I am living.", "He asked where do you live.", "He asked where I live."],
+    correct: 3,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Choose the correct indirect speech form of this command: Mom said, \"Don't be late.\"",
+    opts: ["Mom told me do not be late.", "Mom said me not be late.", "Mom told me not to be late.", "Mom said not be late."],
+    correct: 2,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Convert this direct speech statement into indirect speech: She said, \"I am tired.\"",
+    opts: ["She said she will be tired.", "She said that I was tired.", "She said that she was tired.", "She said that she is tired."],
+    correct: 2,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Which of the following is an example of indirect speech?",
+    opts: ["\"I will call you tomorrow,\" she said.", "She said she will call me tomorrow.", "She said she would call me tomorrow.", "\"She will call me tomorrow,\" she said."],
+    correct: 2,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Which of these is a correct short answer to a modal verb question?",
+    opts: ["No, I haven't.", "Yes, I can.", "Yes, I am.", "No, I don't."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Which of the following is a correct auxiliary-verb question?",
+    opts: ["Does he report daily?", "Do he reports daily?", "He does report daily?", "Reporting he daily?"],
+    correct: 0,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Which question is asking about a reason?",
+    opts: ["What platform do you use?", "Why do you like public speaking?", "Who is your mentor?", "Where is the event?"],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Which of the following is a correct have/has question?",
+    opts: ["Have you writing for a newspaper?", "Do you have written for a newspaper?", "Have you ever written for a newspaper?", "Have you ever write for a newspaper?"],
+    correct: 2,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Which of the following is a Yes/No question?",
+    opts: ["What is your favorite media platform?", "Why do you study communication?", "Where is the library?", "Do you follow the news daily?"],
+    correct: 3,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Which sentence uses the correct 'as ... as'?",
+    opts: ["She is more intelligent as her brother.", "She is intelligent as her brother.", "She is as intelligent as her brother.", "She is as more intelligent as her brother."],
+    correct: 2,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Fill in the blank: \"Your presentation was ____ (clear) than mine.\"",
+    opts: ["clearest", "clear", "clearer", "more clear"],
+    correct: 2,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Which sentence uses the correct superlative form?",
+    opts: ["This is the most exciting news I've heard.", "This is the excitinger news I've heard.", "This is the more exciting news I've heard.", "This is the excitingest news I've heard."],
+    correct: 0,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Which sentence uses the correct superlative form?",
+    opts: ["She is the more talented singer in the group.", "She is the talentedest singer in the group.", "She is the more talentedest singer in the group.", "She is the most talented singer in the group."],
+    correct: 3,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Which sentence correctly uses the comparative form?",
+    opts: ["This book is interestinger than that one.", "This book is most interesting than that one.", "This book is more interesting than that one.", "This book is interesting than that one."],
+    correct: 2,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Choose the correct passive voice form: “The documents ____ (not / review) yet.”",
+    opts: ["have not been reviewed", "is reviewed", "reviewed", "were not reviewed"],
+    correct: 0,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Choose the correct passive voice form: “The presentation ____ (will / prepare) by the marketing department.”",
+    opts: ["would prepare", "will prepared", "will not prepare", "will be prepared"],
+    correct: 3,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Choose the correct passive voice form: “The emails ____ (send) by the manager every morning.”",
+    opts: ["was sent", "were sent", "had been sent", "are sent"],
+    correct: 3,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Choose the correct passive voice form: “The advertisement ____ (create) by the design team.”",
+    opts: ["create", "was created", "created", "are created"],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Choose the correct passive voice form: \"The letter ____ (write) by the secretary yesterday.\"",
+    opts: ["written", "is written", "wrote", "was written"],
+    correct: 3,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Fill in the blank: “I wish he ____ (be) more careful with his words.”",
+    opts: ["were", "are", "will be", "is"],
+    correct: 0,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Fill in the blank: “I wish I ____ (have) more time to study.”",
+    opts: ["had", "would have been", "would have had", "would have"],
+    correct: 0,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Fill in the blank: “If she ____ (call) earlier, we would have gone together.”",
+    opts: ["has called", "called", "was calling", "had called"],
+    correct: 3,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Fill in the blank: “If I ____ (be) you, I would join the seminar.”",
+    opts: ["are", "would have been", "were", "am"],
+    correct: 2,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Fill in the blank: “If they had prepared well, they ____ (pass) the exam.”",
+    opts: ["would have passed", "would have been passed", "would pass", "will pass"],
+    correct: 0,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Which of the following is a good example of a topic sentence?",
+    opts: ["Smartphones have changed the way we live and communicate.", "Smartphones have many advanced features.", "I use my phone to take pictures.", "People use smartphones every day."],
+    correct: 0,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "A good topic sentence should ....",
+    opts: ["give a personal opinion", "be placed at the end", "provide an example", "state the main idea of the paragraph"],
+    correct: 3,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "What is the difference between a topic sentence and a main idea?",
+    opts: ["Main idea is found in the introduction.", "The topic sentence is a sentence, while the main idea is the overall message.", "There is no difference.", "Topic sentence is longer."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "The main idea of a paragraph is usually found in the ....",
+    opts: ["first sentence", "supporting details", "topic sentence", "last sentence"],
+    correct: 2,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Test Formatif",
+    q: "Which sentence below is most likely not a topic sentence?",
+    opts: ["Media has a powerful influence on public opinion.", "For example, TV, radio, and social media are all widely used.", "There are many types of media in modern society.", "The role of media in society is important."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "<b>Read the text:</b> Social media has dramatically changed the way communication happens in the modern world. Platforms like Twitter and Instagram allow people to share information instantly with a global audience. This has made news dissemination faster but also poses challenges in verifying facts and avoiding misinformation. Effective communication skills are essential for professionals in public relations. They must craft clear messages that resonate with the target audience while maintaining the organization’s positive image. Strategies include press releases, social media engagement, and crisis management. <br><br> <b>Based on this text, the writer most likely agrees that ....</b>",
+    opts: ["News should only be shared through traditional media.", "Communication and managing public relations require careful and effective strategies.", "Public relations professionals should not use social media.", "Social media is harmful and should be banned."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Which one is the correct question sentence?",
+    opts: ["Did you interested in journalism?", "Do you interested in journalism?", "Are you interested in journalism?", "Have you interesting in journalism?"],
+    correct: 2,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Fill in the blank: _______ media professionals work remotely in your company?",
+    opts: ["May", "Shoulded", "Do", "Can"],
+    correct: 3,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Rewrite this sentence into passive voice: The company repairs all the equipment regularly.",
+    opts: ["All the equiment repairs regularly by the company.", "All the equipment repair regularly by the company.", "All the equipment is repaired regularly by the company.", "All the equipment was repaired regularly by the company."],
+    correct: 2,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Choose the correct indirect speech: \"Don't post anything before approval,\" the editor told the team.",
+    opts: ["The editor told the team not to post anything before approval", "The editor told the team not post anything before approval", "The editor told the team don’t post anything before approval", "The editor told the team to not posting anything before approval"],
+    correct: 0,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Rewrite this sentence into an indirect speech: \"Why did they cancel the event?\" he asked.",
+    opts: ["He asked why they had canceled the event", "He asked why did they cancel the event", "He asked why had they canceled the event", "He asked why they cancel the event"],
+    correct: 0,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Choose the nouns: \"The presenter delivered a powerful speech about the importance of media in shaping public opinion.\"",
+    opts: ["powerful, presenter, speech", "opinion, speech, presenter", "importance, shaping, about", "delivered, media, powerful"],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Fill in the blank: If you ________ too much time on social media, your productivity decreases. (Fakta umum / kebiasaan)",
+    opts: ["would spend", "spend", "will spend", "spent"],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Which sentence uses a modal auxiliary to express permission?",
+    opts: ["May I speak to the communications manager?", "He might attend the media briefing later.", "They must submit the proposal today.", "You should send the press release immediately."],
+    correct: 0,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Rewrite this sentence into passive voice: The journalist writes the report every day.",
+    opts: ["The report is written every day by the journalist.", "The report write every day by the journalist.", "The report writes every day by the journalist.", "The report was written every day by the journalist"],
+    correct: 0,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Fill in the blank: Podcasts are becoming __________ than traditional radio shows.",
+    opts: ["most popular", "popular", "popularly", "more popular"],
+    correct: 3,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Fill in the blank: Today’s news coverage is __________ than it was a decade ago.",
+    opts: ["fastest", "faster", "fast", "more fast"],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Choose the correct reported speech: The spokesperson said, “We support freedom of the press.”",
+    opts: ["The spokesperson said that they supported freedom of the press.", "The spokesperson says that they support freedom of the press.", "The spokesperson said that they support freedom of the press.", "The spokesperson said that we supported freedom of the press."],
+    correct: 0,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Fill in the blank: Who is __________ comedian on television?",
+    opts: ["more funny", "funny", "funnier", "the funniest"],
+    correct: 3,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Supervisor: No problem, you ___ use the basic tools for now.",
+    opts: ["may", "must", "should", "can"],
+    correct: 3,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Fill in the blank: \"The producer wanted to start filming, ___ the camera crew was not ready.\"",
+    opts: ["since", "because", "but", "so"],
+    correct: 2,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Fill in the blank: \"A public relations officer ___ respond quickly during a crisis.\"",
+    opts: ["can", "must", "may", "should"],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Fill in the blank: If the PR team ________ the crisis quickly... (Situasi tidak nyata di masa lalu)",
+    opts: ["have handled", "had handled", "handles", "handled"],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "This number related with number 1’s text. Which is the topic sentence of the first paragraph?",
+    opts: ["Many people use social media.", "Social media has dramatically changed the way communication happens.", "This has made news dissemination faster...", "Platforms like Twitter and Instagram..."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Correct this sentence: \"How you manage a crisis in public relations?\"",
+    opts: ["How do you manage a crisis in public relations?", "How you did manage a crisis in public relations?", "How manage you a crisis in public relations?", "How did you managed a crisis in public relations?"],
+    correct: 0,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Rewrite into an indirect speech: \"Please turn off the microphone,\" the host said.",
+    opts: ["The host asked me that I turn off", "The host asked me to turn off the microphone", "The host asked me turning off", "The host asked me if I turn off"],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Choose adjectives: \"fast-paced world, effective communication, valuable skill.\"",
+    opts: ["media, professional", "communication, skill", "fast-paced, effective, valuable", "today’s, world"],
+    correct: 2,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Fill in the blank: Effective ___ is essential in crisis communication.",
+    opts: ["communicating", "communication", "communicate", "communicative"],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Fill in the blank: If she ________ more experience... (Kombinasi masa lalu dan sekarang)",
+    opts: ["would have", "had", "has", "will have"],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Fill in the blank: Scotland had its __________ temperatures ever in 2018.",
+    opts: ["most hot", "hotter", "hot", "hottest"],
+    correct: 3,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Fill in the blank: The journalist ___ the interview yesterday.",
+    opts: ["reporting", "reports", "report", "reported"],
+    correct: 3,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Fill in the blank: _______ the public respond well to the new advertisement?",
+    opts: ["Have", "Had", "Does", "Did"],
+    correct: 3,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "This number related with number 1’s text: What is the main idea of the first paragraph?",
+    opts: ["Twitter is difficult.", "Social media changed communication and brings challenges.", "People no longer trust news.", "Only for entertainment."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Choose correct indirect speech: She said, \"I am writing a press release.\"",
+    opts: ["She said she is writing", "She says she was writing", "She said she wrote", "She said that she was writing a press release."],
+    correct: 3,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Fill in the blank: This year’s campaign was __________ than last year’s.",
+    opts: ["most effective", "effective", "effectively", "more effective"],
+    correct: 3,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "This number related with number 1’s text: Which is the topic sentence of the second paragraph?",
+    opts: ["Strategies include...", "They must craft clear messages...", "Communication is difficult...", "Effective communication skills are essential for professionals."],
+    correct: 3,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Rewrite into passive voice: They will publish the article next week.",
+    opts: ["The article will published.", "The article was published.", "The article will be published next week.", "The article is published."],
+    correct: 2,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Fill in the blank: If I ________ the chance, I would interview. (Situasi tidak nyata sekarang)",
+    opts: ["will have", "had", "would have", "have"],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Rewrite into passive voice: They canceled the press conference yesterday.",
+    opts: ["Was cancel.", "Has canceled.", "Is canceled.", "The press conference was canceled yesterday."],
+    correct: 3,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "This number related with number 1’s text: What is the main idea of the second paragraph?",
+    opts: ["Avoid social media.", "PR professionals must communicate effectively.", "Crisis not important.", "Press releases outdated."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Fill in the blank: The news anchor spoke ___.",
+    opts: ["clearly", "clarity", "clear", "clearing"],
+    correct: 0,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Correct this sentence: \"Whom did wrote the press release yesterday?\"",
+    opts: ["Who wrote the press release yesterday?", "Who did wrote?", "Whom did write?", "Whom wrote?"],
+    correct: 0,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Fill in the blank: If the reporter ________ the deadline... (Kemungkinan nyata di masa depan)",
+    opts: ["miss", "misses", "will miss", "missed"],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Which sentence uses “as...as” correctly to show similarity?",
+    opts: ["More as effective as.", "Social media is not as powerful as traditional media.", "As clearer as.", "As informative than."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Rewrite into an indirect speech: \"Did you watch the documentary?\" Mia asked.",
+    opts: ["Mia asked if I had watched the documentary", "Mia asked if I watched", "Mia asked did I watch", "Mia asked whether I have watched"],
+    correct: 0,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Fill in the blank: _______ she written the article?",
+    opts: ["Did", "Has", "Had", "Have"],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Which of the following words is an adverb?",
+    opts: ["strategic", "strategize", "strategically", "strategy"],
+    correct: 2,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Rewrite into passive voice: The editor must approve the draft.",
+    opts: ["Must is approved.", "The draft must be approved by the editor before publishing.", "Must approved.", "Must been approved."],
+    correct: 1,
+    source: "",
+    explanation: ""
+  },
+  {
+    topic: "Variation Test",
+    q: "Rewrite into passive voice: Reporters should follow the ethical guidelines.",
+    opts: ["The ethical guidelines should be followed by the reporters.", "Should is followed.", "Should been followed.", "Should followed."],
+    correct: 0,
+    source: "",
+    explanation: ""
+  }
+]
+};
+document.addEventListener('DOMContentLoaded', () => {
+  QuizEngine.init(QUIZ_DATA);
+  const obs = new MutationObserver(() => {
+    const bar = document.getElementById('quiz-top-bar');
+    const main = document.getElementById('quiz-main-screen');
+    if (bar && main) bar.style.display = main.style.display !== 'none' ? 'flex' : 'none';
+  });
+  const target = document.getElementById('quiz-main-screen');
+  if (target) obs.observe(target, { attributes: true, attributeFilter: ['style'] });
+});
+</script>
+</body>
+</html>

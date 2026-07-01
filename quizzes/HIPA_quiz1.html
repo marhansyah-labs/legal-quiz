@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz 1 — Modul 1–9 — LeksaLaw</title>
+<link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/app.css">
+<link rel="stylesheet" href="../assets/css/quiz.css">
+</head>
+<body>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<div class="app-shell">
+  <aside class="sidebar" id="app-sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-logo">⚖️</div>
+      <div class="sidebar-name">LeksaLaw<small>Platform Belajar Hukum</small></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Menu Utama</div>
+      <a class="nav-item" href="../index.html"><span class="nav-icon">🏠</span><span class="nav-label">Dashboard</span></a>
+      <div class="nav-section-label">Pembelajaran</div>
+      <div id="nav-semesters"></div>
+      <div class="nav-section-label">Lainnya</div>
+      <a class="nav-item" href="../nilai.html"><span class="nav-icon">📊</span><span class="nav-label">Nilai & Progress</span></a>
+      <a class="nav-item" href="../favorit.html"><span class="nav-icon">⭐</span><span class="nav-label">Favorit</span></a>
+    </nav>
+    <div style="padding:12px 16px;border-top:1px solid rgba(255,255,255,0.08)">
+      <div style="font-size:11px;color:#475569;text-align:center">LeksaLaw v1.0 · Offline</div>
+    </div>
+  </aside>
+  <div class="main-content" id="main-content">
+    <header class="top-header">
+      <button class="header-toggle" id="sidebar-toggle">☰</button>
+      <div class="header-breadcrumb">
+        <a href="../index.html" style="color:var(--text-muted);text-decoration:none">Dashboard</a>
+        <span class="breadcrumb-sep">›</span>
+        <span style="color:var(--text-muted)">Hukum Islam & Acara Pengadilan Agama</span>
+        <span class="breadcrumb-sep">›</span>
+        <span class="breadcrumb-current">Quiz 1 — Modul 1–9</span>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" id="theme-btn" title="Ganti Tema">🌙</button>
+      </div>
+    </header>
+    <div class="quiz-top-bar" id="quiz-top-bar" style="display:none">
+      <span class="quiz-progress-text" id="progress-label">Soal 1 / 1</span>
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quiz-progress-fill" style="width:0%"></div></div>
+      <span id="quiz-label" style="font-size:12px;color:var(--text-muted);white-space:nowrap"></span>
+    </div>
+
+    <!-- SETUP -->
+    <div id="quiz-setup-screen">
+      <div class="quiz-setup">
+        <div class="setup-card">
+          <a href="../index.html" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text-muted);margin-bottom:20px;text-decoration:none" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color='var(--text-muted)'">← Kembali ke Dashboard</a>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-muted);margin-bottom:6px">Hukum Islam & Acara Pengadilan Agama</div>
+          <h1 class="setup-title" id="setup-quiz-title">Quiz 1 — Modul 1–9</h1>
+          <p class="setup-sub" id="setup-quiz-course"></p>
+          <div id="score-history" style="display:none" class="score-history"></div>
+          <div class="setup-stat-row">
+            <div class="setup-stat"><div class="n" id="setup-stat-q">—</div><div class="l">Total Soal</div></div>
+            <div class="setup-stat"><div class="n" id="setup-stat-t">—</div><div class="l">Topik</div></div>
+            <div class="setup-stat"><div class="n" id="setup-stat-level">sedang</div><div class="l">Tingkat</div></div>
+          </div>
+          <hr class="divider">
+          <div style="font-size:13px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px">Mode Pengerjaan</div>
+          <div class="mode-opts">
+            <label class="mode-opt selected">
+              <input type="radio" name="mode" value="study" checked>
+              <div><div class="mode-opt-name">📖 Mode Belajar</div><div class="mode-opt-desc">Feedback & penjelasan langsung setelah tiap jawaban</div></div>
+            </label>
+            <label class="mode-opt">
+              <input type="radio" name="mode" value="exam">
+              <div><div class="mode-opt-name">📝 Mode Ujian</div><div class="mode-opt-desc">Hasil & pembahasan muncul di akhir saja</div></div>
+            </label>
+          </div>
+          <hr class="divider">
+          <label class="shuffle-toggle">
+            <input type="checkbox" id="opt-shuffle">
+            <div>
+              <div class="shuffle-toggle-label">🔀 Acak Soal & Pilihan Jawaban</div>
+              <div class="shuffle-toggle-desc">Urutan soal dan opsi akan diacak setiap sesi</div>
+            </div>
+          </label>
+          <button class="btn-start-quiz" id="btn-start-quiz">Mulai Quiz →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUIZ MAIN -->
+    <div id="quiz-main-screen" style="display:none">
+      <div class="page-content" style="padding-top:16px;padding-bottom:100px">
+        <div class="quiz-layout">
+          <div><div id="q-container"></div></div>
+          <div class="quiz-sidebar-panel">
+            <div class="quiz-nav-card">
+              <div class="quiz-nav-title">Navigasi Soal</div>
+              <div class="nav-grid" id="nav-grid"></div>
+              <div class="nav-legend">
+                <div class="legend-item"><div class="legend-dot dot-answered"></div>Dijawab</div>
+                <div class="legend-item"><div class="legend-dot dot-flagged"></div>Ragu</div>
+                <div class="legend-item"><div class="legend-dot dot-unanswered"></div>Belum</div>
+              </div>
+            </div>
+            <div class="quiz-nav-card">
+              <div class="quiz-nav-title">Aksi</div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <button onclick="QuizEngine.finish()" class="btn btn-primary btn-sm" style="justify-content:center">✓ Selesai & Lihat Hasil</button>
+                <button onclick="if(confirm('Mulai ulang quiz?'))QuizEngine.restart()" class="btn btn-secondary btn-sm" style="justify-content:center">🔁 Mulai Ulang</button>
+              </div>
+            </div>
+            <div class="quiz-nav-card" style="font-size:12px;color:var(--text-muted)">
+              <div class="quiz-nav-title">Pintasan Keyboard</div>
+              <div style="display:flex;flex-direction:column;gap:5px">
+                <div><kbd style="background:var(--bg);border:1px solid var(--border);padding:1px 5px;border-radius:4px;font-size:10px">1–5</kbd> Pilih jawaban</div>
+                <div><kbd style="background:var(--bg);border:1px solid var(--border);padding:1px 5px;border-radius:4px;font-size:10px">←→</kbd> Navigasi soal</div>
+                <div><kbd style="background:var(--bg);border:1px solid var(--border);padding:1px 5px;border-radius:4px;font-size:10px">F</kbd> Tandai ragu</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULT -->
+    <div id="quiz-result-screen" style="display:none">
+      <div class="result-screen">
+        <div class="result-card">
+          <div class="score-center">
+            <div class="score-circle">
+              <div class="score-pct" id="result-pct">0%</div>
+              <div class="score-lbl">Skor Akhir</div>
+            </div>
+            <div class="score-detail" id="result-detail"></div>
+            <div class="score-verdict" id="result-verdict"></div>
+          </div>
+          <hr class="divider">
+          <div class="result-section-title">📊 Performa Per Topik</div>
+          <div id="result-topics"></div>
+          <div class="result-section-title">❌ Ringkasan Jawaban Salah</div>
+          <div id="result-wrongs"></div>
+          <div class="result-actions">
+            <button class="btn btn-primary" onclick="QuizEngine.restart()">🔁 Ulangi Quiz</button>
+            <button class="btn btn-secondary" onclick="QuizEngine.review()">📋 Tinjau Jawaban</button>
+            <a href="../index.html" class="btn btn-secondary">🏠 Dashboard</a>
+            <button class="btn btn-secondary" onclick="window.print()">🖨️ Cetak</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER NAV -->
+<div class="quiz-footer" id="quiz-footer">
+  <div class="footer-inner">
+    <button class="btn btn-secondary" id="btn-prev" onclick="QuizEngine.prev()">← Sebelumnya</button>
+    <button class="btn-flag-toggle" id="btn-flag-toggle" onclick="QuizEngine.toggleFlag()">🚩 Tandai Ragu</button>
+    <button class="btn btn-primary" id="btn-next" onclick="QuizEngine.next()">Berikutnya →</button>
+    <button class="btn-finish-quiz" id="btn-finish" style="display:none" onclick="QuizEngine.finish()">Selesai ✓</button>
+  </div>
+</div>
+<div class="toast" id="app-toast"></div>
+
+<script src="../data/config.js"></script>
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/quiz-engine.js"></script>
+<script>
+const QUIZ_DATA = {
+  quizId: "HIPA_Q1",
+  courseId: "HIPA",
+  courseName: "Hukum Islam & Acara Pengadilan Agama",
+  title: "Quiz 1 — Modul 1–9",
+  level: "sedang",
+  questions: [
+  {
+    topic: "Modul 1: Kerangka Dasar Hukum Islam",
+    q: "Dalam perbandingannya dengan hukum umum, hukum Islam memiliki karakteristik 'Internal Power'. Manakah pernyataan berikut yang paling tepat menggambarkan implementasi karakteristik tersebut dalam perilaku pemeluknya?",
+    opts: ["Kepatuhan terhadap norma hanya didasarkan pada sanksi fisik yang diberikan oleh lembaga legislatif.", "Daya ikat norma bersumber pada keyakinan dan keimanan masing-masing pemeluknya terhadap janji sanksi dunia dan akhirat.", "Penegakan hukum sepenuhnya bergantung pada daya paksa eksternal (external power) yang dimiliki oleh penguasa.", "Norma hukum Islam tidak memerlukan penerapan nyata oleh pemeluknya karena bersifat abstrak.", "Hukum Islam hanya mengatur hubungan manusia dengan Tuhan tanpa implikasi sanksi sosial."],
+    correct: 1,
+    source: "Halaman 1.6, Paragraf 1; Halaman 1.17",
+    explanation: ""
+  },
+  {
+    topic: "Modul 1: Kerangka Dasar Hukum Islam",
+    q: "Berdasarkan analisis Hazairin, setelah berlakunya UUD 1945, teori receptie dinyatakan tidak berlaku lagi (receptie exit). Apa argumen yuridis utama yang mendasari kesimpulan tersebut?",
+    opts: ["Hukum Islam baru berlaku jika telah dikodifikasikan ke dalam hukum adat setempat.", "Adanya keharusan hukum adat untuk tunduk sepenuhnya kepada hukum Islam tanpa pengecualian.", "Pasal 29 ayat (1) UUD 1945 menempatkan hukum agama sebagai dasar hukum nasional, sehingga hukum Islam tidak lagi bergantung pada penerimaan hukum adat.", "Belanda sengaja membuat hukum adat berada di atas hukum Islam untuk kepentingan kolonial.", "Hukum Islam hanya berlaku bagi mereka yang secara formal yuridis memilih hukum Islam di pengadilan."],
+    correct: 2,
+    source: "Halaman 1.14, Paragraf 4",
+    explanation: ""
+  },
+  {
+    topic: "Modul 1: Kerangka Dasar Hukum Islam",
+    q: "Hukum melangsungkan perkawinan dapat mengalami pergeseran status dari mubah (jaiz) menjadi haram. Kondisi manakah yang menyebabkan pergeseran status hukum tersebut menurut teks?",
+    opts: ["Seseorang yang secara fisik dan finansial sudah siap namun tidak khawatir berbuat zina.", "Seseorang yang memiliki motivasi untuk melakukan kekerasan dalam rumah tangga jika menikah.", "Seseorang yang masih berstatus mahasiswa dan belum memiliki pekerjaan tetap.", "Seseorang yang menikah dengan tujuan sekadar memenuhi kebutuhan biologis.", "Seseorang yang menikah tanpa adanya persetujuan dari wali nasab."],
+    correct: 1,
+    source: "Halaman 1.44, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Modul 1: Kerangka Dasar Hukum Islam",
+    q: "Dalam sistem kewarisan Islam, terdapat prinsip yang membatasi hak waris kerabat jauh jika terdapat kerabat dekat. Berdasarkan asas bilateral, manakah pernyataan yang benar mengenai kedudukan cucu jika anak laki-laki pewaris masih hidup?",
+    opts: ["Cucu tetap mendapatkan bagian warisan secara penuh sebagai ahli waris pengganti.", "Cucu terhalang (mahjub) oleh keberadaan anak laki-laki yang masih hidup.", "Cucu mendapatkan bagian 1/3 dari harta peninggalan melalui wasiat wajibah.", "Cucu laki-laki mendapatkan bagian dua kali lipat dari anak perempuan yang masih hidup.", "Cucu langsung menempati posisi sebagai ahli waris dzawil furudh."],
+    correct: 1,
+    source: "Halaman 1.21, Paragraf 2; Halaman 7.29",
+    explanation: ""
+  },
+  {
+    topic: "Modul 1: Kerangka Dasar Hukum Islam",
+    q: "Bagaimana hubungan antara larangan riba dalam Al-Qur'an (Syariah) dengan penentuan status bunga bank dalam operasional bank syariah (Fikih)?",
+    opts: ["Syariah memberikan rincian teknis persentase margin keuntungan, sementara fikih bersifat global.", "Nilai kebenaran bunga bank dalam fikih bersifat absolut karena berasal langsung dari wahyu.", "Syariah hanya satu dan bersifat tetap dalam melarang riba, sementara fikih dapat bermacam-macam dalam menginterpretasikan operasional bunga bank.", "Fikih dapat menghapuskan ketentuan syariah mengenai riba jika disepakati oleh seluruh nasabah.", "Larangan riba hanya berlaku pada transaksi fadhl, sedangkan dalam fikih nasi'ah diperbolehkan."],
+    correct: 2,
+    source: "Halaman 1.35, Paragraf 5; Halaman 1.38",
+    explanation: ""
+  },
+  {
+    topic: "Modul 1: Kerangka Dasar Hukum Islam",
+    q: "Dalam kasus pembunuhan, hukum Islam pada dasarnya menetapkan hukuman mati (qisas). Namun, penerapan aturan tersebut dapat disimpangi dengan membayar denda. Hal ini merupakan aplikasi dari asas...",
+    opts: ["Kepastian Hukum, karena didasarkan pada peraturan yang ada.", "Keadilan, karena memberikan pembalasan yang setimpal kepada pelaku.", "Kemanfaatan, jika penerapan hukuman mati dirasa merugikan salah satu pihak atau masyarakat secara umum.", "Ijbari, karena merupakan kehendak hukum yang tidak dapat ditolak.", "Egaliter, karena menempatkan korban dan pelaku pada kedudukan yang sama."],
+    correct: 2,
+    source: "Halaman 1.18, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Modul 1: Kerangka Dasar Hukum Islam",
+    q: "Manakah di bawah ini yang merupakan fokus kajian dari Fikih Jinayah dalam kategori hukum publik Islam?",
+    opts: ["Masalah kebendaan, hak atas benda, dan tata hubungan manusia dalam jual-beli.", "Aturan mengenai perbuatan pidana yang diancam dengan hukuman hudud atau ta'zir.", "Hubungan antara kepala negara dengan pemerintahan pusat dan daerah.", "Urusan perang dan damai serta tata hubungan dengan negara lain.", "Masalah pembagian harta warisan dan harta peninggalan bagi ahli waris."],
+    correct: 1,
+    source: "Halaman 1.16, Paragraf 3",
+    explanation: ""
+  },
+  {
+    topic: "Modul 1: Kerangka Dasar Hukum Islam",
+    q: "Larangan zina dalam Islam secara hakiki ditujukan untuk memelihara salah satu elemen dari Al-Maqasid Al-Khamsah, yaitu...",
+    opts: ["Memelihara Agama (Hifz ad-Din).", "Memelihara Jiwa (Hifz an-Nafs).", "Memelihara Akal (Hifz al-Aql).", "Memelihara Keturunan (Hifz an-Nasl).", "Memelihara Harta Benda (Hifz al-Mal)."],
+    correct: 3,
+    source: "Halaman 1.54, Paragraf 4",
+    explanation: ""
+  },
+  {
+    topic: "Modul 2: Sumber Hukum Islam",
+    q: "Berdasarkan hadis Mu'az bin Jabal, bagaimana urutan pengambilan keputusan hukum jika suatu perkara tidak ditemukan secara eksplisit dalam Al-Qur'an?",
+    opts: ["Langsung melakukan ijtihad menggunakan akal pikiran tanpa merujuk pada Sunah.", "Mencari dasar hukum dalam Sunah Rasulullah, baru kemudian berijtihad jika di Sunah pun tidak ditemukan.", "Bertanya kepada penguasa (Ulil Amri) untuk menetapkan peraturan baru.", "Menunggu turunnya wahyu baru atau mencari kesepakatan adat masyarakat.", "Membatalkan perkara karena tidak ada dasar hukum yang tertulis."],
+    correct: 1,
+    source: "Halaman 2.6, Paragraf 4",
+    explanation: ""
+  },
+  {
+    topic: "Modul 2: Sumber Hukum Islam",
+    q: "Teks ayat Al-Qur’an yang menjadi sumber utama dalam perumusan hukum amaliyah umumnya terdapat dalam kategori ayat...",
+    opts: ["Mutasyabihat, karena memerlukan penafsiran mendalam dari para ahli ijtihad.", "Muhkamat, karena memuat ketentuan-ketentuan yang sudah jelas maknanya.", "Makkiyah, karena diturunkan saat periode pembentukan akidah di Makkah.", "Amaliyah, yang jumlahnya mencapai 6666 ayat dalam Al-Qur'an.", "I'tiqadiyyah, yang berkaitan dengan kepercayaan kepada malaikat dan hari kiamat."],
+    correct: 1,
+    source: "Halaman 2.17, Paragraf 3",
+    explanation: ""
+  },
+  {
+    topic: "Modul 2: Sumber Hukum Islam",
+    q: "Hadis yang menjelaskan bahwa zakat diwajibkan untuk mensucikan harta (penjelasan atas QS At-Taubah: 34) dikategorikan sebagai...",
+    opts: ["Bayan Taqrir, karena memperkokoh pernyataan Al-Qur'an.", "Bayan Tafsir, karena menerangkan ayat Al-Qur'an yang bersifat umum atau global.", "Bayan Taudhih, karena menerangkan maksud dan tujuan Al-Qur'an.", "Hadis Mutawatir, karena diriwayatkan oleh banyak rawi yang tidak mungkin berdusta.", "Ijtihad kolektif, karena disepakati oleh seluruh ulama."],
+    correct: 1,
+    source: "Halaman 2.32; Halaman 2.42",
+    explanation: ""
+  },
+  {
+    topic: "Modul 2: Sumber Hukum Islam",
+    q: "Manakah faktor utama yang membedakan kualitas Hadis Hasan sehingga tidak setara dengan Hadis Sahih?",
+    opts: ["Sanadnya tidak bersambung sampai ke Nabi Muhammad SAW.", "Terdapat rawi yang tidak beragama Islam atau tidak adil.", "Rawi yang meriwayatkan hadis tersebut kurang teliti atau kurang kuat hafalannya (dhabit).", "Jumlah rawi dalam tiap tingkatan sanadnya mencapai jumlah mutawatir.", "Isinya bertentangan secara nyata dengan ayat-ayat dalam Al-Qur'an."],
+    correct: 2,
+    source: "Halaman 2.25, Paragraf 3",
+    explanation: ""
+  },
+  {
+    topic: "Modul 2: Sumber Hukum Islam",
+    q: "Penggunaan metode Istihsan terlihat pada kasus diperbolehkannya dokter melihat bagian tubuh wanita (aurat) untuk kepentingan pengobatan. Apa dasar pemikiran utama metode ini?",
+    opts: ["Mengutamakan adat istiadat yang sudah lama berlangsung di masyarakat.", "Menyimpangi kaidah umum demi prinsip yang lebih besar seperti keadilan atau menghindari kesulitan.", "Menyamakan hukum suatu perkara yang tidak ada teksnya dengan perkara yang ada teksnya berdasarkan persamaan illat.", "Mengambil kemaslahatan umum yang sama sekali tidak ada dasar hukumnya dalam Al-Qur'an dan Sunah.", "Mengikuti hukum agama yang diwahyukan sebelum Islam."],
+    correct: 1,
+    source: "Halaman 2.36, Paragraf 2",
+    explanation: ""
+  },
+  {
+    topic: "Modul 2: Sumber Hukum Islam",
+    q: "Jika dalam sebuah kongres terdapat 100 mujtahid, di mana 80 orang setuju dengan suatu hukum dan 20 orang tidak setuju, apakah kesepakatan tersebut dapat dikategorikan sebagai Ijmak?",
+    opts: ["Ya, karena didasarkan pada jumlah kesepakatan terbanyak.", "Ya, karena sudah mencapai kuorum lebih dari dua pertiga anggota.", "Tidak, karena Ijmak mensyaratkan kesepakatan bulat dari seluruh mujtahid yang ada.", "Tidak, karena mujtahid tidak diperbolehkan melakukan ijtihad kolektif.", "Ya, asalkan hasil kesepakatan tersebut tidak bertentangan dengan hukum adat."],
+    correct: 2,
+    source: "Halaman 2.34, Paragraf 3",
+    explanation: ""
+  },
+  {
+    topic: "Modul 2: Sumber Hukum Islam",
+    q: "Berdasarkan teks, setiap minuman/benda yang memabukkan diharamkan dengan meng-qiyas-kan pada khamr. Apa illat (penyebab hukum) yang menjadi titik persamaan dalam qiyas tersebut?",
+    opts: ["Bentuk bendanya yang berupa cairan.", "Harga belinya yang mahal dan merugikan ekonomi.", "Sifatnya yang dapat menghilangkan kesadaran atau memabukkan.", "Asal-usulnya yang berasal dari tanaman tertentu.", "Cara penggunaannya yang dilakukan secara beramai-ramai."],
+    correct: 2,
+    source: "Halaman 2.35, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Modul 2: Sumber Hukum Islam",
+    q: "Mengapa penguasaan bahasa Arab secara mendalam menjadi syarat mutlak bagi seorang mujtahid?",
+    opts: ["Karena bahasa Arab adalah bahasa resmi dalam administrasi peradilan agama di Indonesia.", "Agar mujtahid dapat memahami makna dan susunan kalimat dalam Al-Qur'an dan Sunah sebagaimana dipahami orang Arab pada umumnya.", "Karena seluruh literatur hukum ekonomi dunia saat ini menggunakan bahasa Arab.", "Untuk menghindari penggunaan akal pikiran dalam proses penemuan hukum.", "Agar mujtahid dapat menerjemahkan Al-Qur'an ke dalam berbagai bahasa daerah."],
+    correct: 1,
+    source: "Halaman 2.32, Paragraf 4",
+    explanation: ""
+  },
+  {
+    topic: "Modul 3: Hukum Zakat",
+    q: "Menurut UU Nomor 23 Tahun 2011, manakah pernyataan yang paling tepat mengenai subjek hukum yang wajib mengeluarkan zakat?",
+    opts: ["Hanya orang pribadi muslim yang memiliki harta melimpah (kaya raya).", "Warga negara Indonesia tanpa membedakan agama jika hartanya mencapai nisab.", "Seorang muslim atau badan usaha yang dimiliki oleh orang muslim.", "Lembaga pemerintah non-struktural yang mengelola dana sosial keagamaan.", "Hanya fakir miskin yang sudah mendapatkan pembinaan dari BAZNAS."],
+    correct: 2,
+    source: "Halaman 3.4, Paragraf 4",
+    explanation: ""
+  },
+  {
+    topic: "Modul 3: Hukum Zakat",
+    q: "Apa konsekuensi hukum jika suatu harta masih tersangkut hak orang lain atau didapatkan dengan cara yang tidak halal terhadap kewajiban zakatnya?",
+    opts: ["Tetap wajib dizakati untuk membersihkan harta tersebut dari unsur haram.", "Tidak wajib dizakati karena tidak memenuhi syarat pemilikan yang pasti dan suci.", "Wajib dizakati sebesar 20% mengikuti tarif zakat rikaz.", "Zakatnya harus diserahkan kepada pemerintah sebagai pajak tambahan.", "Harta tersebut dianggap sebagai hibah yang tidak memiliki nisab."],
+    correct: 1,
+    source: "Halaman 3.7, Paragraf 3",
+    explanation: ""
+  },
+  {
+    topic: "Modul 3: Hukum Zakat",
+    q: "Amil zakat mendapatkan bagian maksimal 12,5%. Manakah kriteria amil yang berhak menerima bagian tersebut menurut teks?",
+    opts: ["Seseorang yang ditunjuk oleh muzaki secara pribadi tanpa izin otoritas.", "Pengelola zakat yang jujur, mukalaf, memahami hukum zakat, dan diorganisasikan dalam suatu badan resmi.", "Fakir miskin yang merangkap tugas membagikan zakat di lingkungan RT.", "Pejabat kementerian yang bertugas menyusun regulasi zakat di tingkat nasional.", "Setiap orang muslim yang bersedia membantu mengumpulkan zakat secara sukarela."],
+    correct: 1,
+    source: "Halaman 3.11, Paragraf 3",
+    explanation: ""
+  },
+  {
+    topic: "Modul 3: Hukum Zakat",
+    q: "Seorang pedagang memiliki keuntungan bersih pertahun Rp10.000.000. Pengeluaran untuk kebutuhan pokoknya sebulan Rp500.000 (Rp6.000.000 setahun). Berapakah zakat yang harus ia keluarkan jika nisab telah terpenuhi?",
+    opts: ["Rp250.000", "Rp150.000", "Rp100.000", "Rp400.000", "Rp2.500.000"],
+    correct: 2,
+    source: "Halaman 3.49, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Modul 3: Hukum Zakat",
+    q: "Berapakah batas minimal (nisab) hasil pertanian berupa gabah untuk dikenakan wajib zakat menurut Peraturan Menteri Agama No. 52 Tahun 2014?",
+    opts: ["524 kg gabah.", "653 kg gabah.", "85 gram emas.", "672 gram perak.", "Tidak memiliki batas nisab."],
+    correct: 1,
+    source: "Halaman 3.35; Halaman 3.49",
+    explanation: ""
+  },
+  {
+    topic: "Modul 3: Hukum Zakat",
+    q: "Manakah pernyataan yang benar mengenai zakat rikaz berdasarkan peraturan nasional?",
+    opts: ["Memiliki nisab senilai 85 gram emas dan haul satu tahun.", "Tidak disyaratkan adanya nisab dan kadar zakatnya sebesar 20%.", "Hanya dikenakan pada emas dan perak yang ditemukan di laut.", "Kadar zakatnya sama dengan zakat profesi yaitu 2,5%.", "Harus dimiliki selama satu tahun penuh sebelum dizakatkan."],
+    correct: 1,
+    source: "Halaman 3.35; Halaman 3.50",
+    explanation: ""
+  },
+  {
+    topic: "Modul 3: Hukum Zakat",
+    q: "Menurut Pasal 22 UU Nomor 23 Tahun 2011, zakat yang dibayarkan melalui BAZNAS atau LAZ dapat memberikan insentif fiskal bagi muzaki berupa...",
+    opts: ["Penghapusan seluruh kewajiban pajak tahunan.", "Pengurangan jumlah pajak yang terutang secara langsung.", "Sebagai pengurang dari penghasilan kena pajak.", "Pembebasan dari pajak pertambahan nilai (PPN).", "Penundaan waktu pembayaran pajak hingga masa panen."],
+    correct: 2,
+    source: "Halaman 3.32, Paragraf 5",
+    explanation: ""
+  },
+  {
+    topic: "Modul 3: Hukum Zakat",
+    q: "Siapakah yang berwenang mengangkat dan memberhentikan 11 orang anggota BAZNAS menurut undang-undang?",
+    opts: ["Menteri Agama atas usul DPR.", "Presiden atas usul Menteri Agama.", "Ketua Majelis Ulama Indonesia.", "Direktur Jenderal Bimas Islam.", "Para muzaki melalui mekanisme voting nasional."],
+    correct: 1,
+    source: "Halaman 3.41; Halaman 3.50",
+    explanation: ""
+  },
+  {
+    topic: "Modul 4: Hukum Wakaf",
+    q: "Berdasarkan UU No. 41 Tahun 2004, wakaf tidak hanya untuk selamanya. Apa ketentuan jangka waktu wakaf yang diperbolehkan?",
+    opts: ["Hanya untuk jangka waktu minimal 10 tahun.", "Untuk selamanya atau untuk jangka waktu tertentu sesuai kepentingannya.", "Harus selamanya karena harta wakaf tidak boleh ditarik kembali.", "Bergantung pada umur wakif saat menyatakan ikrar wakaf.", "Jangka waktu ditetapkan oleh nazhir setelah menerima harta benda."],
+    correct: 1,
+    source: "Halaman 4.4; Halaman 4.43",
+    explanation: ""
+  },
+  {
+    topic: "Modul 4: Hukum Wakaf",
+    q: "Seorang Nazhir berhak menerima imbalan atas jasa pengelolaan harta wakaf. Berapakah batas maksimal imbalan tersebut dari hasil bersih pengelolaan?",
+    opts: ["2,5%", "5%", "10%", "20%", "Sesuai kesepakatan dengan wakif tanpa batas."],
+    correct: 2,
+    source: "Halaman 4.12; Halaman 4.43",
+    explanation: ""
+  },
+  {
+    topic: "Modul 4: Hukum Wakaf",
+    q: "Dalam kondisi apa perubahan status harta benda wakaf (penukaran) diperbolehkan oleh undang-undang?",
+    opts: ["Jika nazhir membutuhkan biaya operasional untuk kantornya.", "Jika harta penukar memiliki nilai dan manfaat yang sekurang-kurangnya sama dan atas izin tertulis Menteri.", "Atas permintaan ahli waris wakif untuk kepentingan keluarga.", "Jika harta wakaf tersebut terletak di area bisnis yang menguntungkan nazhir.", "Penukaran harta wakaf dilarang secara mutlak dalam kondisi apa pun."],
+    correct: 1,
+    source: "Halaman 4.21, Paragraf 3",
+    explanation: ""
+  },
+  {
+    topic: "Modul 4: Hukum Wakaf",
+    q: "Berapakah jumlah anggota BWI dan siapa yang memiliki wewenang untuk mengangkat mereka?",
+    opts: ["11 orang, diangkat oleh Menteri Agama.", "20 sampai 30 orang, diangkat oleh Presiden.", "Minimal 3 orang, diangkat oleh KUA setempat.", "11 orang, diangkat oleh Presiden.", "Sesuai kebutuhan, diangkat oleh pimpinan organisasi kemasyarakatan."],
+    correct: 1,
+    source: "Halaman 4.23; Halaman 4.44",
+    explanation: ""
+  },
+  {
+    topic: "Modul 4: Hukum Wakaf",
+    q: "Lembaga manakah yang ditunjuk untuk menerima setoran uang dari wakif dalam proses wakaf uang?",
+    opts: ["Badan Amil Zakat Nasional (BAZNAS).", "Lembaga Keuangan Syariah Penerima Wakaf Uang (LKS-PWU).", "Kantor Urusan Agama (KUA) tingkat kecamatan.", "Pengadilan Agama tempat wakif berdomisili.", "Koperasi syariah yang belum berbadan hukum."],
+    correct: 1,
+    source: "Halaman 4.27, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Modul 4: Hukum Wakaf",
+    q: "Siapakah yang bertindak sebagai PPAIW untuk benda tidak bergerak berupa tanah?",
+    opts: ["Pejabat Pembuat Akta Tanah (PPAT).", "Kepala Kantor Urusan Agama (KUA).", "Petugas Bank Syariah yang ditunjuk BWI.", "Hakim Pengadilan Agama.", "Pengurus organisasi kemasyarakatan Islam."],
+    correct: 1,
+    source: "Halaman 4.30, Paragraf 2",
+    explanation: ""
+  },
+  {
+    topic: "Modul 4: Hukum Wakaf",
+    q: "Apa perbedaan utama antara wakaf ahli dan wakaf umum menurut penjelasan teks?",
+    opts: ["Wakaf ahli untuk kepentingan ibadah, wakaf umum untuk pendidikan.", "Wakaf ahli diperuntukkan bagi keluarga/kerabat, wakaf umum untuk kepentingan masyarakat luas.", "Wakaf ahli dikelola oleh pemerintah, wakaf umum oleh nazhir perorangan.", "Wakaf ahli hanya berupa uang, wakaf umum berupa tanah.", "Wakaf ahli tidak memerlukan ikrar wakaf, wakaf umum wajib."],
+    correct: 1,
+    source: "Halaman 4.19, Paragraf 2",
+    explanation: ""
+  },
+  {
+    topic: "Modul 4: Hukum Wakaf",
+    q: "Jika musyawarah mufakat tidak berhasil menyelesaikan sengketa wakaf, langkah hukum apa yang dapat ditempuh oleh para pihak menurut UU Wakaf?",
+    opts: ["Langsung melakukan demo di kantor Departemen Agama.", "Melalui mediasi, arbitrase, atau pengadilan.", "Harta wakaf otomatis ditarik kembali oleh ahli waris wakif.", "Sengketa diputuskan sepihak oleh nazhir senior.", "Menunggu putusan dari Majelis Ulama Indonesia tingkat pusat."],
+    correct: 1,
+    source: "Halaman 4.22, Paragraf 5",
+    explanation: ""
+  },
+  {
+    topic: "Modul 5: Lembaga Jasa Keuangan Syariah",
+    q: "Berdasarkan PBI No. 11/3/PBI/2009, berapakah modal disetor minimal yang harus dipenuhi untuk mendirikan sebuah Bank Umum Syariah?",
+    opts: ["Rp100.000.000.000", "Rp500.000.000.000", "Rp1.000.000.000.000", "Rp2.000.000.000.000", "Rp5.000.000.000.000"],
+    correct: 2,
+    source: "Halaman 5.6, Paragraf 5",
+    explanation: ""
+  },
+  {
+    topic: "Modul 5: Lembaga Jasa Keuangan Syariah",
+    q: "Dalam produk pembiayaan, manakah pernyataan yang paling tepat mengenai pembagian kerugian finansial?",
+    opts: ["Dalam mudarabah, kerugian ditanggung nasabah; dalam musyarakah ditanggung bank.", "Dalam mudarabah, kerugian ditanggung bank (selaku pemilik modal); dalam musyarakah ditanggung bersama secara proporsional sesuai porsi modal.", "Kedua akad mewajibkan nasabah menanggung seluruh kerugian tanpa kecuali.", "Bank tidak pernah menanggung kerugian dalam kedua akad tersebut.", "Kerugian selalu dibagi rata (50:50) tanpa melihat jumlah modal awal."],
+    correct: 1,
+    source: "Halaman 5.16; Halaman 5.17",
+    explanation: ""
+  },
+  {
+    topic: "Modul 5: Lembaga Jasa Keuangan Syariah",
+    q: "Seorang pengusaha ingin menyewa alat produksi dan memiliki opsi untuk memiliki alat tersebut di akhir masa sewa. Akad manakah yang paling sesuai digunakan oleh bank syariah?",
+    opts: ["Murabahah, karena ada unsur jual beli di awal.", "Ijarah, karena hanya bersifat sewa murni.", "Ijarah Muntahiyya bit Tamlik, karena ada perpindahan hak milik di akhir masa sewa.", "Hawalah, karena ada pengalihan hutang dari pihak ketiga.", "Sharf, karena berkaitan dengan pertukaran nilai barang."],
+    correct: 2,
+    source: "Halaman 5.19; Halaman 5.55",
+    explanation: ""
+  },
+  {
+    topic: "Modul 5: Lembaga Jasa Keuangan Syariah",
+    q: "Apa perbedaan fundamental antara asuransi syariah dan konvensional terkait pengelolaan risiko?",
+    opts: ["Asuransi syariah menggunakan konsep risk transferring, konvensional menggunakan risk sharing.", "Asuransi syariah bertujuan mencari laba maksimal, konvensional bertujuan tolong-menolong.", "Asuransi syariah menggunakan konsep risk sharing (berbagi risiko antar peserta), konvensional menggunakan risk transferring (pengalihan risiko ke perusahaan).", "Peserta asuransi syariah tidak perlu membayar premi atau kontribusi.", "Dana tabarru' dalam asuransi syariah sepenuhnya menjadi milik perusahaan asuransi."],
+    correct: 2,
+    source: "Halaman 5.56, Paragraf 3",
+    explanation: ""
+  },
+  {
+    topic: "Modul 5: Lembaga Jasa Keuangan Syariah",
+    q: "Dalam menerbitkan kartu kredit syariah, batasan manakah yang wajib diperhatikan oleh bank penerbit?",
+    opts: ["Diperbolehkan membebankan bunga harian pada saldo tertunggak.", "Tidak mendorong pengeluaran berlebihan (israf) dengan menetapkan pagu maksimal.", "Denda keterlambatan diakui sebagai keuntungan operasional bank.", "Nasabah dibebaskan dari biaya keanggotaan (membership fee).", "Dapat digunakan untuk transaksi di tempat hiburan yang dilarang syariah."],
+    correct: 1,
+    source: "Halaman 5.41, Paragraf 3",
+    explanation: ""
+  },
+  {
+    topic: "Modul 5: Lembaga Jasa Keuangan Syariah",
+    q: "Manakah jenis kegiatan usaha yang menyebabkan sebuah perusahaan tidak dapat menerbitkan efek syariah?",
+    opts: ["Usaha perdagangan sembako dengan sistem bagi hasil.", "Usaha jasa konstruksi yang menggunakan akad istisna.", "Usaha yang melakukan perjudian atau perdagangan yang dilarang.", "Usaha manufaktur yang memiliki Shariah Compliance Officer.", "Usaha perkebunan yang mendistribusikan zakat perusahaan melalui BAZNAS."],
+    correct: 2,
+    source: "Halaman 5.48, Paragraf 2",
+    explanation: ""
+  },
+  {
+    topic: "Modul 5: Lembaga Jasa Keuangan Syariah",
+    q: "Manakah karakteristik unik dari akad Salam yang membedakannya dari jual beli biasa?",
+    opts: ["Penyerahan barang dilakukan di awal, pembayaran di akhir.", "Pembayaran dilakukan secara tunai di muka secara penuh, penyerahan barang dilakukan kemudian.", "Harga barang ditentukan oleh pemerintah secara sepihak.", "Barang yang diperjualbelikan harus sudah tersedia saat akad ditandatangani.", "Tidak diperbolehkan adanya spesifikasi barang yang mendetail."],
+    correct: 1,
+    source: "Halaman 5.13; Halaman 5.38",
+    explanation: ""
+  },
+  {
+    topic: "Modul 5: Lembaga Jasa Keuangan Syariah",
+    q: "Berdasarkan Putusan MK No. 93/PUU-X/2012, manakah pernyataan yang benar mengenai sengketa perbankan syariah?",
+    opts: ["Nasabah nonmuslim wajib menyelesaikan sengketa di Peradilan Umum.", "Sengketa perbankan syariah adalah kompetensi absolut Peradilan Agama, dan pilihan forum ke Peradilan Umum dalam akad menjadi batal demi hukum.", "Bank Syariah bebas memilih forum peradilan mana pun sesuai keinginan direksi.", "Hanya perkara waris yang boleh diselesaikan di Peradilan Agama.", "Mahkamah Agung berwenang mengambil alih seluruh sengketa ekonomi syariah."],
+    correct: 1,
+    source: "Halaman 5.23; Halaman 8.41",
+    explanation: ""
+  },
+  {
+    topic: "Modul 6: Hukum Perkawinan Islam",
+    q: "Kapan hukum melaksanakan perkawinan bagi seseorang menjadi wajib menurut fikih munakahat?",
+    opts: ["Seseorang yang sudah memiliki pekerjaan mapan dan rumah pribadi.", "Seseorang yang memiliki nafsu biologis yang mendesak dan dikhawatirkan akan jatuh ke jurang zina jika tidak menikah.", "Seseorang yang diperintahkan oleh kedua orang tuanya untuk segera menikah.", "Seseorang yang memiliki harta yang cukup untuk memberi mahar yang sangat mahal.", "Seseorang yang pasangannya sudah mendesak untuk segera melangsungkan akad."],
+    correct: 1,
+    source: "Halaman 6.10, Paragraf 4",
+    explanation: ""
+  },
+  {
+    topic: "Modul 6: Hukum Perkawinan Islam",
+    q: "Berdasarkan KHI, manakah kualifikasi saksi yang menyebabkan akad nikah menjadi tidak sah?",
+    opts: ["Dua orang saksi laki-laki beragama Islam.", "Saksi yang hadir dan melihat langsung proses ijab kabul.", "Saksi yang memiliki gangguan pendengaran (tunarungu) atau tuli.", "Saksi yang sudah mencapai umur balig dan berakal sehat.", "Saksi yang menandatangani akta nikah di tempat acara."],
+    correct: 2,
+    source: "Halaman 6.20, Paragraf 4",
+    explanation: ""
+  },
+  {
+    topic: "Modul 6: Hukum Perkawinan Islam",
+    q: "Dalam KHI, apa implikasi hukum jika dalam akad nikah jumlah dan jenis mahar tidak disebutkan?",
+    opts: ["Perkawinan dianggap batal demi hukum karena mahar adalah rukun.", "Perkawinan tetap sah, dan suami wajib membayar mahar mitsil.", "Perkawinan sah namun suami dikenai sanksi administratif berupa denda.", "Istri berhak mengajukan cerai gugat secara langsung ke pengadilan.", "Mahar otomatis dianggap lunas dengan pemberian seperangkat alat sholat."],
+    correct: 1,
+    source: "Halaman 6.22; Halaman 6.75",
+    explanation: ""
+  },
+  {
+    topic: "Modul 6: Hukum Perkawinan Islam",
+    q: "Menurut Pasal 5 UU Perkawinan, syarat manakah yang harus dipenuhi suami saat mengajukan izin poligami?",
+    opts: ["Adanya izin lisan dari mertua pihak istri pertama.", "Adanya persetujuan dari istri/istri-istri dan jaminan bahwa suami akan berlaku adil.", "Memiliki harta kekayaan minimal satu miliar rupiah.", "Istri pertama sudah berumur lebih dari 50 tahun.", "Menyerahkan seluruh harta bersama kepada istri pertama."],
+    correct: 1,
+    source: "Halaman 6.30, Paragraf 3",
+    explanation: ""
+  },
+  {
+    topic: "Modul 6: Hukum Perkawinan Islam",
+    q: "Manakah pernyataan yang paling tepat mengenai inisiatif perceraian dalam hukum Islam di Indonesia?",
+    opts: ["Cerai talak diajukan oleh istri; cerai gugat diajukan oleh suami.", "Cerai talak adalah permohonan suami untuk mengikrarkan talak; cerai gugat adalah gugatan perceraian yang diajukan istri.", "Kedua jenis perceraian tersebut hanya dapat dilakukan di luar sidang pengadilan.", "Cerai talak tidak memerlukan alasan hukum, sedangkan cerai gugat wajib.", "Cerai gugat hanya boleh dilakukan jika suami memberikan izin tertulis."],
+    correct: 1,
+    source: "Halaman 6.44; Halaman 6.46",
+    explanation: ""
+  },
+  {
+    topic: "Modul 6: Hukum Perkawinan Islam",
+    q: "Jika seorang suami meninggal dunia atau menceraikan istrinya yang dalam kondisi hamil, kapankah masa tunggu (idah) istri tersebut berakhir?",
+    opts: ["Setelah tiga kali suci (kurang lebih 90 hari).", "Setelah empat bulan sepuluh hari.", "Sampai istri tersebut melahirkan anak yang dikandungnya.", "Setelah 130 hari terhitung sejak kematian suami.", "Tidak ada masa idah bagi istri yang hamil."],
+    correct: 2,
+    source: "Halaman 6.56; Halaman 6.59",
+    explanation: ""
+  },
+  {
+    topic: "Modul 6: Hukum Perkawinan Islam",
+    q: "Berdasarkan KHI, siapakah yang paling berhak mendapatkan hak pemeliharaan anak yang belum mumayyiz (di bawah 12 tahun)?",
+    opts: ["Ayah, karena ia penanggung jawab nafkah utama.", "Ibu, kecuali jika ia telah meninggal dunia atau tidak mampu.", "Kakek dari pihak ayah.", "Dinas Sosial atau lembaga perlindungan anak.", "Saudara laki-laki kandung dari ayah."],
+    correct: 1,
+    source: "Halaman 6.66, Pasal 105",
+    explanation: ""
+  },
+  {
+    topic: "Modul 6: Hukum Perkawinan Islam",
+    q: "Kapan seorang suami dapat melakukan Lian dan apa akibat hukumnya?",
+    opts: ["Saat istri menuntut mahar yang terlalu tinggi; akibatnya suami bebas hutang.", "Saat suami menuduh istri berzina dan/atau mengingkari anak namun tidak punya bukti; akibatnya putus perkawinan selamanya.", "Saat suami ingin menikah lagi tanpa izin istri pertama; akibatnya poligami sah.", "Saat istri keluar rumah tanpa izin; akibatnya istri kehilangan hak idah.", "Saat suami tidak mampu memberi nafkah selama tiga bulan; akibatnya khuluk."],
+    correct: 1,
+    source: "Halaman 6.50, Pasal 126",
+    explanation: ""
+  },
+  {
+    topic: "Modul 7: Hukum Kewarisan Islam",
+    q: "Manakah pernyataan yang tepat mengenai syarat ahli waris saat pewaris meninggal dunia?",
+    opts: ["Ahli waris harus sudah dewasa dan memiliki kartu tanda penduduk.", "Ahli waris harus masih hidup secara hakiki atau secara hukum (seperti janin dalam kandungan).", "Ahli waris boleh beragama apa pun asalkan memiliki hubungan darah.", "Ahli waris yang membunuh pewaris tetap berhak mendapatkan bagian waris.", "Ahli waris tidak perlu ada di tempat saat kematian pewaris terjadi."],
+    correct: 1,
+    source: "Halaman 7.6, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Modul 7: Hukum Kewarisan Islam",
+    q: "Apa konsekuensi dari penerapan asas ijbari dalam proses pembagian harta peninggalan?",
+    opts: ["Ahli waris dipaksa untuk menjual seluruh harta peninggalan kepada negara.", "Peralihan harta terjadi secara otomatis demi hukum dan ahli waris tidak memiliki hak untuk menolak menjadi ahli waris.", "Pembagian harta harus dilakukan di depan pejabat pembuat akta tanah.", "Ahli waris laki-laki wajib memberikan seluruh bagiannya kepada ibu.", "Pewaris wajib menghabiskan hartanya sebelum meninggal dunia."],
+    correct: 1,
+    source: "Halaman 7.17; Halaman 7.22",
+    explanation: ""
+  },
+  {
+    topic: "Modul 7: Hukum Kewarisan Islam",
+    q: "Berapakah bagian seorang Janda jika pewaris meninggal dunia dengan meninggalkan anak-anak?",
+    opts: ["1/2", "1/4", "1/8", "1/3", "Sisa harta setelah dibagi ke anak laki-laki."],
+    correct: 2,
+    source: "Halaman 7.9, Tabel 7.1",
+    explanation: ""
+  },
+  {
+    topic: "Modul 7: Hukum Kewarisan Islam",
+    q: "Siapakah yang dimaksud dengan ahli waris pengganti dalam Kompilasi Hukum Islam?",
+    opts: ["Orang tua angkat yang merawat pewaris sejak kecil.", "Keturunan dari ahli waris (anak) yang telah meninggal dunia terlebih dahulu daripada pewaris.", "Saudara laki-laki kandung yang menggantikan posisi ayah.", "Istri kedua yang menggantikan posisi istri pertama yang sudah cerai.", "Lembaga zakat yang menerima harta jika tidak ada ahli waris."],
+    correct: 1,
+    source: "Halaman 7.17; Halaman 7.33",
+    explanation: ""
+  },
+  {
+    topic: "Modul 7: Hukum Kewarisan Islam",
+    q: "Berdasarkan yurisprudensi Mahkamah Agung (Asas Egaliter), bagaimana kerabat nonmuslim mendapatkan bagian dari harta peninggalan pewaris muslim?",
+    opts: ["Melalui jalur warisan secara langsung sebagaimana ahli waris muslim.", "Diberikan wasiat wajibah yang besarnya maksimal 1/3 dan tidak boleh melebihi bagian ahli waris sederajat.", "Tidak berhak mendapatkan apa pun karena perbedaan agama adalah penghalang waris.", "Melalui hibah yang wajib dilakukan di depan notaris sebelum kematian.", "Mengajukan gugatan ke pengadilan negeri untuk membatalkan hukum Islam."],
+    correct: 1,
+    source: "Halaman 7.8; Halaman 7.19",
+    explanation: ""
+  },
+  {
+    topic: "Modul 7: Hukum Kewarisan Islam",
+    q: "Manakah perbedaan yang paling tepat mengenai waktu peralihan hak kebendaan antara wasiat dan hibah?",
+    opts: ["Wasiat terjadi saat pemberi masih hidup; hibah setelah meninggal.", "Wasiat dan hibah keduanya hanya boleh dilakukan jika ada izin dari hakim.", "Wasiat efektif setelah pemberi meninggal dunia; hibah efektif saat pemberi masih hidup.", "Hibah dibatasi maksimal 1/3 harta; wasiat boleh seluruh harta.", "Wasiat hanya untuk keluarga; hibah hanya untuk lembaga sosial."],
+    correct: 2,
+    source: "Halaman 7.46, Paragraf 2",
+    explanation: ""
+  },
+  {
+    topic: "Modul 7: Hukum Kewarisan Islam",
+    q: "Kapan majelis hakim peradilan agama menerapkan mekanisme Aul dalam pembagian warisan?",
+    opts: ["Jika jumlah bagian ahli waris dzawil furudh kurang dari nilai satu (1).", "Jika jumlah bagian ahli waris dzawil furudh melebihi nilai satu (1).", "Jika salah satu ahli waris menolak untuk menerima bagiannya.", "Jika terdapat harta warisan yang berupa hutang piutang.", "Jika pewaris memiliki istri lebih dari empat orang."],
+    correct: 1,
+    source: "Halaman 7.30, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Modul 7: Hukum Kewarisan Islam",
+    q: "Menurut KHI, apa yang harus dilakukan jika seorang pewaris memberikan hibah kepada salah satu ahli warisnya tanpa persetujuan ahli waris yang lain?",
+    opts: ["Hibah tersebut batal demi hukum dan kembali ke tangan pewaris.", "Hibah tersebut dianggap sebagai bagian dari harta warisan yang sudah diterima (diperhitungkan dalam pembagian akhir).", "Hibah tersebut wajib diserahkan kepada negara sebagai pajak waris.", "Ahli waris lain wajib memberikan hibah yang sama nilainya.", "Hibah tersebut tetap sah dan tidak boleh diganggu gugat."],
+    correct: 1,
+    source: "Halaman 7.46, Paragraf 4",
+    explanation: ""
+  },
+  {
+    topic: "Modul 8: Susunan dan Asas PA",
+    q: "Pengadilan Agama berwenang mengadili perkara antara orang-orang yang beragama Islam. Namun, dalam kasus sengketa perbankan syariah, seorang nonmuslim tetap dianggap tunduk pada kewenangan Pengadilan Agama karena...",
+    opts: ["Adanya paksaan dari undang-undang perbankan nasional.", "Penundukan diri secara sukarela saat menandatangani akad yang menggunakan prinsip syariah.", "Seluruh hakim di Indonesia wajib memahami hukum Islam secara mendalam.", "Nasabah nonmuslim tersebut wajib masuk Islam terlebih dahulu sebelum beperkara.", "Peradilan Umum dilarang menangani kasus yang memiliki nilai ekonomi tinggi."],
+    correct: 1,
+    source: "Halaman 8.27, Paragraf 4",
+    explanation: ""
+  },
+  {
+    topic: "Modul 8: Susunan dan Asas PA",
+    q: "Berdasarkan UU No. 3 Tahun 2006 (Pasal 50), bagaimana prosedur penyelesaian jika dalam perkara waris terdapat sengketa hak milik antara sesama orang yang beragama Islam?",
+    opts: ["Harus diputus lebih dahulu oleh Pengadilan Negeri (Peradilan Umum).", "Objek sengketa tersebut diputus oleh Pengadilan Agama bersama-sama dengan perkara warisnya.", "Perkara dihentikan sampai ada kesepakatan damai di luar pengadilan.", "Majelis hakim wajib meminta fatwa dari Mahkamah Konstitusi.", "Harta tersebut dianggap sebagai harta tak bertuan dan disita negara."],
+    correct: 1,
+    source: "Halaman 8.10; Halaman 8.26",
+    explanation: ""
+  },
+  {
+    topic: "Modul 8: Susunan dan Asas PA",
+    q: "Manakah tindakan hakim yang mencerminkan asas Ius Curia Novit ketika menghadapi perkara yang belum ada hukum tertulisnya?",
+    opts: ["Menolak perkara tersebut karena tidak ada dasar undang-undangnya.", "Meminta para pihak untuk mencari hukumnya sendiri di perpustakaan.", "Wajib memeriksa dan mengadili dengan menggali nilai-nilai hukum yang hidup di masyarakat.", "Menunda sidang sampai pemerintah mengeluarkan undang-undang baru.", "Memberikan putusan berdasarkan keinginan pribadi tanpa alasan hukum."],
+    correct: 2,
+    source: "Halaman 8.23, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Modul 8: Susunan dan Asas PA",
+    q: "Apa pengecualian asas Actor Sequetur Forum Rei dalam perkara Cerai Gugat (gugatan diajukan oleh istri)?",
+    opts: ["Gugatan diajukan ke pengadilan di tempat tinggal suami (tergugat).", "Gugatan diajukan ke pengadilan di tempat tinggal istri (penggugat).", "Gugatan harus diajukan ke Mahkamah Agung di Jakarta.", "Gugatan diajukan ke pengadilan di tempat pernikahan dilangsungkan.", "Gugatan diajukan ke pengadilan yang paling dekat dengan kantor polisi."],
+    correct: 1,
+    source: "Halaman 8.28; Halaman 8.47",
+    explanation: ""
+  },
+  {
+    topic: "Modul 8: Susunan dan Asas PA",
+    q: "Dalam sistem peradilan di Indonesia, Mahkamah Syar’iyah di Provinsi Aceh merupakan...",
+    opts: ["Pengadilan di bawah lingkungan Peradilan Umum.", "Pengadilan khusus di bawah lingkungan Peradilan Agama.", "Lembaga independen yang tidak berada di bawah Mahkamah Agung.", "Bagian dari Peradilan Tata Usaha Negara khusus masalah agama.", "Lembaga adat yang hanya berwenang dalam urusan perdamaian desa."],
+    correct: 1,
+    source: "Halaman 8.8, Paragraf 2",
+    explanation: ""
+  },
+  {
+    topic: "Modul 8: Susunan dan Asas PA",
+    q: "Apa konsekuensi yuridis jika majelis hakim tidak menyatakan sidang terbuka untuk umum dalam perkara selain perceraian?",
+    opts: ["Sidang tetap sah asalkan dihadiri oleh para saksi.", "Putusan yang dijatuhkan menjadi batal demi hukum (null and void).", "Hakim dikenai sanksi administratif berupa teguran lisan.", "Para pihak wajib mengulangi seluruh proses pembuktian dari awal.", "Biaya perkara ditanggung sepenuhnya oleh pengadilan."],
+    correct: 1,
+    source: "Halaman 8.24; Halaman 8.47",
+    explanation: ""
+  },
+  {
+    topic: "Modul 8: Susunan dan Asas PA",
+    q: "Manakah di bawah ini yang bukan merupakan lingkup ekonomi syariah yang menjadi wewenang Pengadilan Agama menurut penjelasan UU No. 3 Tahun 2006?",
+    opts: ["Asuransi Syariah dan Reasuransi Syariah.", "Pegadaian Syariah dan Dana Pensiun Syariah.", "Bisnis Multilevel Marketing Konvensional.", "Bank Syariah dan Lembaga Keuangan Mikro Syariah.", "Reksa Dana Syariah dan Obligasi Syariah."],
+    correct: 2,
+    source: "Halaman 8.15; Halaman 8.47",
+    explanation: ""
+  },
+  {
+    topic: "Modul 9: Teknik Beracara di PA",
+    q: "Manakah ciri utama dari perkara Voluntair (permohonan) yang membedakannya dari perkara Contentius?",
+    opts: ["Adanya persengketaan antara dua pihak yang saling berlawanan.", "Produk akhirnya berupa putusan (vonis) yang menghukum salah satu pihak.", "Tidak ada pihak lawan (hanya ada pemohon) dan produk akhirnya berupa penetapan.", "Wajib menggunakan bantuan pengacara dari lembaga bantuan hukum.", "Biaya perkara selalu dipikul oleh negara secara prodeo."],
+    correct: 2,
+    source: "Halaman 9.5; Halaman 9.35",
+    explanation: ""
+  },
+  {
+    topic: "Modul 9: Teknik Beracara di PA",
+    q: "Berdasarkan PERMA No. 1 Tahun 2008, sengketa manakah yang tidak wajib melalui proses mediasi sebelum pemeriksaan pokok perkara?",
+    opts: ["Gugatan pembagian harta bersama.", "Perkara waris yang mengandung sengketa antar bersaudara.", "Perkara Voluntair dan perkara yang menyangkut legalitas hukum seperti itsbat nikah.", "Gugatan pemutusan akad mudarabah pada bank syariah.", "Cerai gugat yang dihadiri oleh kedua belah pihak di sidang pertama."],
+    correct: 2,
+    source: "Halaman 9.13, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Modul 9: Teknik Beracara di PA",
+    q: "Kapan batas waktu terakhir bagi Tergugat untuk mengajukan tangkisan/sanggahan bahwa Pengadilan Agama tersebut tidak berwenang mengadili secara wilayah (relative competence)?",
+    opts: ["Pada saat tahap pembuktian surat dilakukan.", "Sebelum pembacaan putusan akhir oleh majelis hakim.", "Pada sidang pertama, segera setelah gugatan dibacakan.", "Kapan saja selama proses persidangan berlangsung di tingkat pertama.", "Hanya saat melakukan upaya hukum banding ke Pengadilan Tinggi Agama."],
+    correct: 2,
+    source: "Halaman 9.21; Halaman 9.35",
+    explanation: ""
+  },
+  {
+    topic: "Modul 9: Teknik Beracara di PA",
+    q: "Hukum acara peradilan agama menganut teori pembuktian Negatief Wettelijk. Apa inti dari teori ini dalam mempengaruhi keyakinan hakim?",
+    opts: ["Hakim bebas menentukan hukum tanpa perlu adanya alat bukti tertulis.", "Hakim baru dapat memutus perkara jika telah dipenuhi minimum alat bukti yang ditentukan undang-undang dan hakim yakin atas kebenaran fakta tersebut.", "Keyakinan hakim adalah satu-satunya dasar dalam menjatuhkan putusan.", "Hanya bukti pengakuan murni yang dapat dijadikan dasar putusan.", "Hakim wajib memenangkan pihak yang memiliki saksi lebih banyak."],
+    correct: 1,
+    source: "Halaman 9.32; Halaman 9.50",
+    explanation: ""
+  },
+  {
+    topic: "Modul 9: Teknik Beracara di PA",
+    q: "Mengapa Akta Autentik (seperti Sertifikat Nikah atau Akta Hibah Notaris) memiliki kekuatan pembuktian yang sempurna?",
+    opts: ["Karena dibuat dengan tinta khusus yang tidak dapat dipalsukan.", "Karena dibuat oleh pejabat berwenang menurut ketentuan yang ditetapkan dan isinya dianggap benar selama tidak dibuktikan sebaliknya.", "Karena Akta Autentik otomatis memenangkan pihak penggugat.", "Karena Akta Autentik tidak memerlukan saksi tambahan dalam persidangan.", "Karena biaya pembuatannya sangat mahal sehingga pasti benar."],
+    correct: 1,
+    source: "Halaman 9.25; Halaman 9.50",
+    explanation: ""
+  },
+  {
+    topic: "Modul 9: Teknik Beracara di PA",
+    q: "Manakah alasan yang dapat dijadikan dasar bagi para pihak untuk mengajukan permohonan Kasasi ke Mahkamah Agung?",
+    opts: ["Karena ingin menunjukkan fakta-fakta baru (novum) yang belum sempat diajukan.", "Karena menganggap majelis hakim tingkat banding salah dalam menerapkan hukum atau melanggar hukum yang berlaku.", "Karena merasa jumlah bagian warisan yang diterima terlalu sedikit.", "Karena keberatan dengan biaya perkara yang ditetapkan oleh Pengadilan Agama.", "Karena saksi yang dihadirkan di tingkat pertama tidak disumpah."],
+    correct: 1,
+    source: "Halaman 9.42; Halaman 9.51",
+    explanation: ""
+  },
+  {
+    topic: "Modul 9: Teknik Beracara di PA",
+    q: "Berapakah tenggang waktu maksimal untuk mengajukan permohonan Peninjauan Kembali sejak ditemukan bukti surat yang bersifat menentukan (novum)?",
+    opts: ["14 hari", "30 hari", "90 hari", "180 hari", "Satu tahun penuh"],
+    correct: 3,
+    source: "Halaman 9.43; Halaman 9.51",
+    explanation: ""
+  }
+]
+};
+document.addEventListener('DOMContentLoaded', () => {
+  QuizEngine.init(QUIZ_DATA);
+  const obs = new MutationObserver(() => {
+    const bar = document.getElementById('quiz-top-bar');
+    const main = document.getElementById('quiz-main-screen');
+    if (bar && main) bar.style.display = main.style.display !== 'none' ? 'flex' : 'none';
+  });
+  const target = document.getElementById('quiz-main-screen');
+  if (target) obs.observe(target, { attributes: true, attributeFilter: ['style'] });
+});
+</script>
+</body>
+</html>

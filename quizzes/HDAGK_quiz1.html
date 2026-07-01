@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz 1 — Bank Soal Modul 1–6 — LeksaLaw</title>
+<link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/app.css">
+<link rel="stylesheet" href="../assets/css/quiz.css">
+</head>
+<body>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<div class="app-shell">
+  <aside class="sidebar" id="app-sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-logo">⚖️</div>
+      <div class="sidebar-name">LeksaLaw<small>Platform Belajar Hukum</small></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Menu Utama</div>
+      <a class="nav-item" href="../index.html"><span class="nav-icon">🏠</span><span class="nav-label">Dashboard</span></a>
+      <div class="nav-section-label">Pembelajaran</div>
+      <div id="nav-semesters"></div>
+      <div class="nav-section-label">Lainnya</div>
+      <a class="nav-item" href="../nilai.html"><span class="nav-icon">📊</span><span class="nav-label">Nilai & Progress</span></a>
+      <a class="nav-item" href="../favorit.html"><span class="nav-icon">⭐</span><span class="nav-label">Favorit</span></a>
+    </nav>
+    <div style="padding:12px 16px;border-top:1px solid rgba(255,255,255,0.08)">
+      <div style="font-size:11px;color:#475569;text-align:center">LeksaLaw v1.0 · Offline</div>
+    </div>
+  </aside>
+  <div class="main-content" id="main-content">
+    <header class="top-header">
+      <button class="header-toggle" id="sidebar-toggle">☰</button>
+      <div class="header-breadcrumb">
+        <a href="../index.html" style="color:var(--text-muted);text-decoration:none">Dashboard</a>
+        <span class="breadcrumb-sep">›</span>
+        <span style="color:var(--text-muted)">Hukum Dagang & Kepailitan</span>
+        <span class="breadcrumb-sep">›</span>
+        <span class="breadcrumb-current">Quiz 1 — Bank Soal Modul 1–6</span>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" id="theme-btn" title="Ganti Tema">🌙</button>
+      </div>
+    </header>
+    <div class="quiz-top-bar" id="quiz-top-bar" style="display:none">
+      <span class="quiz-progress-text" id="progress-label">Soal 1 / 1</span>
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quiz-progress-fill" style="width:0%"></div></div>
+      <span id="quiz-label" style="font-size:12px;color:var(--text-muted);white-space:nowrap"></span>
+    </div>
+
+    <!-- SETUP -->
+    <div id="quiz-setup-screen">
+      <div class="quiz-setup">
+        <div class="setup-card">
+          <a href="../index.html" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text-muted);margin-bottom:20px;text-decoration:none" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color='var(--text-muted)'">← Kembali ke Dashboard</a>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-muted);margin-bottom:6px">Hukum Dagang & Kepailitan</div>
+          <h1 class="setup-title" id="setup-quiz-title">Quiz 1 — Bank Soal Modul 1–6</h1>
+          <p class="setup-sub" id="setup-quiz-course"></p>
+          <div id="score-history" style="display:none" class="score-history"></div>
+          <div class="setup-stat-row">
+            <div class="setup-stat"><div class="n" id="setup-stat-q">—</div><div class="l">Total Soal</div></div>
+            <div class="setup-stat"><div class="n" id="setup-stat-t">—</div><div class="l">Topik</div></div>
+            <div class="setup-stat"><div class="n" id="setup-stat-level">sedang</div><div class="l">Tingkat</div></div>
+          </div>
+          <hr class="divider">
+          <div style="font-size:13px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px">Mode Pengerjaan</div>
+          <div class="mode-opts">
+            <label class="mode-opt selected">
+              <input type="radio" name="mode" value="study" checked>
+              <div><div class="mode-opt-name">📖 Mode Belajar</div><div class="mode-opt-desc">Feedback & penjelasan langsung setelah tiap jawaban</div></div>
+            </label>
+            <label class="mode-opt">
+              <input type="radio" name="mode" value="exam">
+              <div><div class="mode-opt-name">📝 Mode Ujian</div><div class="mode-opt-desc">Hasil & pembahasan muncul di akhir saja</div></div>
+            </label>
+          </div>
+          <hr class="divider">
+          <label class="shuffle-toggle">
+            <input type="checkbox" id="opt-shuffle">
+            <div>
+              <div class="shuffle-toggle-label">🔀 Acak Soal & Pilihan Jawaban</div>
+              <div class="shuffle-toggle-desc">Urutan soal dan opsi akan diacak setiap sesi</div>
+            </div>
+          </label>
+          <button class="btn-start-quiz" id="btn-start-quiz">Mulai Quiz →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUIZ MAIN -->
+    <div id="quiz-main-screen" style="display:none">
+      <div class="page-content" style="padding-top:16px;padding-bottom:100px">
+        <div class="quiz-layout">
+          <div><div id="q-container"></div></div>
+          <div class="quiz-sidebar-panel">
+            <div class="quiz-nav-card">
+              <div class="quiz-nav-title">Navigasi Soal</div>
+              <div class="nav-grid" id="nav-grid"></div>
+              <div class="nav-legend">
+                <div class="legend-item"><div class="legend-dot dot-answered"></div>Dijawab</div>
+                <div class="legend-item"><div class="legend-dot dot-flagged"></div>Ragu</div>
+                <div class="legend-item"><div class="legend-dot dot-unanswered"></div>Belum</div>
+              </div>
+            </div>
+            <div class="quiz-nav-card">
+              <div class="quiz-nav-title">Aksi</div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <button onclick="QuizEngine.finish()" class="btn btn-primary btn-sm" style="justify-content:center">✓ Selesai & Lihat Hasil</button>
+                <button onclick="if(confirm('Mulai ulang quiz?'))QuizEngine.restart()" class="btn btn-secondary btn-sm" style="justify-content:center">🔁 Mulai Ulang</button>
+              </div>
+            </div>
+            <div class="quiz-nav-card" style="font-size:12px;color:var(--text-muted)">
+              <div class="quiz-nav-title">Pintasan Keyboard</div>
+              <div style="display:flex;flex-direction:column;gap:5px">
+                <div><kbd style="background:var(--bg);border:1px solid var(--border);padding:1px 5px;border-radius:4px;font-size:10px">1–5</kbd> Pilih jawaban</div>
+                <div><kbd style="background:var(--bg);border:1px solid var(--border);padding:1px 5px;border-radius:4px;font-size:10px">←→</kbd> Navigasi soal</div>
+                <div><kbd style="background:var(--bg);border:1px solid var(--border);padding:1px 5px;border-radius:4px;font-size:10px">F</kbd> Tandai ragu</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULT -->
+    <div id="quiz-result-screen" style="display:none">
+      <div class="result-screen">
+        <div class="result-card">
+          <div class="score-center">
+            <div class="score-circle">
+              <div class="score-pct" id="result-pct">0%</div>
+              <div class="score-lbl">Skor Akhir</div>
+            </div>
+            <div class="score-detail" id="result-detail"></div>
+            <div class="score-verdict" id="result-verdict"></div>
+          </div>
+          <hr class="divider">
+          <div class="result-section-title">📊 Performa Per Topik</div>
+          <div id="result-topics"></div>
+          <div class="result-section-title">❌ Ringkasan Jawaban Salah</div>
+          <div id="result-wrongs"></div>
+          <div class="result-actions">
+            <button class="btn btn-primary" onclick="QuizEngine.restart()">🔁 Ulangi Quiz</button>
+            <button class="btn btn-secondary" onclick="QuizEngine.review()">📋 Tinjau Jawaban</button>
+            <a href="../index.html" class="btn btn-secondary">🏠 Dashboard</a>
+            <button class="btn btn-secondary" onclick="window.print()">🖨️ Cetak</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER NAV -->
+<div class="quiz-footer" id="quiz-footer">
+  <div class="footer-inner">
+    <button class="btn btn-secondary" id="btn-prev" onclick="QuizEngine.prev()">← Sebelumnya</button>
+    <button class="btn-flag-toggle" id="btn-flag-toggle" onclick="QuizEngine.toggleFlag()">🚩 Tandai Ragu</button>
+    <button class="btn btn-primary" id="btn-next" onclick="QuizEngine.next()">Berikutnya →</button>
+    <button class="btn-finish-quiz" id="btn-finish" style="display:none" onclick="QuizEngine.finish()">Selesai ✓</button>
+  </div>
+</div>
+<div class="toast" id="app-toast"></div>
+
+<script src="../data/config.js"></script>
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/quiz-engine.js"></script>
+<script>
+const QUIZ_DATA = {
+  quizId: "HDAGK_Q1",
+  courseId: "HDAGK",
+  courseName: "Hukum Dagang & Kepailitan",
+  title: "Quiz 1 — Bank Soal Modul 1–6",
+  level: "sedang",
+  questions: [
+  {
+    topic: "Bank Soal",
+    q: "Analisis pandangan Subekti mengenai Hukum Perdata dalam arti luas mencakup seluruh \"hukum materiil\" yang mengatur kepentingan perorangan. Manakah pernyataan berikut yang paling tepat menggambarkan implementasi prinsip tersebut dalam hukum positif Indonesia?",
+    opts: ["Hukum Dagang merupakan subsistem dari Hukum Perdata yang berdiri sendiri tanpa keterkaitan normatif.", "KUHD adalah satu-satunya rujukan primer bagi perniagaan, sehingga KUHPerdata tidak berlaku lagi.", "Hukum Dagang adalah perkembangan khusus dari asas-asas umum yang terdapat dalam Buku III KUHPerdata.", "Peraturan perniagaan hanya mencakup hubungan antara individu dengan negara sebagai regulator ekonomi.", "Hukum Perdata dalam arti luas hanya terbatas pada kodifikasi yang terdapat dalam Burgerlijk Wetboek."],
+    correct: 2,
+    source: "Modul 1, Hal 1.2, Paragraf 4",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Seorang pengusaha ingin memahami kedudukan dirinya dalam sistem hukum kekayaan ( Vermogensrecht ). Berdasarkan sistematika ilmu pengetahuan hukum perdata, pada tahap manakah hubungan hukum yang dapat dinilai dengan uang dikategorikan?",
+    opts: ["Hukum tentang diri seseorang ( Personnenrecht ).", "Hukum kekeluargaan ( Familierecht ).", "Hukum kekayaan ( Vermogensrecht ).", "Hukum warisan ( Erfrecht ).", "Hukum perorangan ( Van Personen )."],
+    correct: 2,
+    source: "Modul 1, Hal 1.4, Paragraf 4",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Terdapat konflik norma antara ketentuan umum dalam KUHPerdata dengan ketentuan spesifik mengenai perniagaan dalam KUHD. Berdasarkan Pasal 1 KUHD, prinsip manakah yang harus digunakan untuk menyelesaikan konflik tersebut?",
+    opts: ["Lex Superior Derogat Legi Inferiori .", "Pari Passu Pro Rata Parte .", "Lex Specialis Derogat Legi Generali .", "Pacta Sunt Servanda .", "Lex Posterior Derogat Legi Priori ."],
+    correct: 2,
+    source: "Modul 1, Hal 1.16, Paragraf 2",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Dalam suatu sengketa bisnis, hakim harus menentukan apakah suatu entitas dapat dituntut secara perdata. Menurut Modul 1, subjek hukum dalam sistem hukum Indonesia terdiri atas...",
+    opts: ["Hanya pribadi kodrati (manusia) yang sudah dewasa dan sehat.", "Pribadi kodrati dan badan hukum seperti PT, Yayasan, dan Koperasi.", "Seluruh makhluk hidup yang memiliki nilai ekonomi.", "Badan hukum publik seperti negara yang tidak memiliki tanggung jawab perdata.", "Hanya pengusaha yang terdaftar dalam Wajib Daftar Perusahaan."],
+    correct: 1,
+    source: "Modul 1, Hal 1.4, Paragraf 2-3",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Analisis terhadap Buku III KUHPerdata menunjukkan bahwa ia merupakan sumber utama bagi Hukum Dagang. Mengapa pemahaman terhadap Buku III menjadi prasyarat mutlak bagi mahasiswa hukum sebelum mempelajari KUHD?",
+    opts: ["Karena KUHD hanya mengatur mengenai asuransi dan pengangkutan.", "Karena Buku III mengatur asas-asas umum perjanjian dan perikatan yang mendasari transaksi dagang.", "Karena seluruh pasal dalam Buku III telah dicabut dan dipindahkan ke dalam KUH", "Karena Buku III memberikan definisi mutlak mengenai perbuatan perusahaan.", "Karena Buku III hanya berlaku bagi pedagang yang melakukan wanprestasi."],
+    correct: 1,
+    source: "Modul 1, Hal 1.2, Paragraf 3",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Perbedaan mendasar antara kegiatan perusahaan dengan kegiatan konsumsi sendiri, menurut pandangan pakar dalam teks, terletak pada...",
+    opts: ["Lokasi dilakukannya kegiatan tersebut.", "Keterlibatan pihak ketiga sebagai saksi.", "Tujuan utama untuk mencari nilai tambah atau laba.", "Penggunaan dokumen tertulis atau akta otentik.", "Jumlah modal yang digunakan dalam transaksi."],
+    correct: 2,
+    source: "Modul 1, Hal 1.3, Paragraf 4",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Berdasarkan sistematika ilmu pengetahuan hukum, hukum perdata menggambarkan siklus kehidupan manusia. Urutan manakah yang paling akurat mencerminkan siklus tersebut?",
+    opts: ["Orang, Benda, Perikatan, Daluwarsa.", "Diri seseorang, kekeluargaan, kekayaan, warisan.", "Perikatan, kekayaan, warisan, diri seseorang.", "Warisan, orang, benda, daluwarsa.", "Kekeluargaan, diri seseorang, warisan, kekayaan."],
+    correct: 1,
+    source: "Modul 1, Hal 1.5, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Pasal 1 KUHD menjaga kesatuan antara Hukum Perdata umum dan khusus. Kapan ketentuan KUHPerdata tetap berlaku terhadap hal-hal yang dibicarakan dalam KUHD?",
+    opts: ["Hanya jika para pihak sepakat menggunakan hukum perdata.", "Selama tidak ada penyimpangan khusus yang diatur dalam KUHD.", "Jika transaksi dilakukan oleh pribadi kodrati, bukan badan hukum.", "Selama objek transaksi adalah barang tidak bergerak.", "Jika nilai transaksi melebihi Rp 50.000.000."],
+    correct: 1,
+    source: "Modul 1, Hal 1.3, Paragraf 3",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Menurut Soekardono, hubungan pribadi antarmanusia dalam masyarakat adalah inti dari hukum perdata. Contoh hubungan pribadi tersebut meliputi...",
+    opts: ["Pengaturan pajak perusahaan kepada negara.", "Sengketa wilayah kedaulatan antarprovinsi.", "Jual beli, pegadaian sawah, dan barang bawaan perkawinan.", "Pemberian sanksi pidana bagi pelaku penggelapan.", "Penetapan kebijakan moneter oleh Bank Indonesia."],
+    correct: 2,
+    source: "Modul 1, Hal 1.1, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Subjek hukum \"pribadi kodrati\" memiliki wewenang berhak sejak saat tertentu. Manakah yang termasuk kriteria badan hukum perdata menurut Modul 1?",
+    opts: ["Negara dan Lembaga Tinggi Negara.", "Perseroan Terbatas (PT), Yayasan, dan Koperasi.", "Seluruh persekutuan yang belum disahkan menteri.", "Firma dan Persekutuan Komanditer saja.", "Individu yang menjalankan profesi sebagai dokter."],
+    correct: 1,
+    source: "Modul 1, Hal 1.4, Paragraf 3",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "PT Maju Jaya berjanji untuk menyerahkan 500 unit mesin kepada PT Sentosa. Namun, pada hari yang ditentukan, PT Maju Jaya tidak menyerahkan mesin tersebut. Dalam konteks unsur perikatan, kewajiban penyerahan barang tersebut disebut sebagai...",
+    opts: ["Hubungan hukum.", "Kekayaan.", "Prestasi.", "Perbuatan melawan hukum.", "Hak retensi."],
+    correct: 2,
+    source: "Modul 1, Hal 1.6, Paragraf 3",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Seorang pemuda berusia 20 tahun dan belum pernah menikah menandatangani kontrak bisnis dalam kondisi sehat jasmani dan rohani. Berdasarkan Pasal 1320 KUHPerdata, apakah syarat subjektif \"kecakapan\" telah terpenuhi?",
+    opts: ["Ya, karena ia melakukan kontrak dalam kondisi sehat.", "Tidak, karena ia belum berusia 21 tahun dan belum menikah.", "Ya, karena ia sudah memiliki kemampuan ekonomi.", "Tidak, karena ia harus mendapatkan izin dari pengurus RT.", "Ya, karena ia sudah dianggap dewasa secara kodrati."],
+    correct: 1,
+    source: "Modul 1, Hal 1.7, Paragraf 4",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Perusahaan A menyewa alat berat dari Perusahaan B dengan kesepakatan bahwa di akhir periode, Perusahaan A memiliki hak untuk membeli alat tersebut berdasarkan nilai sisa. Perjanjian ini diklasifikasikan sebagai...",
+    opts: ["Jual beli cicilan.", "Sewa menyewa biasa.", "Leasing ( Innominaat ).", "Franchise ( Nominaat ).", "Pinjam pakai."],
+    correct: 2,
+    source: "Modul 1, Hal 1.8, Paragraf 3",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Mengapa perjanjian Leasing dan Franchise disebut sebagai perjanjian Innominaat ?",
+    opts: ["Karena tidak memiliki kekuatan hukum yang mengikat.", "Karena pengaturannya tidak secara khusus terdapat dalam kodifikasi KUHPerdata/KUHD namun tumbuh di masyarakat.", "Karena nama perjanjian tersebut dilarang oleh undang-undang.", "Karena subjek hukumnya selalu merupakan warga negara asing.", "Karena objek perikatan tidak dapat dinilai dengan uang."],
+    correct: 1,
+    source: "Modul 1, Hal 1.8, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Dalam sistem Business Format Franchise , apa yang membedakannya dengan Product Franchise ?",
+    opts: ["Hanya memberikan hak distribusi produk tanpa sistem manajemen.", "Menyediakan paket unik, variasi produk, dan sistem operasi lengkap kepada Franchisee .", "Tidak memungut biaya imbalan apa pun kepada penerima hak.", "Objeknya hanya terbatas pada industri manufaktur berat.", "Franchisor tidak memiliki hak kekayaan intelektual atas merek."],
+    correct: 1,
+    source: "Modul 1, Hal 1.10, Paragraf 4",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Analisis terhadap hak opsi ( optie ) dalam perjanjian Leasing menunjukkan bahwa...",
+    opts: ["Hak tersebut otomatis menjadikan Lessee sebagai pemilik barang sejak awal.", "Hak tersebut baru efektif setelah Lessee memenuhi seluruh kewajiban pembayaran berkala.", "Hak tersebut hanya boleh digunakan oleh pemerintah.", "Hak tersebut menghapus kewajiban pembayaran uang sewa.", "Hak tersebut dilarang dalam sistem hukum perdata Indonesia."],
+    correct: 1,
+    source: "Modul 1, Hal 1.9, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Manakah di bawah ini yang termasuk dalam sumber perikatan yang lahir dari undang-undang karena perbuatan manusia yang melawan hukum?",
+    opts: ["Pasal 1313 KUHPerdata.", "Pasal 1320 KUHPerdata.", "Pasal 1365 KUHPerdata.", "Pasal 1352 KUHPerdata.", "Pasal 1233 KUHPerdata."],
+    correct: 2,
+    source: "Modul 1, Hal 1.13, Paragraf 4",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Unsur \"sesuatu sebab yang halal\" dalam syarat sah perjanjian (Pasal 1320) mengandung makna bahwa...",
+    opts: ["Perjanjian harus dibuat dengan saksi minimal dua orang.", "Objek perjanjian tidak boleh bertentangan dengan undang-undang, kesusilaan, atau ketertiban umum.", "Perjanjian harus didaftarkan di kantor polisi.", "Isi perjanjian harus menggunakan bahasa Indonesia yang baik dan benar.", "Perjanjian harus mendapatkan restu dari ahli waris."],
+    correct: 1,
+    source: "Modul 1, Hal 1.13, Paragraf 4",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Dalam Product Franchise , posisi penerima waralaba ( Franchisee ) bertindak sebagai...",
+    opts: ["Pencipta produk dengan merek baru.", "Distributor produk partner dengan pembatasan area.", "Pengelola sistem manajemen pusat secara penuh.", "Pemilik hak cipta atas logo perusahaan induk.", "Pemberi modal bagi perusahaan pewaralaba."],
+    correct: 1,
+    source: "Modul 1, Hal 1.10, Paragraf 2",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Keunggulan sistem franchise bagi franchisee adalah akses pada bantuan manajerial, namun kerugiannya adalah...",
+    opts: ["Risiko kegagalan bisnis menjadi 100%.", "Tidak memiliki kebebasan penuh karena terikat sistem dan metode franchisor .", "Harus menanggung seluruh utang pribadi franchisor .", "Tidak diakui sebagai subjek hukum yang mandiri.", "Keuntungan harus diserahkan sepenuhnya kepada negara."],
+    correct: 1,
+    source: "Modul 1, Hal 1.11, Paragraf 3",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Perjanjian bernama ( Nominaat ) adalah perjanjian yang...",
+    opts: ["Namanya ditentukan secara bebas oleh para pihak.", "Diatur dan dikenal dalam kodifikasi KUHPerdata atau KUHD.", "Hanya berlaku bagi warga negara asing.", "Tidak memerlukan kesepakatan para pihak.", "Objeknya tidak dapat dipindahtangankan."],
+    correct: 1,
+    source: "Modul 1, Hal 1.7, Paragraf 5",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Di manakah letak kepemilikan yuridis atas barang modal dalam transaksi Leasing selama masa kontrak?",
+    opts: ["Berada pada Lessee .", "Berada pada Lessor .", "Berada pada pihak ketiga.", "Berada pada notaris yang membuat akta.", "Berada pada pemerintah sebagai regulator."],
+    correct: 1,
+    source: "Modul 1, Hal 1.8, Paragraf 4",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Kodifikasi hukum dagang Prancis yang diterbitkan pada masa Raja Lodewijk XIV dan menjadi landasan bagi hukum dagang modern di Eropa adalah...",
+    opts: ["Code Civil .", "Ordonnance du Commerce (1673) dan Ordonnance de la Marine (1681).", "Burgerlijk Wetboek .", "Wetboek van Koophandel .", "Indische Staatsregeling ."],
+    correct: 1,
+    source: "Modul 2, Hal 2.1, Paragraf 2",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "KUHD mulai berlaku di Indonesia pada tanggal 1 Mei 1848. Asas hukum manakah yang menyebabkan hukum Belanda tersebut diberlakukan di wilayah jajahan (Indonesia)?",
+    opts: ["Asas Personalitas.", "Asas Teritorialitas.", "Asas Konkordansi.", "Asas Legalitas.", "Asas Resiproksitas."],
+    correct: 2,
+    source: "Modul 2, Hal 2.1, Paragraf 2",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Mengapa Pasal 2 sampai dengan Pasal 5 KUHD dicabut oleh pemerintah kolonial pada tahun 1938?",
+    opts: ["Karena dianggap terlalu modern bagi masyarakat Indonesia.", "Karena istilah \"Pedagang\" dan \"Perbuatan Perniagaan\" dianggap terlalu sempit dan menimbulkan kerancuan hukum.", "Karena hukum adat sudah cukup untuk mengatur perdagangan.", "Karena Prancis menarik kembali pengaruh hukumnya.", "Karena terjadinya transisi ke hukum pidana ekonomi."],
+    correct: 1,
+    source: "Modul 2, Hal 2.11, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Berdasarkan Pasal 3 KUHD lama, kriteria utama \"perbuatan perniagaan\" adalah...",
+    opts: ["Menjual barang hasil produksi sendiri.", "Membeli barang (bergerak) untuk dijual kembali.", "Melakukan jasa konsultasi pendidikan.", "Menghimpun dana sosial untuk bencana.", "Melakukan tukar menukar barang antik."],
+    correct: 1,
+    source: "Modul 2, Hal 2.10, Paragraf 3",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Sebagai pengganti istilah \"Pedagang\" pasca pencabutan pasal-pasal lama, KUHD menggunakan istilah baru yang lebih luas, yaitu...",
+    opts: ["Pengusaha.", "Perusahaan.", "Firma.", "Perseroan.", "Komisioner."],
+    correct: 1,
+    source: "Modul 2, Hal 2.13, Paragraf 2",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Manakah yang merupakan syarat mutlak agar suatu kegiatan diklasifikasikan sebagai \"Perusahaan\" menurut pengertian hukum yang baru?",
+    opts: ["Dilakukan secara tertutup dan tidak mencari laba.", "Dilakukan secara terus-menerus, terang-terangan, dan bertujuan mencari laba.", "Hanya dilakukan sekali untuk kepentingan mendesak.", "Dilakukan oleh minimal 10 orang dengan akta notaris.", "Dilakukan tanpa ada pembukuan sama sekali."],
+    correct: 1,
+    source: "Modul 2, Hal 2.13, Paragraf 3",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Pandangan Molengraaf mengenai perusahaan menekankan pada aspek ekonomi, yaitu...",
+    opts: ["Perhitungan untung rugi dalam pembukuan.", "Keseluruhan perbuatan terus-menerus untuk mendapatkan penghasilan melalui perniagaan.", "Hubungan antara majikan dan buruh di pabrik.", "Pendaftaran perusahaan di kementerian terkait.", "Penyerahan seluruh modal kepada negara."],
+    correct: 1,
+    source: "Modul 2, Hal 2.13, Paragraf 4",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Polak memberikan definisi perusahaan dari sudut pandang komersial. Ciri khas menurut Polak adalah adanya...",
+    opts: ["Izin dari kepolisian setempat.", "Perhitungan laba-rugi yang dicatat secara rapi.", "Penggunaan seragam bagi para karyawan.", "Lokasi usaha yang menetap selamanya.", "Kepemilikan aset oleh orang asing."],
+    correct: 1,
+    source: "Modul 2, Hal 2.14, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Setelah kemerdekaan Indonesia, kelangsungan KUHPerdata dan KUHD dijamin melalui...",
+    opts: ["Dekret Presiden 5 Juli 1959.", "Aturan Peralihan Undang-Undang Dasar 1945.", "Proklamasi Kemerdekaan.", "Perjanjian Konferensi Meja Bundar.", "Undang-Undang No. 1 Tahun 1974."],
+    correct: 1,
+    source: "Modul 2, Hal 2.2, Paragraf 2",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Kodifikasi hukum dagang yang disusun materi demi materi secara terpisah (seperti UU PT atau UU Asuransi) disebut sebagai...",
+    opts: ["Kodifikasi Umum.", "Kodifikasi Parsial.", "Kodifikasi Mutlak.", "Kodifikasi Internasional.", "Kodifikasi Adat."],
+    correct: 1,
+    source: "Modul 2, Hal 2.6, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Berdasarkan Pasal 6 KUHD, setiap pengusaha wajib menyelenggarakan pembukuan. Tujuan utama dari kewajiban ini, selain untuk internal perusahaan, adalah untuk...",
+    opts: ["Memamerkan kekayaan kepada pesaing.", "Perlindungan bagi pihak kreditor agar hak dan kewajiban pengusaha dapat diketahui sewaktu-waktu.", "Menghindari seluruh jenis pajak negara.", "Mengetahui jumlah karyawan yang harus di-PHK.", "Mempersiapkan pembubaran perusahaan secara sepihak."],
+    correct: 1,
+    source: "Modul 3, Hal 3.1, Paragraf 3",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Neraca perusahaan yang telah ditandatangani sendiri oleh pengusaha merupakan dokumen krusial yang wajib disimpan selama...",
+    opts: ["10 tahun.", "20 tahun.", "30 tahun.", "5 tahun.", "Selamanya."],
+    correct: 2,
+    source: "Modul 3, Hal 3.10, Paragraf 3",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Hakim dalam suatu persidangan perdata memerintahkan agar buku harian dan neraca sebuah perusahaan disajikan di depan persidangan. Prosedur penerobosan rahasia dagang oleh hakim ini disebut...",
+    opts: ["Communication .", "Openlegging .", "Del Credere .", "Retensi .", "Prokurasi ."],
+    correct: 1,
+    source: "Modul 3, Hal 3.16, Paragraf 2",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Pembantu perusahaan \"di dalam\" perusahaan yang diberikan wewenang penuh untuk mewakili pimpinan dalam transaksi perniagaan harian disebut...",
+    opts: ["Makelar.", "Pemegang Prokurasi.", "Kasir.", "Notaris.", "Ekspeditur."],
+    correct: 1,
+    source: "Modul 3, Hal 3.5, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Seorang makelar berbeda dengan agen perusahaan karena makelar memiliki karakteristik sebagai berikut...",
+    opts: ["Memiliki hubungan kerja tetap dengan pengusaha.", "Diangkat dan disumpah oleh pejabat berwenang (Presiden/Menteri).", "Bertindak atas nama sendiri namun dibiayai orang lain.", "Tidak diperbolehkan menerima provisi.", "Bertanggung jawab penuh atas utang pribadi pengusaha."],
+    correct: 1,
+    source: "Modul 3, Hal 3.5, Paragraf 3",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Perusahaan X memberikan kuasa kepada Komisioner Y untuk menjual barang. Komisioner Y berhak menahan barang milik Perusahaan X selama provisinya belum dibayar. Hak ini disebut...",
+    opts: ["Hak Opsi.", "Hak Reklame.", "Hak Retensi.", "Hak Del Credere .", "Hak Prokurasi."],
+    correct: 2,
+    source: "Modul 3, Hal 3.6, Paragraf 3",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Manakah pernyataan yang paling tepat mengenai perbedaan Agen Perusahaan dan Komisioner?",
+    opts: ["Agen bertindak atas nama pengusaha, sedangkan Komisioner bertindak atas nama sendiri.", "Agen bertindak atas nama sendiri, sedangkan Komisioner bertindak atas nama pengusaha.", "Agen tidak dibayar, sedangkan Komisioner dibayar gaji bulanan tetap.", "Agen hanya boleh bekerja untuk satu pengusaha, sedangkan Komisioner tidak terbatas.", "Tidak ada perbedaan hukum di antara keduanya."],
+    correct: 0,
+    source: "Modul 3, Hal 3.7, Paragraf 3",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Komisioner menjamin kepada pemberi kuasa bahwa pihak ketiga akan melunasi pembayarannya. Sebagai imbalan atas risiko ini, Komisioner menerima tambahan provisi. Jaminan ini disebut...",
+    opts: ["Openlegging .", "Del Credere .", "Communication .", "Fidusia.", "Akta Otentik."],
+    correct: 1,
+    source: "Modul 3, Hal 3.6, Paragraf 3",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Pembantu perusahaan \"di luar\" perusahaan yang bertugas menyelenggarakan pengangkutan barang melalui daratan atau perairan disebut...",
+    opts: ["Makelar.", "Agen Perusahaan.", "Ekspeditur.", "Pengepak.", "Kasir."],
+    correct: 2,
+    source: "Modul 3, Hal 3.7, Paragraf 4",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Siapakah yang berhak melakukan prosedur Communication (pemberitahuan) terhadap rahasia pembukuan perusahaan?",
+    opts: ["Hanya Hakim sebagai pejabat negara.", "Ahli waris, orang yang berkepentingan, sekutu persero, atau kreditor.", "Seluruh masyarakat umum tanpa terkecuali.", "Hanya instansi pajak.", "Hanya kompetitor bisnis."],
+    correct: 1,
+    source: "Modul 3, Hal 3.16, Paragraf 3",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Kasir dalam suatu perusahaan memiliki hubungan hukum dengan pengusaha yang didasarkan pada...",
+    opts: ["Perjanjian pemberian kuasa yang sejajar.", "Hubungan perburuhan (atasan-bawahan) menurut Pasal 1601 KUHPerdata.", "Penunjukan langsung oleh Pengadilan Negeri.", "Kepemilikan saham mayoritas.", "Izin praktik dari Ikatan Akuntan Indonesia."],
+    correct: 1,
+    source: "Modul 3, Hal 3.5, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Analisis terhadap kewajiban pendaftaran perusahaan menurut UU No. 7 Tahun 1982 menunjukkan bahwa tujuannya adalah...",
+    opts: ["Mempersulit pendirian usaha baru.", "Menjamin kepastian berusaha dan menjadi sumber informasi resmi bagi pihak ketiga yang berkepentingan.", "Menghapus kewajiban pembukuan dalam KUH", "Menjadikan perusahaan sebagai aset milik negara.", "Membatasi jumlah pengusaha di Indonesia."],
+    correct: 1,
+    source: "Modul 3, Hal 3.28, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Pemilik Perusahaan A menyuruh orang lain melakukan perusahaan tanpa ia ikut campur sama sekali. Hubungan ini murni didasarkan pada...",
+    opts: ["Perjanjian Perburuhan.", "Perjanjian Pemberian Kuasa/Perwakilan.", "Perjanjian Konsumsi.", "Perjanjian Sewa-Menyewa.", "Perjanjian Pengangkutan."],
+    correct: 1,
+    source: "Modul 3, Hal 3.4, Paragraf 3",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Perbedaan mendasar antara Persekutuan Perdata ( Maatschap ) dengan Persekutuan Firma adalah...",
+    opts: ["Maatschap selalu bersifat badan hukum.", "Firma didirikan untuk menjalankan perusahaan di bawah satu nama bersama.", "Maatschap dilarang mencari keuntungan materiil.", "Firma tidak memerlukan kesepakatan para pihak.", "Maatschap hanya boleh didirikan oleh suami istri."],
+    correct: 1,
+    source: "Modul 4, Hal 4.1, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Dalam sebuah Persekutuan Komanditer (CV), Tuan A bertindak sebagai pengurus harian yang bertanggung jawab penuh, sedangkan Tuan B hanya menyetorkan modal tanpa berhak mengurus perusahaan. Tuan B disebut sebagai...",
+    opts: ["Sekutu Komplementer.", "Sekutu Kerja.", "Sekutu Komanditer (Pelepas Uang).", "Direktur Utama.", "Komisaris Independen."],
+    correct: 2,
+    source: "Modul 4, Hal 4.11, Paragraf 3",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Tanggung jawab pemegang saham dalam Perseroan Terbatas (PT) dibatasi oleh hukum ( Limited Liability ). Hal ini berarti...",
+    opts: ["Pemegang saham tidak bertanggung jawab sama sekali atas kerugian.", "Tanggung jawab terbatas hanya pada nilai nominal saham yang dimiliki.", "Harta pribadi pemegang saham menjadi jaminan utama utang perusahaan.", "Tanggung jawab hanya berlaku selama 5 tahun sejak pendirian.", "Pemegang saham hanya bertanggung jawab kepada Direksi."],
+    correct: 1,
+    source: "Modul 4, Hal 4.15, Paragraf 2",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Organ PT manakah yang memegang kekuasaan tertinggi dan memiliki wewenang yang tidak diberikan kepada Direksi atau Dewan Komisaris?",
+    opts: ["Dewan Audit.", "Rapat Umum Pemegang Saham (RUPS).", "Kementerian Hukum dan HAM.", "Kurator Independen.", "Pemegang Saham Minoritas."],
+    correct: 1,
+    source: "Modul 4, Hal 4.17, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Berdasarkan UU No. 40 Tahun 2007, modal dasar minimal untuk pendirian sebuah Perseroan Terbatas adalah...",
+    opts: ["Rp 10.000.000.", "Rp 25.000.000.", "Rp 50.000.000.", "Rp 100.000.000.", "Rp 500.000.000."],
+    correct: 2,
+    source: "Modul 4, Hal 4.19, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Dalam persekutuan perdata, terdapat sekutu yang diangkat melalui akta pendirian dan tidak dapat diberhentikan kecuali karena alasan mendesak atau tidak cakap. Sekutu ini disebut...",
+    opts: ["Sekutu Mandater.", "Sekutu Statuter.", "Sekutu Komanditer.", "Sekutu Luar.", "Sekutu Pasif."],
+    correct: 1,
+    source: "Modul 4, Hal 4.5, Paragraf 4",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Mengapa pengurangan modal pada sebuah PT wajib diumumkan dalam surat kabar dan diberitahukan kepada kreditor?",
+    opts: ["Agar kreditor dapat membeli saham tersebut.", "Untuk melindungi kepentingan kreditor karena modal merupakan jaminan utang perusahaan.", "Agar kreditor dapat mengambil alih kursi Direksi.", "Karena pengurangan modal adalah perbuatan melawan hukum.", "Untuk mengundang investor baru secara paksa."],
+    correct: 1,
+    source: "Modul 4, Hal 4.21, Paragraf 4",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Analisis terhadap PT Terbuka menunjukkan ciri utama yang membedakannya dengan PT Tertutup, yaitu...",
+    opts: ["Lokasi kantor pusatnya harus di Jakarta.", "Modal diperoleh dari penawaran saham kepada masyarakat luas (Bursa Efek).", "Jumlah karyawannya minimal 1.000 orang.", "Tidak diwajibkan memiliki Dewan Komisaris.", "Direkturnya harus berkebangsaan asing."],
+    correct: 1,
+    source: "Modul 4, Hal 4.16, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Organ PT yang bertugas melakukan pengawasan atas kebijakan pengurusan dan memberikan nasihat kepada Direksi adalah...",
+    opts: ["RUPS.", "Dewan Komisaris.", "Manajer Operasional.", "Akuntan Publik.", "Kurator."],
+    correct: 1,
+    source: "Modul 4, Hal 4.18, Paragraf 3",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Sebuah Maatschap (Persekutuan Perdata) dapat dinyatakan bubar berdasarkan Pasal 1646 KUHPerdata apabila...",
+    opts: ["Salah satu sekutu memenangkan lotre.", "Musnahnya barang yang menjadi pokok persekutuan atau tujuannya telah tercapai.", "Perusahaan mendapatkan keuntungan yang sangat besar.", "Dilakukan pendaftaran di kantor kementerian.", "Salah satu sekutu menikah dengan warga negara asing."],
+    correct: 1,
+    source: "Modul 4, Hal 4.6, Paragraf 4",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Modal PT yang benar-benar telah diterima oleh kas perseroan dari para pemegang saham disebut...",
+    opts: ["Modal Dasar.", "Modal Ditempatkan.", "Modal Disetor.", "Modal Cadangan.", "Modal Pinjaman."],
+    correct: 2,
+    source: "Modul 4, Hal 4.19, Paragraf 3",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Tanggung jawab para sekutu dalam sebuah Firma terhadap perikatan dengan pihak ketiga bersifat...",
+    opts: ["Terbatas pada modal yang disetor.", "Tanggung renteng (tanggung menanggung) hingga harta pribadi.", "Hanya sebatas keuntungan tahun berjalan.", "Tidak ada tanggung jawab sama sekali.", "Ditanggung oleh asuransi pemerintah."],
+    correct: 1,
+    source: "Modul 4, Hal 4.11, Paragraf 2",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Manakah yang merupakan bentuk badan hukum yang tidak memiliki anggota dan diperuntukkan bagi tujuan sosial, keagamaan, atau kemanusiaan?",
+    opts: ["Koperasi.", "Perseroan Terbatas.", "Firma.", "Yayasan.", "Persekutuan Komanditer."],
+    correct: 3,
+    source: "Modul 4, Hal 4.25, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Kasus Lindenbaum vs Cohen (1919) mengubah paradigma PMH secara drastis. Berdasarkan putusan tersebut, sebuah perbuatan dapat dikategorikan PMH jika...",
+    opts: ["Hanya jika perbuatan tersebut melanggar undang-undang tertulis secara eksplisit.", "Perbuatan tersebut berlawanan dengan kepatutan dalam masyarakat atau melanggar hak orang lain.", "Perbuatan tersebut dilakukan atas izin penguasa setempat.", "Perbuatan tersebut menguntungkan salah satu pihak secara finansial.", "Perbuatan tersebut tidak sengaja merugikan lingkungan hidup."],
+    correct: 1,
+    source: "Modul 5, Hal 5.4, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Dalam menganalisis PMH menurut Pasal 1365 BW, unsur kesalahan ( schuld ) dianggap terpenuhi apabila...",
+    opts: ["Pelaku menyadari perbuatannya melanggar hak orang lain atau kepatutan (sengaja atau kelalaian).", "Pelaku tidak tahu sama sekali mengenai undang-undang yang berlaku.", "Korban PMH tidak merasa rugi secara materiel.", "Perbuatan dilakukan atas perintah atasan tanpa keraguan.", "Pelaku berusia di bawah 17 tahun."],
+    correct: 0,
+    source: "Modul 5, Hal 5.5, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Kepailitan merupakan sita umum atas seluruh kekayaan debitor. Tujuan utama dari proses ini menurut Modul 1 adalah...",
+    opts: ["Menghukum debitor agar jera dan tidak berutang lagi.", "Pembagian kekayaan debitor secara adil kepada seluruh kreditor sesuai hak masing-masing.", "Memberikan seluruh harta debitor kepada satu kreditor terbesar.", "Menghapuskan hak perdata debitor sebagai manusia.", "Membubarkan kurator yang mengurus harta pailit."],
+    correct: 1,
+    source: "Modul 1, Hal 1.21, Paragraf 2",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "PT A memiliki utang jatuh tempo kepada Bank B sebesar Rp 1 Miliar dan kepada Kreditor C sebesar Rp 100 Juta. PT A tidak membayar utang tersebut. Apakah syarat pailit terpenuhi?",
+    opts: ["Tidak, karena jumlah kreditor harus minimal 10 orang.", "Ya, karena ada minimal dua kreditor dan satu utang jatuh tempo yang belum dibayar.", "Tidak, karena utang kepada Kreditor C terlalu kecil.", "Ya, selama debitor melarikan diri ke luar negeri.", "Tidak, karena PT A masih memiliki gedung kantor."],
+    correct: 1,
+    source: "Modul 1, Hal 1.22, Paragraf 3",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Prinsip Pari Passu Pro Rata Parte dalam hukum kepailitan mengamanatkan bahwa...",
+    opts: ["Kreditor asing harus dibayar sebelum kreditor domestik.", "Harta debitor dibagi secara berimbang sesuai besarnya piutang masing-masing kreditor.", "Kreditor dengan piutang tertua mendapatkan seluruh aset debitor.", "Pembagian harta didasarkan pada tingkat pendidikan kreditor.", "Hanya kreditor pemerintah yang boleh mendapatkan pelunasan."],
+    correct: 1,
+    source: "Modul 1, Hal 1.22, Paragraf 3",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Kreditor yang memiliki jaminan hak kebendaan seperti gadai atau hak tanggungan dan dapat mengeksekusi haknya seolah-olah tidak terjadi pailit disebut...",
+    opts: ["Kreditor Konkuren.", "Kreditor Preferen.", "Kreditor Separatis.", "Kreditor Minoritas.", "Kreditor Pro Memori."],
+    correct: 2,
+    source: "Modul 1, Hal 1.23, Paragraf 5",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Seorang kurator menemukan bahwa sebulan sebelum dinyatakan pailit, debitor telah menghibahkan rumahnya kepada kerabat untuk menghindari sitaan. Kurator dapat membatalkan transaksi ini melalui...",
+    opts: ["Paritas Creditorum .", "Actio Pauliana .", "Openlegging .", "Hak Retensi.", "Pari Passu ."],
+    correct: 1,
+    source: "Modul 1, Hal 1.24, Paragraf 3",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Apabila sebuah Bank dinyatakan gagal bayar, siapakah satu-satunya pihak yang berwenang mengajukan permohonan pailit ke Pengadilan Niaga?",
+    opts: ["Menteri Keuangan.", "Kejaksaan Agung.", "Bank Indonesia.", "LPS (Lembaga Penjamin Simpanan).", "Nasabah penyimpan dana."],
+    correct: 2,
+    source: "Modul 1, Hal 1.23, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Tugas utama seorang Kurator dalam kepailitan, di bawah pengawasan Hakim Pengawas, adalah...",
+    opts: ["Memenjarakan direksi perusahaan yang pailit.", "Mengurus dan membereskan harta pailit untuk dibagikan kepada kreditor.", "Menagih pajak dari kreditor yang sudah dibayar.", "Membatalkan putusan pailit melalui lobi politik.", "Menjadi pembela debitor di persidangan pidana."],
+    correct: 1,
+    source: "Modul 1, Hal 1.24, Paragraf 4",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Permohonan pailit terhadap sebuah Perusahaan Asuransi atau Badan Usaha Milik Negara (BUMN) di bidang kepentingan publik hanya dapat diajukan oleh...",
+    opts: ["Gubernur Bank Indonesia.", "Jaksa Agung.", "Menteri Keuangan.", "Karyawan perusahaan tersebut.", "Pihak kepolisian."],
+    correct: 2,
+    source: "Modul 1, Hal 1.23, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Dalam proses kepailitan, tahap di mana kurator mencocokkan piutang-piutang yang diajukan para kreditor disebut...",
+    opts: ["Likuidasi.", "Verifikasi.", "Insolvensi.", "Somasi.", "Rekonvensi."],
+    correct: 1,
+    source: "Modul 1, Hal 1.24, Paragraf 4",
+    explanation: ""
+  },
+  {
+    topic: "Bank Soal",
+    q: "Asas kepailitan menyatakan bahwa kepailitan hanya menyangkut kekayaan debitor, bukan status pribadinya. Implikasi hukumnya adalah...",
+    opts: ["Debitor kehilangan kewarganegaraan Indonesia.", "Debitor tidak ditaruh di bawah pengampuan ( curatele ) dan tetap memiliki hak pribadi non-harta.", "Debitor wajib menyerahkan diri ke lembaga pemasyarakatan.", "Debitor dianggap gila secara yuridis.", "Debitor dilarang menikah selama proses pailit berlangsung."],
+    correct: 1,
+    source: "Modul 1, Hal 1.21, Paragraf 2",
+    explanation: ""
+  }
+]
+};
+document.addEventListener('DOMContentLoaded', () => {
+  QuizEngine.init(QUIZ_DATA);
+  const obs = new MutationObserver(() => {
+    const bar = document.getElementById('quiz-top-bar');
+    const main = document.getElementById('quiz-main-screen');
+    if (bar && main) bar.style.display = main.style.display !== 'none' ? 'flex' : 'none';
+  });
+  const target = document.getElementById('quiz-main-screen');
+  if (target) obs.observe(target, { attributes: true, attributeFilter: ['style'] });
+});
+</script>
+</body>
+</html>

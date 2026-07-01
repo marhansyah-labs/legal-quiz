@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz 1 — Materi Modul 1–9 — LeksaLaw</title>
+<link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/app.css">
+<link rel="stylesheet" href="../assets/css/quiz.css">
+</head>
+<body>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<div class="app-shell">
+  <aside class="sidebar" id="app-sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-logo">⚖️</div>
+      <div class="sidebar-name">LeksaLaw<small>Platform Belajar Hukum</small></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Menu Utama</div>
+      <a class="nav-item" href="../index.html"><span class="nav-icon">🏠</span><span class="nav-label">Dashboard</span></a>
+      <div class="nav-section-label">Pembelajaran</div>
+      <div id="nav-semesters"></div>
+      <div class="nav-section-label">Lainnya</div>
+      <a class="nav-item" href="../nilai.html"><span class="nav-icon">📊</span><span class="nav-label">Nilai & Progress</span></a>
+      <a class="nav-item" href="../favorit.html"><span class="nav-icon">⭐</span><span class="nav-label">Favorit</span></a>
+    </nav>
+    <div style="padding:12px 16px;border-top:1px solid rgba(255,255,255,0.08)">
+      <div style="font-size:11px;color:#475569;text-align:center">LeksaLaw v1.0 · Offline</div>
+    </div>
+  </aside>
+  <div class="main-content" id="main-content">
+    <header class="top-header">
+      <button class="header-toggle" id="sidebar-toggle">☰</button>
+      <div class="header-breadcrumb">
+        <a href="../index.html" style="color:var(--text-muted);text-decoration:none">Dashboard</a>
+        <span class="breadcrumb-sep">›</span>
+        <span style="color:var(--text-muted)">Tindak Pidana Khusus</span>
+        <span class="breadcrumb-sep">›</span>
+        <span class="breadcrumb-current">Quiz 1 — Materi Modul 1–9</span>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" id="theme-btn" title="Ganti Tema">🌙</button>
+      </div>
+    </header>
+    <div class="quiz-top-bar" id="quiz-top-bar" style="display:none">
+      <span class="quiz-progress-text" id="progress-label">Soal 1 / 1</span>
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quiz-progress-fill" style="width:0%"></div></div>
+      <span id="quiz-label" style="font-size:12px;color:var(--text-muted);white-space:nowrap"></span>
+    </div>
+
+    <!-- SETUP -->
+    <div id="quiz-setup-screen">
+      <div class="quiz-setup">
+        <div class="setup-card">
+          <a href="../index.html" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text-muted);margin-bottom:20px;text-decoration:none" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color='var(--text-muted)'">← Kembali ke Dashboard</a>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-muted);margin-bottom:6px">Tindak Pidana Khusus</div>
+          <h1 class="setup-title" id="setup-quiz-title">Quiz 1 — Materi Modul 1–9</h1>
+          <p class="setup-sub" id="setup-quiz-course"></p>
+          <div id="score-history" style="display:none" class="score-history"></div>
+          <div class="setup-stat-row">
+            <div class="setup-stat"><div class="n" id="setup-stat-q">—</div><div class="l">Total Soal</div></div>
+            <div class="setup-stat"><div class="n" id="setup-stat-t">—</div><div class="l">Topik</div></div>
+            <div class="setup-stat"><div class="n" id="setup-stat-level">advance</div><div class="l">Tingkat</div></div>
+          </div>
+          <hr class="divider">
+          <div style="font-size:13px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px">Mode Pengerjaan</div>
+          <div class="mode-opts">
+            <label class="mode-opt selected">
+              <input type="radio" name="mode" value="study" checked>
+              <div><div class="mode-opt-name">📖 Mode Belajar</div><div class="mode-opt-desc">Feedback & penjelasan langsung setelah tiap jawaban</div></div>
+            </label>
+            <label class="mode-opt">
+              <input type="radio" name="mode" value="exam">
+              <div><div class="mode-opt-name">📝 Mode Ujian</div><div class="mode-opt-desc">Hasil & pembahasan muncul di akhir saja</div></div>
+            </label>
+          </div>
+          <hr class="divider">
+          <label class="shuffle-toggle">
+            <input type="checkbox" id="opt-shuffle">
+            <div>
+              <div class="shuffle-toggle-label">🔀 Acak Soal & Pilihan Jawaban</div>
+              <div class="shuffle-toggle-desc">Urutan soal dan opsi akan diacak setiap sesi</div>
+            </div>
+          </label>
+          <button class="btn-start-quiz" id="btn-start-quiz">Mulai Quiz →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUIZ MAIN -->
+    <div id="quiz-main-screen" style="display:none">
+      <div class="page-content" style="padding-top:16px;padding-bottom:100px">
+        <div class="quiz-layout">
+          <div><div id="q-container"></div></div>
+          <div class="quiz-sidebar-panel">
+            <div class="quiz-nav-card">
+              <div class="quiz-nav-title">Navigasi Soal</div>
+              <div class="nav-grid" id="nav-grid"></div>
+              <div class="nav-legend">
+                <div class="legend-item"><div class="legend-dot dot-answered"></div>Dijawab</div>
+                <div class="legend-item"><div class="legend-dot dot-flagged"></div>Ragu</div>
+                <div class="legend-item"><div class="legend-dot dot-unanswered"></div>Belum</div>
+              </div>
+            </div>
+            <div class="quiz-nav-card">
+              <div class="quiz-nav-title">Aksi</div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <button onclick="QuizEngine.finish()" class="btn btn-primary btn-sm" style="justify-content:center">✓ Selesai & Lihat Hasil</button>
+                <button onclick="if(confirm('Mulai ulang quiz?'))QuizEngine.restart()" class="btn btn-secondary btn-sm" style="justify-content:center">🔁 Mulai Ulang</button>
+              </div>
+            </div>
+            <div class="quiz-nav-card" style="font-size:12px;color:var(--text-muted)">
+              <div class="quiz-nav-title">Pintasan Keyboard</div>
+              <div style="display:flex;flex-direction:column;gap:5px">
+                <div><kbd style="background:var(--bg);border:1px solid var(--border);padding:1px 5px;border-radius:4px;font-size:10px">1–5</kbd> Pilih jawaban</div>
+                <div><kbd style="background:var(--bg);border:1px solid var(--border);padding:1px 5px;border-radius:4px;font-size:10px">←→</kbd> Navigasi soal</div>
+                <div><kbd style="background:var(--bg);border:1px solid var(--border);padding:1px 5px;border-radius:4px;font-size:10px">F</kbd> Tandai ragu</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULT -->
+    <div id="quiz-result-screen" style="display:none">
+      <div class="result-screen">
+        <div class="result-card">
+          <div class="score-center">
+            <div class="score-circle">
+              <div class="score-pct" id="result-pct">0%</div>
+              <div class="score-lbl">Skor Akhir</div>
+            </div>
+            <div class="score-detail" id="result-detail"></div>
+            <div class="score-verdict" id="result-verdict"></div>
+          </div>
+          <hr class="divider">
+          <div class="result-section-title">📊 Performa Per Topik</div>
+          <div id="result-topics"></div>
+          <div class="result-section-title">❌ Ringkasan Jawaban Salah</div>
+          <div id="result-wrongs"></div>
+          <div class="result-actions">
+            <button class="btn btn-primary" onclick="QuizEngine.restart()">🔁 Ulangi Quiz</button>
+            <button class="btn btn-secondary" onclick="QuizEngine.review()">📋 Tinjau Jawaban</button>
+            <a href="../index.html" class="btn btn-secondary">🏠 Dashboard</a>
+            <button class="btn btn-secondary" onclick="window.print()">🖨️ Cetak</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER NAV -->
+<div class="quiz-footer" id="quiz-footer">
+  <div class="footer-inner">
+    <button class="btn btn-secondary" id="btn-prev" onclick="QuizEngine.prev()">← Sebelumnya</button>
+    <button class="btn-flag-toggle" id="btn-flag-toggle" onclick="QuizEngine.toggleFlag()">🚩 Tandai Ragu</button>
+    <button class="btn btn-primary" id="btn-next" onclick="QuizEngine.next()">Berikutnya →</button>
+    <button class="btn-finish-quiz" id="btn-finish" style="display:none" onclick="QuizEngine.finish()">Selesai ✓</button>
+  </div>
+</div>
+<div class="toast" id="app-toast"></div>
+
+<script src="../data/config.js"></script>
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/quiz-engine.js"></script>
+<script>
+const QUIZ_DATA = {
+  quizId: "TIPISUS_Q1",
+  courseId: "TIPISUS",
+  courseName: "Tindak Pidana Khusus",
+  title: "Quiz 1 — Materi Modul 1–9",
+  level: "advance",
+  questions: [
+  {
+    topic: "Teori & Asas Hukum Pidana Khusus",
+    q: "Dalam memahami unsur tindak pidana, terdapat perbedaan tajam antara pandangan monistis dan dualistis. Apa konsekuensi yuridis utama dari penganut pandangan dualistis dalam menentukan keberadaan pidana?",
+    opts: ["Perbuatan pidana dan pertanggungjawaban pidana adalah satu kesatuan yang tidak dapat dipisahkan.", "Untuk adanya pidana, tidak cukup hanya terjadi perbuatan pidana, tetapi harus dibuktikan adanya kesalahan/pertanggungjawaban.", "Setiap orang yang melakukan perbuatan yang dilarang undang-undang otomatis dapat dipidana tanpa melihat aspek batin.", "Fokus utama hanya pada criminal act semata tanpa mempertimbangkan subjek hukumnya.", "Penentuan pidana hanya didasarkan pada terpenuhinya syarat materiil di masyarakat."],
+    correct: 1,
+    source: "Hal. 1.10, Par. 4",
+    explanation: ""
+  },
+  {
+    topic: "Teori & Asas Hukum Pidana Khusus",
+    q: "Tindak pidana khusus seringkali melakukan penyimpangan terhadap hukum pidana umum (KUHP). Manakah yang merupakan bentuk penyimpangan hukum pidana materiil menurut Teguh Prasetyo?",
+    opts: ["Penyidikan hanya boleh dilakukan oleh Kepolisian Negara Republik Indonesia.", "Perkara harus diadili di pengadilan negeri umum tanpa pengecualian.", "Perluasan berlakunya asas teritorial dan pidana denda ditambah sepertiga terhadap korporasi.", "Larangan penggunaan peradilan in absentia demi hak asasi manusia.", "Penghapusan sanksi tambahan berupa perampasan barang bergerak."],
+    correct: 2,
+    source: "Hal. 1.15, Par. 2",
+    explanation: ""
+  },
+  {
+    topic: "Teori & Asas Hukum Pidana Khusus",
+    q: "Menurut Bagir Manan, apa yang dimaksud dengan prinsip bahwa kaidah lex specialis harus berada dalam \"regim hukum yang sama\"?",
+    opts: ["Harus diatur oleh lembaga yang sama dengan pembuat kaidah umum.", "Harus memiliki motif untuk memperlemah kaidah umum agar lebih fleksibel.", "Diatur dalam pertingkatan perundang-undangan yang sederajat dengan kaidah lex generalis.", "Hanya boleh mengatur tentang prosedur penyidikan tanpa mengubah sanksi materiil.", "Tidak boleh menambah kaidah umum, melainkan hanya boleh menyimpanginya."],
+    correct: 2,
+    source: "Hal. 1.16, Par. 3",
+    explanation: ""
+  },
+  {
+    topic: "Teori & Asas Hukum Pidana Khusus",
+    q: "Berdasarkan pendapat Azis Syamsudin, substansi hukum pidana khusus mencakup tiga permasalahan utama, yaitu...",
+    opts: ["Penyelidikan, penyidikan, dan penuntutan.", "Norma, sanksi administratif, dan sanksi perdata.", "Tindak pidana, pertanggungjawaban pidana, serta pidana dan pemidanaan.", "Subjek hukum, objek hukum, dan hubungan hukum.", "Legalitas, kemanfaatan, dan keadilan prosedural."],
+    correct: 2,
+    source: "Hal. 1.17, Par. 4",
+    explanation: ""
+  },
+  {
+    topic: "Tindak Pidana Korupsi",
+    q: "Robert Klitgaard merumuskan terjadinya korupsi dengan formula C = M + D – A. Berdasarkan analisis hubungan antar unsur tersebut, korupsi paling mungkin terjadi apabila...",
+    opts: ["Akuntabilitas sangat tinggi sehingga menekan diskresi pejabat.", "Terjadi monopoli kekuasaan yang dibarengi dengan diskresi tanpa adanya akuntabilitas.", "Pejabat memiliki diskresi yang luas namun tetap dalam pengawasan publik yang ketat.", "Tidak ada monopoli kekuasaan meskipun akuntabilitas rendah.", "Diskresi pejabat dihilangkan sama sekali dalam sistem pemerintahan."],
+    correct: 1,
+    source: "Hal. 2.8, Par. 4",
+    explanation: ""
+  },
+  {
+    topic: "Tindak Pidana Korupsi",
+    q: "Tindak Pidana Korupsi diklasifikasikan sebagai White Collar Crime. Sutherland mendefinisikan karakteristik kejahatan ini sebagai kejahatan yang dilakukan oleh...",
+    opts: ["Orang-orang kelas bawah yang ingin memperbaiki status sosialnya.", "Penjahat kambuhan yang memiliki organisasi yang sangat rahasia.", "Seseorang yang terhormat atau berstatus sosial tinggi dalam masa jabatannya.", "Individu yang tidak memiliki keahlian khusus namun memanfaatkan peluang.", "Korporasi asing yang tidak memiliki izin usaha di wilayah Indonesia."],
+    correct: 2,
+    source: "Hal. 2.10, Par. 3",
+    explanation: ""
+  },
+  {
+    topic: "Tindak Pidana Korupsi",
+    q: "Mengapa tindak pidana korupsi di Indonesia digolongkan sebagai kejahatan yang pemberantasannya harus dilakukan dengan \"cara luar biasa\" menurut penjelasan UU Tipikor?",
+    opts: ["Karena korupsi hanya merugikan segelintir pejabat negara.", "Karena telah terjadi secara sistematik dan meluas, melanggar hak sosial dan ekonomi masyarakat.", "Karena aparat penegak hukum biasa sudah tidak mampu lagi melakukan penyidikan.", "Karena sanksi dalam KUHP sudah dianggap terlalu berat untuk diterapkan.", "Karena korupsi merupakan bagian dari budaya bangsa yang harus dipertahankan."],
+    correct: 1,
+    source: "Hal. 2.23, Par. 1",
+    explanation: ""
+  },
+  {
+    topic: "Tindak Pidana Korupsi",
+    q: "Pasal 12B UU Tipikor mengatur tentang gratifikasi. Kapan sebuah gratifikasi kepada pegawai negeri dianggap sebagai pemberian suap?",
+    opts: ["Apabila nilainya di atas satu juta rupiah tanpa melihat jabatan.", "Apabila berhubungan dengan jabatan dan berlawanan dengan kewajiban atau tugasnya.", "Apabila diberikan oleh keluarga dekat pada saat acara pernikahan.", "Apabila penerima melaporkannya kepada KPK dalam waktu 30 hari kerja.", "Apabila gratifikasi tersebut berbentuk barang pecah belah atau suvenir."],
+    correct: 1,
+    source: "Hal. 2.21, Par. 7",
+    explanation: ""
+  },
+  {
+    topic: "Tindak Pidana Korupsi",
+    q: "Dalam UU Tipikor, pengembalian kerugian negara oleh terdakwa memiliki status hukum tertentu. Berdasarkan Pasal 4, apa dampak pengembalian kerugian negara terhadap proses pidana?",
+    opts: ["Menghapuskan status tindak pidana dan menghentikan penuntutan.", "Mengubah status kejahatan menjadi pelanggaran administratif semata.", "Tidak menghapuskan dipidananya pelaku tindak pidana tersebut.", "Membebaskan pelaku dari hukuman penjara namun tetap membayar denda.", "Menjadi dasar hakim untuk memberikan vonis bebas secara otomatis."],
+    correct: 2,
+    source: "Hal. 2.34, Par. 1",
+    explanation: ""
+  },
+  {
+    topic: "Tindak Pidana Pencucian Uang",
+    q: "Tahapan di mana pelaku melakukan transaksi keuangan yang kompleks, rumit, dan berlapis-lapis untuk menyamarkan sumber dana disebut...",
+    opts: ["Placement.", "Integration.", "Layering.", "Cleaning.", "Mixing."],
+    correct: 2,
+    source: "Hal. 3.15, Par. 2",
+    explanation: ""
+  },
+  {
+    topic: "Tindak Pidana Pencucian Uang",
+    q: "UU TPPU No. 8 Tahun 2010 menerapkan asas pembuktian terbalik. Bagaimana mekanisme penerapan asas ini di sidang pengadilan menurut Pasal 77?",
+    opts: ["Jaksa wajib membuktikan bahwa harta kekayaan terdakwa berasal dari kejahatan.", "Terdakwa wajib membuktikan bahwa harta kekayaannya bukan merupakan hasil tindak pidana.", "Hakim secara otomatis menyita harta terdakwa tanpa perlu pembuktian.", "Pihak pelapor harus membuktikan adanya kerugian negara yang nyata.", "PPATK yang bertanggung jawab membuktikan aliran dana di depan hakim."],
+    correct: 1,
+    source: "Hal. 3.21, Par. 4",
+    explanation: ""
+  },
+  {
+    topic: "Tindak Pidana Pencucian Uang",
+    q: "Berdasarkan UU TPPU, siapakah yang wajib menyampaikan laporan transaksi keuangan mencurigakan kepada PPATK?",
+    opts: ["Hanya Lembaga Perbankan dan Bank Indonesia.", "Penyedia Jasa Keuangan serta Penyedia Barang dan/atau Jasa Lainnya.", "Masyarakat umum yang melihat adanya transaksi mencurigakan.", "Mahkamah Agung dan Komisi Pemberantasan Korupsi.", "Instansi pemerintah yang mengelola data kependudukan."],
+    correct: 1,
+    source: "Hal. 3.41, Par. 4",
+    explanation: ""
+  },
+  {
+    topic: "Tindak Pidana Pencucian Uang",
+    q: "Salah satu dampak ekonomi makro dari tindak pidana pencucian uang yang disebutkan dalam teks adalah...",
+    opts: ["Meningkatnya produktivitas masyarakat karena banyaknya aliran uang.", "Menghindari pembayaran pajak sehingga mengurangi penerimaan negara.", "Menguatnya nilai tukar mata uang dalam negeri secara stabil.", "Memudahkan pemerintah dalam mengontrol kebijakan moneter.", "Meningkatnya kepercayaan investor asing karena banyaknya modal masuk."],
+    correct: 1,
+    source: "Hal. 3.18, Par. 4",
+    explanation: ""
+  },
+  {
+    topic: "Tindak Pidana Pencucian Uang",
+    q: "Apa yang membedakan subjek hukum aktif dan pasif dalam tindak pidana pencucian uang berdasarkan UU TPPU?",
+    opts: ["Subjek aktif adalah korporasi, sedangkan subjek pasif adalah perorangan.", "Subjek aktif adalah pelaku pencucian, subjek pasif adalah penerima/penguasa harta hasil kejahatan.", "Subjek aktif melakukan tindak pidana asal, subjek pasif melakukan pencucian uang.", "Subjek aktif adalah pejabat pemerintah, subjek pasif adalah pihak swasta.", "Tidak ada perbedaan karena keduanya diatur dalam pasal yang sama."],
+    correct: 1,
+    source: "Hal. 3.33, Par. 3",
+    explanation: ""
+  },
+  {
+    topic: "Pelanggaran HAM Berat",
+    q: "Berdasarkan Statuta Roma dan UU Pengadilan HAM, apa perbedaan mendasar dalam cakupan jenis pelanggaran antara keduanya?",
+    opts: ["UU Pengadilan HAM mencakup agresi, sedangkan Statuta Roma tidak.", "Statuta Roma mencakup kejahatan perang dan agresi, sedangkan UU Pengadilan HAM hanya genosida dan kemanusiaan.", "UU Pengadilan HAM memiliki cakupan yang lebih luas daripada Statuta Roma.", "Statuta Roma hanya berlaku untuk konflik bersenjata, UU Pengadilan HAM berlaku untuk masa damai saja.", "Keduanya memiliki cakupan yang persis sama tanpa ada perbedaan."],
+    correct: 1,
+    source: "Hal. 4.11, Par. 4",
+    explanation: ""
+  },
+  {
+    topic: "Pelanggaran HAM Berat",
+    q: "Hakim Pengadilan HAM Ad hoc menjelaskan bahwa sebuah serangan dalam kejahatan kemanusiaan bersifat \"sistematik\" apabila...",
+    opts: ["Dilakukan secara spontan oleh massa tanpa rencana.", "Terjadi pembunuhan besar-besaran dalam skala besar secara kolektif.", "Kegiatan tersebut berpola sama dan konsisten (berulang-ulang) berdasarkan struktur atau desain tertentu.", "Hanya ditujukan kepada satu individu yang memiliki jabatan penting.", "Menggunakan teknologi militer yang sangat canggih dalam eksekusinya."],
+    correct: 2,
+    source: "Hal. 4.10, Par. 2",
+    explanation: ""
+  },
+  {
+    topic: "Pelanggaran HAM Berat",
+    q: "Siapakah lembaga yang berwenang melakukan \"penyelidikan\" perkara pelanggaran HAM berat berdasarkan UU Pengadilan HAM?",
+    opts: ["Jaksa Agung RI.", "Kepolisian Negara Republik Indonesia.", "Komisi Nasional Hak Asasi Manusia (KOMNASHAM).", "Lembaga Perlindungan Saksi dan Korban (LPSK).", "Majelis Hakim Pengadilan HAM."],
+    correct: 2,
+    source: "Hal. 4.12, Par. 5",
+    explanation: ""
+  },
+  {
+    topic: "Pelanggaran HAM Berat",
+    q: "Dalam tindak pidana terorisme, berdasarkan Pasal 19 UU Terorisme, bagaimana ketentuan penjatuhan pidana bagi pelaku di bawah 18 tahun?",
+    opts: ["Tetap dijatuhi pidana mati jika mengakibatkan korban massal.", "Tidak berlaku ketentuan pidana minimum khusus, pidana mati, atau penjara seumur hidup.", "Pidana yang dijatuhkan harus dua kali lipat dari pelaku dewasa untuk efek jera.", "Diberikan pembebasan murni karena dianggap sebagai korban doktrin.", "Hanya dikenakan sanksi administratif berupa rehabilitasi sosial tanpa proses peradilan."],
+    correct: 1,
+    source: "Hal. 4.48, Par. 8",
+    explanation: ""
+  },
+  {
+    topic: "Terorisme & Kejahatan Penerbangan",
+    q: "Konvensi manakah yang secara spesifik membahas pemberantasan tindakan melawan hukum yang mengancam keamanan \"penerbangan sipil\" dari luar pesawat?",
+    opts: ["Konvensi Tokyo 1963.", "Konvensi Den Haag 1970.", "Konvensi Montreal 1971.", "Konvensi Jenewa 1949.", "Konvensi Vienna 1988."],
+    correct: 2,
+    source: "Hal. 4.32, Par. 1",
+    explanation: ""
+  },
+  {
+    topic: "Terorisme & Kejahatan Penerbangan",
+    q: "UU Penerbangan No. 1 Tahun 2009 memiliki karakteristik khusus dalam subjek deliknya. Apa penyimpangan terhadap ketentuan umum KUHP yang terdapat dalam undang-undang ini?",
+    opts: ["Penghapusan sanksi denda bagi seluruh pelaku.", "Memungkinkan pemidanaan terhadap badan hukum (korporasi).", "Hanya perorangan yang dapat dijadikan subjek hukum pidana.", "Seluruh tindak pidana di dalamnya merupakan delik aduan.", "Penyidikan mutlak dilakukan hanya oleh aparat Kepolisian."],
+    correct: 1,
+    source: "Hal. 4.33, Par. 1",
+    explanation: ""
+  },
+  {
+    topic: "Terorisme & Kejahatan Penerbangan",
+    q: "Berdasarkan Pasal 6 UU Terorisme, unsur utama yang membedakan terorisme dengan kejahatan kekerasan biasa adalah penggunaan kekerasan/ancaman kekerasan yang bertujuan untuk...",
+    opts: ["Memperkaya diri sendiri atau korporasi tertentu.", "Menimbulkan suasana teror atau rasa takut terhadap orang secara meluas.", "Memperoleh jabatan politik melalui mekanisme pemilu yang sah.", "Menghilangkan jejak kejahatan ekonomi yang telah dilakukan sebelumnya.", "Melindungi properti pribadi dari gangguan pihak luar."],
+    correct: 1,
+    source: "Hal. 4.43, Par. 2",
+    explanation: ""
+  },
+  {
+    topic: "Terorisme & Kejahatan Penerbangan",
+    q: "Manakah contoh penerapan fungsi regulerend (mengatur) pajak dalam kebijakan ekonomi pemerintah?",
+    opts: ["Pemungutan pajak penghasilan untuk membiayai belanja rutin pegawai.", "Penetapan bea masuk yang tinggi untuk produk luar negeri guna melindungi produksi dalam negeri.", "Penggunaan hasil pajak untuk membangun infrastruktur jalan raya nasional.", "Menekan pengeluaran negara agar terjadi surplus dalam APBN.", "Mengumpulkan uang sebanyak-banyaknya untuk dimasukkan ke kas negara."],
+    correct: 1,
+    source: "Hal. 5.8, Par. 3",
+    explanation: ""
+  },
+  {
+    topic: "Tindak Pidana Perpajakan",
+    q: "Adam Smith mengemukakan asas pemungutan pajak The Four Maxims. Asas Convinience of Payment menekankan bahwa...",
+    opts: ["Pajak harus dipungut sesuai kemampuan dan penghasilan wajib pajak.", "Biaya pemungutan pajak tidak boleh lebih besar dari hasil pemungutannya.", "Pajak dipungut pada saat yang paling tepat bagi wajib pajak, misalnya saat menerima penghasilan.", "Segala pungutan harus didasarkan pada Undang-Undang demi kepastian hukum.", "Negara tidak boleh bertindak diskriminatif terhadap wajib pajak."],
+    correct: 2,
+    source: "Hal. 5.12, Par. 3",
+    explanation: ""
+  },
+  {
+    topic: "Tindak Pidana Perpajakan",
+    q: "Sistem pemungutan pajak di Indonesia yang menempatkan tanggung jawab sepenuhnya kepada wajib pajak untuk menghitung, membayar, dan melaporkan sendiri pajaknya disebut...",
+    opts: ["Official Assessment System.", "Withholding Tax System.", "Self Assessment System.", "Voluntary Payment System.", "Pay As You Earn System."],
+    correct: 2,
+    source: "Hal. 5.14, Par. 3",
+    explanation: ""
+  },
+  {
+    topic: "Tindak Pidana Perpajakan",
+    q: "Berdasarkan Pasal 43 UU KUP, siapa sajakah \"pihak lain\" (selain wajib pajak) yang dapat dipidana jika membantu terjadinya delik pajak?",
+    opts: ["Hanya anggota keluarga dari wajib pajak.", "Pejabat pemungut pajak dari Direktorat Jenderal Pajak.", "Wakil, kuasa, pegawai dari wajib pajak, konsultan pajak, atau akuntan publik.", "Seluruh masyarakat yang mengetahui adanya kecurangan pajak.", "Hanya pihak perbankan yang mengelola rekening wajib pajak."],
+    correct: 2,
+    source: "Hal. 5.19, Par. 1",
+    explanation: ""
+  },
+  {
+    topic: "Tindak Pidana Perpajakan",
+    q: "Sanksi pidana dalam UU KUP dianggap sebagai Ultimum Remedium. Apa makna dari istilah tersebut dalam konteks penegakan hukum pajak?",
+    opts: ["Sanksi pidana adalah sanksi utama yang harus didahulukan.", "Sanksi pidana diterapkan bersamaan dengan sanksi perdata sejak awal penyidikan.", "Sanksi pidana merupakan senjata pamungkas (terakhir) jika sanksi administrasi dirasa belum cukup.", "Penegakan hukum yang hanya menitikberatkan pada ganti rugi materiil.", "Penghapusan seluruh hutang pajak melalui proses peradilan pidana."],
+    correct: 2,
+    source: "Hal. 5.15, Par. 1",
+    explanation: ""
+  },
+  {
+    topic: "Tindak Pidana Perpajakan",
+    q: "Tindak pidana perpajakan melibatkan upaya penyalahgunaan dalam sistem self-assessment. Manakah unsur utama delik pajak yang paling menentukan menurut UU KUP?",
+    opts: ["Besarnya nilai pajak yang dihindari.", "Jabatan atau status sosial pelaku.", "Adanya unsur kesengajaan (dolus) dalam perbuatan yang merugikan negara.", "Jenis usaha yang dijalankan oleh wajib pajak.", "Domisili wajib pajak yang berbeda dengan tempat usaha."],
+    correct: 2,
+    source: "Hal. 5.16, Par. 2",
+    explanation: ""
+  },
+  {
+    topic: "Narkotika & Psikotropika",
+    q: "Manakah karakteristik utama dari Narkotika Golongan II menurut UU No. 35 Tahun 2009?",
+    opts: ["Hanya digunakan untuk tujuan ilmu pengetahuan dan tidak digunakan dalam terapi.", "Berkhasiat pengobatan, digunakan sebagai pilihan terakhir, dan potensi tinggi mengakibatkan ketergantungan.", "Banyak digunakan dalam terapi dan potensi ringan mengakibatkan ketergantungan.", "Boleh digunakan secara bebas oleh masyarakat tanpa resep dokter.", "Tidak memiliki potensi ketergantungan sama sekali."],
+    correct: 1,
+    source: "Hal. 6.6, Par. 5",
+    explanation: ""
+  },
+  {
+    topic: "Narkotika & Psikotropika",
+    q: "Manakah yang termasuk ke dalam faktor eksternal penyebab seseorang menyalahgunakan narkotika?",
+    opts: ["Sifat egois dan rasa ingin tahu yang tinggi.", "Adanya kegoncangan jiwa atau depresi mendalam.", "Kurangnya pengawasan dan pengaruh pergaulan lingkungan.", "Keinginan untuk merasa bebas secara pribadi.", "Struktur kepribadian yang labil sejak lahir."],
+    correct: 2,
+    source: "Hal. 6.8, Par. 1",
+    explanation: ""
+  },
+  {
+    topic: "Narkotika & Psikotropika",
+    q: "Syarat utama untuk mendapatkan \"Alasan Pemaaf\" agar pecandu narkotika tidak dituntut pidana berdasarkan UU Narkotika adalah...",
+    opts: ["Melarikan diri dari lingkungan pergaulan pecandu sebelumnya.", "Telah dilaporkan oleh orang tua/wali dan sedang menjalani rehabilitasi medis.", "Menyerahkan seluruh aset yang dimiliki kepada negara secara sukarela.", "Mengungkapkan seluruh jaringan pengedar dalam waktu 24 jam.", "Membayar denda maksimum yang ditentukan dalam undang-undang."],
+    correct: 1,
+    source: "Hal. 6.45, Par. 2",
+    explanation: ""
+  },
+  {
+    topic: "Narkotika & Psikotropika",
+    q: "Bagaimana ketentuan sanksi bagi korporasi yang terlibat dalam tindak pidana narkotika menurut Pasal 130 UU Narkotika?",
+    opts: ["Hanya pengurusnya yang dapat dijatuhi pidana penjara.", "Korporasi dijatuhi denda dengan pemberatan 3 (tiga) kali dari pidana denda yang berlaku.", "Korporasi secara otomatis dibubarkan tanpa melalui proses persidangan.", "Denda yang dijatuhkan kepada korporasi sama nilainya dengan denda perorangan.", "Korporasi hanya dikenakan sanksi berupa peringatan tertulis."],
+    correct: 1,
+    source: "Hal. 6.39, Par. 4",
+    explanation: ""
+  },
+  {
+    topic: "Narkotika & Psikotropika",
+    q: "Batasan penguasaan psikotropika oleh individu agar dianggap sah secara hukum berdasarkan UU No. 5 Tahun 1997 adalah...",
+    opts: ["Boleh dimiliki selama dibeli di apotek dengan harga resmi.", "Hanya dapat dimiliki dan dibawa dalam rangka pengobatan dan/atau perawatan dengan bukti sah (resep dokter).", "Dapat disimpan dalam jumlah besar untuk cadangan medis pribadi di rumah.", "Boleh diedarkan secara mandiri asalkan tujuannya adalah menolong sesama penderita.", "Tidak memerlukan surat keterangan dokter selama digunakan untuk penelitian mandiri."],
+    correct: 1,
+    source: "Hal. 6.23, Par. 1",
+    explanation: ""
+  },
+  {
+    topic: "Narkotika & Psikotropika",
+    q: "Psikotropika yang berkhasiat untuk pengobatan, sangat luas digunakan dalam terapi, namun memiliki potensi ringan mengakibatkan sindroma ketergantungan termasuk dalam...",
+    opts: ["Golongan I.", "Golongan II.", "Golongan III.", "Golongan IV.", "Golongan Bebas Terbatas."],
+    correct: 3,
+    source: "Hal. 6.19, Par. 5",
+    explanation: ""
+  },
+  {
+    topic: "Tindak Pidana Lingkungan Hidup",
+    q: "Apa perbedaan mendasar antara konsep \"Pencemaran Lingkungan\" dan \"Kerusakan Lingkungan\" berdasarkan UU No. 32 Tahun 2009?",
+    opts: ["Pencemaran adalah perubahan fisik secara langsung, kerusakan adalah masuknya zat asing.", "Pencemaran fokus pada masuknya komponen yang melampaui baku mutu, kerusakan fokus pada perubahan fisik/hayati yang melampaui kriteria baku kerusakan.", "Pencemaran hanya terjadi di air, sedangkan kerusakan hanya terjadi di tanah dan hutan.", "Kerusakan diakibatkan oleh alam, sedangkan pencemaran mutlak diakibatkan oleh manusia.", "Tidak ada perbedaan karena keduanya diatur dalam satu pasal yang sama."],
+    correct: 1,
+    source: "Hal. 7.15, Par. 2",
+    explanation: ""
+  },
+  {
+    topic: "Tindak Pidana Lingkungan Hidup",
+    q: "UU Lingkungan menganut asas \"Pencemar Membayar\". Apa implementasi dari asas ini dalam sengketa lingkungan hidup?",
+    opts: ["Pelaku wajib membayar biaya perkara pengadilan saja.", "Setiap penanggung jawab usaha yang mengakibatkan pencemaran wajib membayar ganti rugi dan melakukan pemulihan lingkungan.", "Pemerintah yang menanggung seluruh biaya pemulihan jika pencemar tidak mampu bayar.", "Masyarakat terdampak harus membayar biaya administrasi untuk menuntut perusahaan.", "Pajak lingkungan ditingkatkan untuk seluruh perusahaan baik yang mencemari maupun tidak."],
+    correct: 1,
+    source: "Hal. 7.10, Par. 3",
+    explanation: ""
+  },
+  {
+    topic: "Tindak Pidana Lingkungan Hidup",
+    q: "Kapan instrumen hukum pidana baru boleh digunakan menurut Asas Subsidiaritas dalam penegakan hukum pidana lingkungan hidup?",
+    opts: ["Sejak awal ditemukannya indikasi pelanggaran administratif.", "Apabila sanksi administrasi dan perdata sudah diupayakan namun tidak efektif, atau tingkat kesalahan relatif berat.", "Hanya jika terjadi kematian lebih dari sepuluh orang akibat pencemaran.", "Saat perusahaan menolak memberikan akses bagi pengawas lingkungan hidup.", "Apabila masyarakat melakukan demonstrasi besar-besaran menolak keberadaan industri."],
+    correct: 1,
+    source: "Hal. 7.21, Par. 1",
+    explanation: ""
+  },
+  {
+    topic: "Tindak Pidana Lingkungan Hidup",
+    q: "Manakah yang termasuk dalam kategori \"Delik Materil\" dalam tindak pidana lingkungan hidup?",
+    opts: ["Membuang limbah sedikit di bawah baku mutu yang ditentukan.", "Melanggar prosedur administrasi perizinan amdal namun lingkungan tetap terjaga.", "Perbuatan melawan hukum yang secara nyata menyebabkan pencemaran atau perusakan lingkungan tanpa perlu bukti pelanggaran administrasi.", "Tidak memiliki izin lingkungan meskipun belum melakukan aktivitas produksi.", "Menyusun dokumen amdal tanpa memiliki sertifikat kompetensi penyusun."],
+    correct: 2,
+    source: "Hal. 7.21, Par. 4",
+    explanation: ""
+  },
+  {
+    topic: "Tindak Pidana Lingkungan Hidup",
+    q: "Pasal 96 UU No. 32 Tahun 2009 mengatur perluasan alat bukti. Apa perluasan alat bukti dalam UU ini dibandingkan dengan KUHAP?",
+    opts: ["Sumpah pocong diakui sebagai bukti utama.", "Pengakuan masyarakat sekitar tanpa melalui saksi ahli.", "Informasi yang disimpan secara elektronik atau magnetik (alat bukti elektronik).", "Hasil mediasi di luar pengadilan yang tidak tertulis.", "Seluruh benda yang ditemukan di lokasi kejadian tanpa melihat relevansi."],
+    correct: 2,
+    source: "Hal. 7.39, Par. 6",
+    explanation: ""
+  },
+  {
+    topic: "Ketenagakerjaan & ASN",
+    q: "Mengapa upah dikatakan memegang peranan paling penting dalam unsur perjanjian kerja menurut teks?",
+    opts: ["Karena upah adalah satu-satunya alasan orang mau menaati perintah.", "Karena jika tidak ada unsur upah, maka hubungan tersebut bukan merupakan hubungan kerja.", "Karena upah ditentukan sepihak oleh pengusaha tanpa perlu kesepakatan.", "Karena besar kecilnya upah menentukan status sosial pekerja di masyarakat.", "Karena upah merupakan syarat sah utama menurut Pasal 1320 KUH Perdata."],
+    correct: 1,
+    source: "Hal. 8.8, Par. 1",
+    explanation: ""
+  },
+  {
+    topic: "Ketenagakerjaan & ASN",
+    q: "Bagaimana parameter untuk mengukur terjadinya penyalahgunaan wewenang (detournement de pouvoir) dalam tindak pemerintahan menurut Indriyanto Seno Adji?",
+    opts: ["Adanya kealpaan pejabat dalam menandatangani dokumen penting.", "Tindakan pejabat yang menyimpang dari tujuan diberikannya kewenangan tersebut oleh undang-undang.", "Penggunaan anggaran yang melebihi pagu yang telah ditetapkan dalam APBN.", "Penolakan pejabat untuk melayani masyarakat di luar jam kerja resmi.", "Pejabat yang tidak memiliki latar belakang pendidikan sesuai jabatannya."],
+    correct: 1,
+    source: "Hal. 8.20, Par. 3",
+    explanation: ""
+  },
+  {
+    topic: "Ketenagakerjaan & ASN",
+    q: "UU No. 5 Tahun 2014 tentang ASN membagi pegawai aparatur sipil negara menjadi dua kategori. Siapakah mereka?",
+    opts: ["Pegawai Negeri Sipil dan Pegawai Swasta yang diperbantukan.", "Pegawai Negeri Sipil dan Pegawai Pemerintah dengan Perjanjian Kerja (PPPK).", "Pegawai Tetap dan Pegawai Harian Lepas.", "Pejabat Negara dan Staf Ahli kementerian.", "Pegawai Pusat dan Pegawai Daerah yang belum tersertifikasi."],
+    correct: 1,
+    source: "Hal. 8.16, Par. 4",
+    explanation: ""
+  },
+  {
+    topic: "Ketenagakerjaan & ASN",
+    q: "Manakah yang bukan merupakan bentuk sanksi administratif dalam UU Ketenagakerjaan yang dapat dijatuhkan oleh menteri atau pejabat yang ditunjuk?",
+    opts: ["Pembekuan kegiatan usaha.", "Pencabutan izin usaha.", "Pidana penjara selama 1 tahun.", "Penghentian sementara alat produksi.", "Peringatan tertulis."],
+    correct: 2,
+    source: "Hal. 8.13, Par. 1",
+    explanation: ""
+  },
+  {
+    topic: "Ketenagakerjaan & ASN",
+    q: "Seorang mantan pegawai negeri menahan surat dinas dari instansi asalnya tanpa izin pembesar yang berkuasa. Berdasarkan Pasal 554 KUHP, tindakan ini dikategorikan sebagai...",
+    opts: ["Kejahatan jabatan yang berat.", "Pelanggaran di bidang kepegawaian.", "Tindak pidana korupsi materiil.", "Penyalahgunaan wewenang aktif.", "Pencurian dokumen rahasia negara."],
+    correct: 1,
+    source: "Hal. 8.37, Par. 2",
+    explanation: ""
+  },
+  {
+    topic: "Tindak Pidana Sumber Daya Alam",
+    q: "Berdasarkan UU No. 41 Tahun 2009, apa yang menjadi pendorong utama terjadinya konversi lahan pertanian menjadi lahan non-pertanian di Indonesia?",
+    opts: ["Kurangnya minat generasi muda untuk bertani.", "Pertumbuhan penduduk, industri, dan belum adanya Rencana Tata Ruang yang berkekuatan hukum.", "Menurunnya kualitas tanah akibat penggunaan pupuk kimia berlebih.", "Tingginya pajak lahan pertanian dibandingkan lahan industri.", "Kebijakan pemerintah untuk mengimpor seluruh bahan pangan pokok."],
+    correct: 1,
+    source: "Hal. 9.6, Par. 2",
+    explanation: ""
+  },
+  {
+    topic: "Tindak Pidana Sumber Daya Alam",
+    q: "Praktik pencurian ikan oleh armada kapal asing sering disebut dengan istilah IUU Fishing. Apa kepanjangan dari istilah tersebut?",
+    opts: ["Illegal, Union, and Unprotected fishing.", "Illegal, Unregulated, and Unreported fishing.", "International, Under, and Unstable fishing.", "Independent, Unreported, and Unlawful fishing.", "Illegal, Unusual, and Unidentified fishing."],
+    correct: 1,
+    source: "Hal. 9.14, Par. 5",
+    explanation: ""
+  },
+  {
+    topic: "Tindak Pidana Sumber Daya Alam",
+    q: "Mengapa tindak pidana perikanan di Indonesia dikategorikan sebagai Extraordinary Crime (Kejahatan Luar Biasa)?",
+    opts: ["Karena hanya melibatkan teknologi radar yang sangat sederhana.", "Karena secara nyata mengakibatkan kerusakan sumber daya kelautan nasional.", "Karena pelakunya selalu merupakan warga negara Indonesia sendiri.", "Karena denda yang diterapkan sangat kecil sehingga tidak membebani pelaku.", "Karena perairan Indonesia sempit sehingga mudah diawasi."],
+    correct: 1,
+    source: "Hal. 9.14, Par. 6",
+    explanation: ""
+  },
+  {
+    topic: "Tindak Pidana Sumber Daya Alam",
+    q: "Berdasarkan statusnya, hutan di Indonesia dibagi menjadi dua, yaitu Hutan Negara dan Hutan Hak. Apa yang dimaksud dengan Hutan Hak?",
+    opts: ["Hutan yang dikelola oleh masyarakat hukum adat tanpa izin pemerintah.", "Hutan yang berada pada tanah yang tidak dibebani hak atas tanah.", "Hutan yang berada pada tanah yang dibebani hak milik (hutan rakyat).", "Hutan yang diserahkan pengelolaannya kepada pihak swasta asing.", "Kawasan hutan yang memiliki fungsi pokok pengawetan flora dan fauna."],
+    correct: 2,
+    source: "Hal. 9.24, Par. 4",
+    explanation: ""
+  },
+  {
+    topic: "Tindak Pidana Sumber Daya Alam",
+    q: "Salah satu modus operandi kejahatan kehutanan (Illegal Logging) yang terkait dengan \"peredaran kayu\" adalah...",
+    opts: ["Menebang pohon di malam hari tanpa suara.", "Menggunakan dokumen yang dalam proses mendapatkannya \"cacat\" secara hukum.", "Menanam kembali hutan yang telah digunduli secara ilegal.", "Menjual kayu hanya kepada masyarakat lokal di sekitar hutan.", "Melakukan penebangan sesuai dengan batas luas yang diizinkan menteri."],
+    correct: 1,
+    source: "Hal. 9.25, Par. 2",
+    explanation: ""
+  },
+  {
+    topic: "Tindak Pidana Sumber Daya Alam",
+    q: "UU Minerba No. 4 Tahun 2009 mengatur tentang tindak pidana pertambangan. Apa yang dimaksud dengan \"Illegal Mining\" dalam konteks undang-undang ini?",
+    opts: ["Melakukan kegiatan pascatambang sebelum waktunya.", "Penambangan yang dilakukan tanpa IUP, IPR, atau IUPK.", "Menggunakan alat berat yang belum lunas pembayarannya.", "Menjual hasil tambang dengan harga di bawah standar pasar global.", "Mempekerjakan tenaga kerja asing tanpa paspor resmi."],
+    correct: 1,
+    source: "Hal. 9.37, Par. 1",
+    explanation: ""
+  },
+  {
+    topic: "Tindak Pidana Sumber Daya Alam",
+    q: "Sanksi pidana dalam UU Pertambangan (Minerba) mengenal pidana denda yang sangat besar. Berapa batas denda maksimal yang dapat dijatuhkan kepada pelaku penambangan tanpa izin menurut Pasal 158?",
+    opts: ["Rp 1.000.000.000,00 (satu miliar rupiah).", "Rp 5.000.000.000,00 (lima miliar rupiah).", "Rp 10.000.000.000,00 (sepuluh miliar rupiah).", "Rp 15.000.000.000,00 (lima belas miliar rupiah).", "Rp 20.000.000.000,00 (dua puluh miliar rupiah)."],
+    correct: 2,
+    source: "Hal. 9.63, Par. 4",
+    explanation: ""
+  }
+]
+};
+document.addEventListener('DOMContentLoaded', () => {
+  QuizEngine.init(QUIZ_DATA);
+  const obs = new MutationObserver(() => {
+    const bar = document.getElementById('quiz-top-bar');
+    const main = document.getElementById('quiz-main-screen');
+    if (bar && main) bar.style.display = main.style.display !== 'none' ? 'flex' : 'none';
+  });
+  const target = document.getElementById('quiz-main-screen');
+  if (target) obs.observe(target, { attributes: true, attributeFilter: ['style'] });
+});
+</script>
+</body>
+</html>

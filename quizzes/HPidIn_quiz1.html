@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz 1 — Modul 1–9 — LeksaLaw</title>
+<link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/app.css">
+<link rel="stylesheet" href="../assets/css/quiz.css">
+</head>
+<body>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<div class="app-shell">
+  <aside class="sidebar" id="app-sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-logo">⚖️</div>
+      <div class="sidebar-name">LeksaLaw<small>Platform Belajar Hukum</small></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Menu Utama</div>
+      <a class="nav-item" href="../index.html"><span class="nav-icon">🏠</span><span class="nav-label">Dashboard</span></a>
+      <div class="nav-section-label">Pembelajaran</div>
+      <div id="nav-semesters"></div>
+      <div class="nav-section-label">Lainnya</div>
+      <a class="nav-item" href="../nilai.html"><span class="nav-icon">📊</span><span class="nav-label">Nilai & Progress</span></a>
+      <a class="nav-item" href="../favorit.html"><span class="nav-icon">⭐</span><span class="nav-label">Favorit</span></a>
+    </nav>
+    <div style="padding:12px 16px;border-top:1px solid rgba(255,255,255,0.08)">
+      <div style="font-size:11px;color:#475569;text-align:center">LeksaLaw v1.0 · Offline</div>
+    </div>
+  </aside>
+  <div class="main-content" id="main-content">
+    <header class="top-header">
+      <button class="header-toggle" id="sidebar-toggle">☰</button>
+      <div class="header-breadcrumb">
+        <a href="../index.html" style="color:var(--text-muted);text-decoration:none">Dashboard</a>
+        <span class="breadcrumb-sep">›</span>
+        <span style="color:var(--text-muted)">Hukum Pidana Internasional</span>
+        <span class="breadcrumb-sep">›</span>
+        <span class="breadcrumb-current">Quiz 1 — Modul 1–9</span>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" id="theme-btn" title="Ganti Tema">🌙</button>
+      </div>
+    </header>
+    <div class="quiz-top-bar" id="quiz-top-bar" style="display:none">
+      <span class="quiz-progress-text" id="progress-label">Soal 1 / 1</span>
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quiz-progress-fill" style="width:0%"></div></div>
+      <span id="quiz-label" style="font-size:12px;color:var(--text-muted);white-space:nowrap"></span>
+    </div>
+
+    <!-- SETUP -->
+    <div id="quiz-setup-screen">
+      <div class="quiz-setup">
+        <div class="setup-card">
+          <a href="../index.html" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text-muted);margin-bottom:20px;text-decoration:none" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color='var(--text-muted)'">← Kembali ke Dashboard</a>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-muted);margin-bottom:6px">Hukum Pidana Internasional</div>
+          <h1 class="setup-title" id="setup-quiz-title">Quiz 1 — Modul 1–9</h1>
+          <p class="setup-sub" id="setup-quiz-course"></p>
+          <div id="score-history" style="display:none" class="score-history"></div>
+          <div class="setup-stat-row">
+            <div class="setup-stat"><div class="n" id="setup-stat-q">—</div><div class="l">Total Soal</div></div>
+            <div class="setup-stat"><div class="n" id="setup-stat-t">—</div><div class="l">Topik</div></div>
+            <div class="setup-stat"><div class="n" id="setup-stat-level">sedang</div><div class="l">Tingkat</div></div>
+          </div>
+          <hr class="divider">
+          <div style="font-size:13px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px">Mode Pengerjaan</div>
+          <div class="mode-opts">
+            <label class="mode-opt selected">
+              <input type="radio" name="mode" value="study" checked>
+              <div><div class="mode-opt-name">📖 Mode Belajar</div><div class="mode-opt-desc">Feedback & penjelasan langsung setelah tiap jawaban</div></div>
+            </label>
+            <label class="mode-opt">
+              <input type="radio" name="mode" value="exam">
+              <div><div class="mode-opt-name">📝 Mode Ujian</div><div class="mode-opt-desc">Hasil & pembahasan muncul di akhir saja</div></div>
+            </label>
+          </div>
+          <hr class="divider">
+          <label class="shuffle-toggle">
+            <input type="checkbox" id="opt-shuffle">
+            <div>
+              <div class="shuffle-toggle-label">🔀 Acak Soal & Pilihan Jawaban</div>
+              <div class="shuffle-toggle-desc">Urutan soal dan opsi akan diacak setiap sesi</div>
+            </div>
+          </label>
+          <button class="btn-start-quiz" id="btn-start-quiz">Mulai Quiz →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUIZ MAIN -->
+    <div id="quiz-main-screen" style="display:none">
+      <div class="page-content" style="padding-top:16px;padding-bottom:100px">
+        <div class="quiz-layout">
+          <div><div id="q-container"></div></div>
+          <div class="quiz-sidebar-panel">
+            <div class="quiz-nav-card">
+              <div class="quiz-nav-title">Navigasi Soal</div>
+              <div class="nav-grid" id="nav-grid"></div>
+              <div class="nav-legend">
+                <div class="legend-item"><div class="legend-dot dot-answered"></div>Dijawab</div>
+                <div class="legend-item"><div class="legend-dot dot-flagged"></div>Ragu</div>
+                <div class="legend-item"><div class="legend-dot dot-unanswered"></div>Belum</div>
+              </div>
+            </div>
+            <div class="quiz-nav-card">
+              <div class="quiz-nav-title">Aksi</div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <button onclick="QuizEngine.finish()" class="btn btn-primary btn-sm" style="justify-content:center">✓ Selesai & Lihat Hasil</button>
+                <button onclick="if(confirm('Mulai ulang quiz?'))QuizEngine.restart()" class="btn btn-secondary btn-sm" style="justify-content:center">🔁 Mulai Ulang</button>
+              </div>
+            </div>
+            <div class="quiz-nav-card" style="font-size:12px;color:var(--text-muted)">
+              <div class="quiz-nav-title">Pintasan Keyboard</div>
+              <div style="display:flex;flex-direction:column;gap:5px">
+                <div><kbd style="background:var(--bg);border:1px solid var(--border);padding:1px 5px;border-radius:4px;font-size:10px">1–5</kbd> Pilih jawaban</div>
+                <div><kbd style="background:var(--bg);border:1px solid var(--border);padding:1px 5px;border-radius:4px;font-size:10px">←→</kbd> Navigasi soal</div>
+                <div><kbd style="background:var(--bg);border:1px solid var(--border);padding:1px 5px;border-radius:4px;font-size:10px">F</kbd> Tandai ragu</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULT -->
+    <div id="quiz-result-screen" style="display:none">
+      <div class="result-screen">
+        <div class="result-card">
+          <div class="score-center">
+            <div class="score-circle">
+              <div class="score-pct" id="result-pct">0%</div>
+              <div class="score-lbl">Skor Akhir</div>
+            </div>
+            <div class="score-detail" id="result-detail"></div>
+            <div class="score-verdict" id="result-verdict"></div>
+          </div>
+          <hr class="divider">
+          <div class="result-section-title">📊 Performa Per Topik</div>
+          <div id="result-topics"></div>
+          <div class="result-section-title">❌ Ringkasan Jawaban Salah</div>
+          <div id="result-wrongs"></div>
+          <div class="result-actions">
+            <button class="btn btn-primary" onclick="QuizEngine.restart()">🔁 Ulangi Quiz</button>
+            <button class="btn btn-secondary" onclick="QuizEngine.review()">📋 Tinjau Jawaban</button>
+            <a href="../index.html" class="btn btn-secondary">🏠 Dashboard</a>
+            <button class="btn btn-secondary" onclick="window.print()">🖨️ Cetak</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER NAV -->
+<div class="quiz-footer" id="quiz-footer">
+  <div class="footer-inner">
+    <button class="btn btn-secondary" id="btn-prev" onclick="QuizEngine.prev()">← Sebelumnya</button>
+    <button class="btn-flag-toggle" id="btn-flag-toggle" onclick="QuizEngine.toggleFlag()">🚩 Tandai Ragu</button>
+    <button class="btn btn-primary" id="btn-next" onclick="QuizEngine.next()">Berikutnya →</button>
+    <button class="btn-finish-quiz" id="btn-finish" style="display:none" onclick="QuizEngine.finish()">Selesai ✓</button>
+  </div>
+</div>
+<div class="toast" id="app-toast"></div>
+
+<script src="../data/config.js"></script>
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/quiz-engine.js"></script>
+<script>
+const QUIZ_DATA = {
+  quizId: "HPIDIN_Q1",
+  courseId: "HPIDIN",
+  courseName: "Hukum Pidana Internasional",
+  title: "Quiz 1 — Modul 1–9",
+  level: "sedang",
+  questions: [
+  {
+    topic: "Dasar & Konsep HPI",
+    q: "Penggunaan istilah Hukum Internasional Pidana sering kali dianggap tidak tepat dalam realitas hukum saat ini. Manakah alasan berikut yang paling tepat menjelaskan mengapa istilah Hukum Pidana Internasional lebih sesuai digunakan?",
+    opts: ["Karena dunia saat ini sudah memiliki Kitab Undang-Undang Hukum Pidana (KUHP) dunia yang bersifat tetap.", "Karena hukum internasional saat ini masih bersifat koordinatif dan menghormati batas wilayah yurisdiksi kriminal negara berdaulat.", "Karena adanya hakim, jaksa, dan pengacara dunia yang memiliki kedudukan subordinatif terhadap negara.", "Karena tanggung jawab pidana dalam hukum internasional hanya dibebankan kepada negara, bukan individu.", "Karena penegakan hukum pidana internasional sepenuhnya bergantung pada perintah dari organisasi internasional tertentu."],
+    correct: 1,
+    source: "Halaman 1.10, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Dasar & Konsep HPI",
+    q: "Dalam konteks fungsi HPI, asas nonintervensi memberikan batasan yang jelas bagi negara-negara besar dalam urusan hukum negara lain. Manakah situasi berikut yang <em>tidak</em> dianggap sebagai pelanggaran terhadap asas nonintervensi?",
+    opts: ["Negara A menggunakan kekuatan bersenjata untuk mendukung pemberontakan di Negara B tanpa persetujuan Negara B.", "Negara A memutus hubungan diplomatik sepihak karena ketidaksetujuan terhadap vonis pengadilan di Negara B.", "Negara A mengirimkan mediator untuk menyelesaikan konflik internal di Negara B atas undangan resmi pemerintah Negara B.", "Negara A mendirikan pengadilan luar negeri di dalam wilayah Negara B untuk mengadili warga negara A yang melakukan kejahatan.", "Negara A memberikan suaka politik kepada buronan Negara B dengan tujuan melemahkan legitimasi hukum Negara B."],
+    correct: 2,
+    source: "Halaman 1.13, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Dasar & Konsep HPI",
+    q: "Rolling membedakan hukum pidana menjadi tiga kategori. Manakah pernyataan yang paling akurat dalam membedakan Hukum Pidana Internasional (HPI) dengan Hukum Pidana Supranasional berdasarkan institusi penegaknya?",
+    opts: ["HPI menggunakan peradilan internasional sementara Supranasional menggunakan peradilan nasional.", "HPI dan Supranasional sama-sama menggunakan peradilan nasional namun dengan sanksi internasional.", "HPI menitikberatkan pada hukum nasional yang mengandung unsur internasional, sedangkan Supranasional memiliki lembaga penegak hukum sendiri (jaksa/hakim) yang bersifat independen secara internasional.", "Hukum Supranasional didasarkan pada sumber hukum adat, sementara HPI didasarkan pada hukum positif negara maju.", "Perbedaan keduanya terletak pada objek kejahatannya, di mana HPI hanya mengadili kejahatan ekonomi lintas negara."],
+    correct: 2,
+    source: "Halaman 1.28, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Dasar & Konsep HPI",
+    q: "Berdasarkan analisis M. Cherif Bassiouni mengenai unsur kejahatan internasional, mengapa unsur \"necessity\" (kebutuhan) menjadi sangat krusial dalam penegakan HPI?",
+    opts: ["Karena kejahatan internasional selalu dilakukan oleh individu yang memiliki kekebalan hukum di negaranya.", "Karena dampak kejahatan internasional hanya dirasakan oleh satu negara sehingga kerja sama tidak mutlak diperlukan.", "Karena tanpa kerja sama internasional dalam hal ekstradisi dan bantuan yudisial, pelaku kejahatan internasional mustahil untuk diadili secara efektif.", "Karena kejahatan internasional memerlukan persetujuan dari seluruh anggota PBB sebelum proses penyidikan dimulai.", "Karena biaya peradilan internasional sangat mahal sehingga negara miskin tidak mampu mengadili pelakunya secara mandiri."],
+    correct: 2,
+    source: "Halaman 3.8, Paragraf 1 (Tabel 3.2)",
+    explanation: ""
+  },
+  {
+    topic: "Dasar & Konsep HPI",
+    q: "Dalam penerapan asas legalitas di Hukum Pidana Internasional, terdapat karakteristik \"sui generis\". Hal ini berarti penerapan asas <em>nullum crimen sine lege</em> dalam HPI...",
+    opts: ["Sama persis dengan penerapan dalam hukum pidana nasional yang sangat kaku terhadap teks undang-undang tertulis.", "Menggunakan standar minimum \"the rule of ejusdem generis\" untuk menjaga keseimbangan antara keadilan bagi tertuduh dan tertib dunia.", "Memperbolehkan penggunaan analogi secara luas untuk menjerat semua perbuatan yang dianggap tidak bermoral.", "Melarang sama sekali penggunaan hukum kebiasaan internasional sebagai dasar pemidanaan.", "Mewajibkan adanya Kitab Undang-Undang Hukum Pidana dunia sebelum seorang pelaku dapat diadili."],
+    correct: 1,
+    source: "Halaman 1.51, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Sejarah HPI",
+    q: "Mengapa pembentukan International Military Tribunal Nuremberg (IMTN) 1945 dianggap sebagai langkah progresif dalam sejarah Hukum Pidana Internasional?",
+    opts: ["Karena untuk pertama kalinya negara-negara bersepakat menghapuskan hukuman mati bagi penjahat perang.", "Karena individu secara langsung dapat dimintakan pertanggungjawaban pidana pada tataran internasional atas kejahatan yang dilakukannya.", "Karena peradilan ini menggunakan hukum nasional Jerman untuk mengadili para petinggi Nazi agar terasa lebih adil.", "Karena IMTN memberikan kekebalan hukum bagi pejabat negara yang menjalankan kebijakan pemerintahnya.", "Karena peradilan ini memfokuskan pada pemulihan aset negara (asset recovery) daripada penghukuman fisik pelaku."],
+    correct: 1,
+    source: "Halaman 1.53, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Sejarah HPI",
+    q: "Prinsip keempat dalam London Agreement 1945 menyatakan bahwa perintah atasan tidak membebaskan seseorang dari tanggung jawab hukum internasional. Syarat apa yang harus terpenuhi agar \"pilihan moral\" dapat dijadikan pertimbangan?",
+    opts: ["Sepanjang pelaku tersebut mendapatkan keuntungan finansial dari perintah tersebut.", "Sepanjang tidak ada ancaman hukuman mati dari atasan jika perintah tersebut ditolak.", "Sepanjang masih ada pertimbangan moral yang secara fakta mungkin dipilih oleh pelaku saat itu.", "Sepanjang pelaku tersebut memiliki pangkat militer yang setingkat dengan atasannya.", "Sepanjang perintah tersebut diberikan dalam situasi perang yang sudah berlangsung lebih dari lima tahun."],
+    correct: 2,
+    source: "Halaman 1.57, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Dasar & Konsep HPI",
+    q: "Karakteristik HPI sebagai \"bridging science\" menurut Otto Triffterer dimaksudkan untuk menjembatani...",
+    opts: ["Kepentingan politik negara maju dan negara berkembang dalam forum PBB.", "Kepentingan hukum internasional (international law interest) dan kepentingan hukum nasional (national law interest) dalam menghadapi ancaman kejahatan lintas batas.", "Hubungan antara sistem hukum Anglo-Saxon dan Eropa Kontinental dalam hal prosedur ekstradisi.", "Perbedaan antara sanksi administratif dan sanksi pidana dalam kasus pelanggaran lingkungan internasional.", "Kewenangan Majelis Umum PBB dan Dewan Keamanan PBB dalam hal penentuan sanksi ekonomi."],
+    correct: 1,
+    source: "Halaman 1.23, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Dasar & Konsep HPI",
+    q: "HPI memiliki karakteristik <em>double personality</em> (kepribadian ganda). Hal ini didasarkan pada kenyataan bahwa...",
+    opts: ["Pelaku kejahatan internasional sering kali memiliki kewarganegaraan ganda untuk menghindari hukum.", "Objek pembahasannya menggabungkan substansi hukum internasional dan penegakan hukum melalui hukum pidana nasional.", "Hukum ini berlaku secara berbeda bagi penduduk sipil dan personel militer dalam situasi konflik.", "Penegakan hukumnya dilakukan oleh dua lembaga peradilan internasional yang berbeda yurisdiksinya.", "Sanksi yang diberikan mencakup pidana penjara di tingkat nasional dan denda di tingkat internasional."],
+    correct: 1,
+    source: "Halaman 2.4, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Sejarah HPI",
+    q: "Terdapat tiga peristiwa monumental yang memengaruhi perkembangan HPI. Manakah di antara peristiwa berikut yang secara khusus berkaitan dengan keselamatan penerbangan sipil?",
+    opts: ["Sejarah perkembangan piracy (pembajakan) di laut lepas sejak abad pertengahan.", "Praktik pengimplementasian Konvensi Tokyo 1963, Den Haag 1970, dan Montreal 1971.", "Kasus extraordinary crimes tentara Jerman dan Jepang pada Perang Dunia II.", "Persoalan kejahatan apartheid yang terjadi di wilayah Afrika Selatan.", "Penarikan garis pangkal lurus dalam kasus Anglo-Norwegian Fisheries."],
+    correct: 1,
+    source: "Halaman 2.4, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Sejarah HPI",
+    q: "Pada masa Kekaisaran Justinianus (abad ke-16), peraturan tentang perang mulai diperjelas. Kontribusi utama era ini terhadap embrio HPI adalah...",
+    opts: ["Larangan penggunaan senjata kimia dalam setiap jenis peperangan antarsuku.", "Penegasan bahwa perang harus dilandaskan pada sebab yang layak dan pelanggar aturan perang dipandang melakukan kejahatan internasional.", "Pembentukan mahkamah permanen untuk mengadili tentara jajahannya yang melakukan pencurian.", "Pengakuan hak asasi manusia bagi seluruh budak yang tertangkap dalam peperangan.", "Kewajiban bagi setiap raja untuk meminta izin Majelis Bangsa-Bangsa sebelum menyerang wilayah lain."],
+    correct: 1,
+    source: "Halaman 2.5, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Yurisdiksi & Kedaulatan",
+    q: "Mengapa opini masyarakat internasional dianggap sebagai landasan sosiologis yang ampuh dalam menekan suatu negara untuk mematuhi HPI?",
+    opts: ["Karena opini tersebut dapat diubah menjadi undang-undang nasional secara otomatis melalui referendum.", "Karena masyarakat internasional memiliki militer sendiri yang dapat mengintervensi negara yang melanggar.", "Karena tekanan opini internasional (seperti kecaman terhadap pelanggaran HAM berat) dapat memaksa negara membentuk instrumen hukum nasional seperti UU Pengadilan HAM.", "Karena opini tersebut memberikan hak bagi individu untuk mengadili kepala negaranya sendiri di pengadilan asing.", "Karena opini masyarakat internasional merupakan sumber hukum primer yang kedudukannya di atas perjanjian internasional."],
+    correct: 2,
+    source: "Halaman 2.41, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Yurisdiksi & Kedaulatan",
+    q: "Berdasarkan asas <em>par in parem non habet imperium</em>, batas kedaulatan suatu negara dalam menerapkan yurisdiksinya adalah...",
+    opts: ["Sampai sejauh jangkauan senjata pemusnah massal yang dimiliki negara tersebut.", "Berlaku secara absolut di mana pun warga negaranya berada tanpa kecuali.", "Terbatas pada wilayah teritorial negaranya sendiri dan berakhir manakala memasuki teritorial kedaulatan negara lain.", "Dapat diperluas hingga ke negara lain asalkan negara tersebut sedang dalam kondisi perang saudara.", "Tergantung pada besarnya bantuan finansial yang diberikan negara tersebut kepada organisasi internasional."],
+    correct: 2,
+    source: "Halaman 2.18, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Yurisdiksi & Kedaulatan",
+    q: "Penerapan asas nasional aktif dalam kasus pidana yang melibatkan warga negara di luar negeri menunjukkan bahwa...",
+    opts: ["Hukum nasional sebuah negara seolah-olah \"mengikuti\" warga negaranya di mana pun ia berada untuk memberikan perlindungan hukum atau mengadili kejahatannya.", "Negara tempat terjadinya tindak pidana wajib tunduk pada hukum negara asal pelaku demi menghormati hak asasi manusia.", "Setiap kejahatan yang dilakukan warga negara asing di wilayah teritorial sebuah negara harus diadili oleh pengadilan internasional.", "Negara berhak mengambil alih yurisdiksi negara lain jika korban kejahatannya adalah pejabat diplomatik.", "Pelaku kejahatan otomatis kehilangan kewarganegaraannya jika melakukan pembunuhan di luar batas wilayah negaranya."],
+    correct: 0,
+    source: "Halaman 2.43, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Yurisdiksi & Kedaulatan",
+    q: "Apa perbedaan mendasar antara kepentingan yang dilindungi dalam asas nasional pasif dibandingkan dengan asas nasional aktif?",
+    opts: ["Asas nasional pasif melindungi kepentingan individu, sedangkan asas nasional aktif melindungi kepentingan korporasi.", "Asas nasional aktif berfokus pada perlindungan warga negara sebagai korban, sedangkan nasional pasif berfokus pada pelaku.", "Asas nasional aktif melindungi kepentingan individu (pelaku), sedangkan nasional pasif melindungi kepentingan negara (misal: pemalsuan mata uang atau keamanan negara).", "Nasional aktif hanya berlaku untuk kejahatan ringan, sedangkan nasional pasif hanya untuk kejahatan luar biasa.", "Keduanya tidak memiliki perbedaan karena sama-sama bersumber dari prinsip hukum perdata internasional."],
+    correct: 2,
+    source: "Halaman 2.44, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Yurisdiksi & Kedaulatan",
+    q: "Asas universal memungkinkan sebuah negara mengadili pelaku kejahatan tanpa melihat kebangsaan pelaku dan tempat kejadian perkara. Kejahatan manakah yang secara klasik memicu lahirnya asas ini dalam hukum kebiasaan internasional?",
+    opts: ["Penipuan kartu kredit lintas negara dan korupsi pejabat publik.", "Pembajakan laut lepas (piracy) dan perbudakan (slavery).", "Pelanggaran lalu lintas di wilayah perbatasan antarnegara.", "Pencurian barang antik di museum nasional suatu negara.", "Pencemaran lingkungan akibat limbah industri skala kecil."],
+    correct: 1,
+    source: "Halaman 2.11, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Kejahatan Internasional",
+    q: "Istilah kejahatan internasional (international crime) memiliki perbedaan konseptual dengan tindak pidana internasional. Manakah pernyataan berikut yang menjelaskan perbedaan tersebut dari sisi sanksi hukum?",
+    opts: ["Kejahatan internasional sudah mencantumkan sanksi pidana secara eksplisit dalam konvensi pengaturnya.", "Tindak pidana internasional tidak memerlukan undang-undang nasional untuk menjatuhkan hukuman bagi pelakunya.", "Perbuatan yang dianggap sebagai kejahatan internasional sering kali tidak memuat sanksi pidana langsung di dalamnya, melainkan penentuannya diserahkan pada hukum nasional negara anggota.", "Sanksi untuk kejahatan internasional ditentukan oleh pemungutan suara di Majelis Umum PBB.", "Tindak pidana internasional hanya mencakup pelanggaran administratif seperti denda atau penyitaan aset."],
+    correct: 2,
+    source: "Halaman 3.4, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Yurisdiksi & Kedaulatan",
+    q: "Seseorang warga negara asing di luar negeri menghina martabat Presiden Republik Indonesia melalui media massa. Upaya apa yang harus dilakukan pemerintah Indonesia untuk mengadili pelaku tersebut jika ia melarikan diri ke negara asalnya?",
+    opts: ["Langsung mengirim pasukan khusus untuk menangkap pelaku di negara asalnya berdasarkan kedaulatan negara.", "Melakukan kerja sama internasional dengan meminta ekstradisi kepada pemerintah negara tempat pelaku berada.", "Mengadili pelaku secara in absentia di mahkamah internasional tanpa perlu menghubungi negara asal pelaku.", "Memutus hubungan perdagangan secara total dengan negara tersebut sampai pelaku diserahkan.", "Meminta PBB untuk mengeluarkan resolusi hukuman mati bagi pelaku tersebut."],
+    correct: 1,
+    source: "Halaman 3.5, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Kejahatan Internasional",
+    q: "Dalam Konvensi Palermo 2000, sebuah kelompok dapat dikategorikan sebagai <em>organized criminal group</em> apabila memenuhi syarat minimum jumlah anggota sebanyak...",
+    opts: ["Dua orang yang bekerja sama secara spontan untuk melakukan satu tindak pidana.", "Lima orang yang memiliki struktur kepemimpinan militer yang sangat formal.", "Tiga orang atau lebih yang eksis dalam periode waktu tertentu dan bertujuan memperoleh keuntungan finansial melalui kejahatan serius.", "Sepuluh orang yang semuanya merupakan pegawai negeri sipil atau staf perusahaan swasta.", "Minimal satu orang pemimpin yang membawahi ratusan pengikut di berbagai negara."],
+    correct: 2,
+    source: "Halaman 3.10, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Kejahatan Internasional",
+    q: "Proses pencucian uang (money laundering) terdiri dari beberapa tahapan. Apa yang terjadi pada tahap <em>layering</em> (pelapisan)?",
+    opts: ["Penempatan harta hasil kejahatan secara fisik ke dalam sistem keuangan untuk pertama kalinya.", "Pemindahan dana melalui serangkaian transaksi keuangan yang kompleks untuk memisahkan hasil kejahatan dari sumber aslinya.", "Penggunaan harta kekayaan yang sudah tampak legal untuk aktivitas bisnis yang sah.", "Pembayaran pajak secara sukarela atas uang hasil korupsi agar terlihat resmi.", "Penyimpanan uang tunai di bawah tempat tidur atau di dalam brankas pribadi di rumah."],
+    correct: 1,
+    source: "Modul 3 KB 1 — Tahapan Pencucian Uang",
+    explanation: ""
+  },
+  {
+    topic: "Terorisme",
+    q: "Mengapa kejahatan terorisme sering dikategorikan sebagai <em>hostis humanis generis</em>?",
+    opts: ["Karena terorisme hanya menargetkan fasilitas militer negara-negara adidaya.", "Karena terorisme dilakukan oleh kelompok yang memiliki dukungan dana dari banyak negara.", "Karena tindakan terorisme (seperti bom Bali) menimbulkan korban massal secara tidak beradab dan menjadi musuh bersama umat manusia.", "Karena pelaku terorisme selalu merupakan warga negara yang tidak memiliki identitas resmi.", "Karena terorisme adalah satu-satunya kejahatan yang sanksinya diatur langsung oleh Piagam PBB."],
+    correct: 2,
+    source: "Halaman 3.20, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Terorisme",
+    q: "Pasal 5 UU No. 15 Tahun 2003 mengecualikan terorisme dari tindak pidana politik. Apa tujuan utama dari pengecualian ini dalam konteks penegakan hukum internasional?",
+    opts: ["Agar pelaku terorisme tidak dapat dihukum mati oleh pengadilan nasional.", "Untuk memudahkan proses ekstradisi, karena kejahatan politik biasanya menjadi alasan penolakan penyerahan pelaku antarnegara.", "Untuk memberikan hak imunitas bagi pelaku yang memiliki motif perjuangan ideologi tertentu.", "Agar kasus terorisme dapat langsung diambil alih oleh Mahkamah Internasional tanpa campur tangan polisi nasional.", "Agar pelaku terorisme mendapatkan status sebagai tawanan perang (prisoner of war)."],
+    correct: 1,
+    source: "Halaman 3.27, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Terorisme",
+    q: "Apa yang dimaksud dengan <em>nihilist terrorism</em> menurut klasifikasi kejahatan terorisme?",
+    opts: ["Tindakan teror yang dilakukan murni untuk keuntungan finansial kelompok kriminal.", "Kelompok teroris yang hanya berjuang untuk kepentingan etnis di wilayah kecil.", "Bentuk terorisme yang memiliki muatan ideologi kuat dan memiliki sistem agenda politik tertentu.", "Terorisme yang dilakukan oleh agen negara untuk menekan rakyatnya sendiri.", "Aksi kekerasan yang dilakukan secara spontan tanpa perencanaan dan tujuan politik."],
+    correct: 2,
+    source: "Halaman 3.26, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Terorisme",
+    q: "Penggunaan asas personal pasif untuk pertama kalinya diadopsi Indonesia dalam UU Pemberantasan Tindak Pidana Terorisme. Apa fungsi utama asas ini dalam UU tersebut?",
+    opts: ["Menuntut warga negara Indonesia yang melakukan terorisme di luar negeri sebagai pelaku.", "Melindungi warga negara Indonesia yang menjadi korban tindak pidana terorisme di luar wilayah Indonesia.", "Memberikan kewenangan bagi polisi asing untuk melakukan penyidikan di wilayah Indonesia.", "Melarang warga negara asing masuk ke Indonesia jika pernah terlibat dalam organisasi politik.", "Menjamin hak pelaku terorisme untuk diadili oleh hakim dari negara asalnya sendiri."],
+    correct: 1,
+    source: "Halaman 3.31, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Sumber Hukum Internasional",
+    q: "Sumber hukum internasional formal tercantum dalam Pasal 38 ayat (1) Statuta Mahkamah Internasional. Manakah di bawah ini yang dikategorikan sebagai sumber hukum tambahan (subsidiary)?",
+    opts: ["Perjanjian internasional yang bersifat umum maupun khusus.", "Prinsip-prinsip hukum umum yang diakui oleh bangsa-bangsa beradab.", "Hukum kebiasaan internasional sebagai bukti praktik umum yang diterima sebagai hukum.", "Keputusan pengadilan dan ajaran para sarjana (doktrin) yang paling terkemuka.", "Resolusi Majelis Umum PBB yang disetujui secara aklamasi."],
+    correct: 3,
+    source: "Halaman 4.5, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Sumber Hukum Internasional",
+    q: "Apa perbedaan mendasar antara <em>law making treaties</em> dengan <em>treaty contract</em> dalam konteks perjanjian internasional?",
+    opts: ["Law making treaties hanya mengikat negara yang menandatanganinya, sementara treaty contract mengikat seluruh dunia.", "Law making treaties meletakkan kaidah hukum bagi masyarakat internasional secara keseluruhan (misal: Konvensi Hukum Laut), sedangkan treaty contract hanya mengatur hak dan kewajiban antar pihak yang mengadakannya (misal: batas wilayah).", "Treaty contract bersifat terbuka bagi pihak ketiga, sedangkan law making treaties bersifat tertutup.", "Law making treaties hanya berlaku dalam situasi perang, sementara treaty contract berlaku saat damai.", "Keduanya tidak memiliki perbedaan yuridis karena sama-sama merupakan kontrak antar subjek hukum."],
+    correct: 1,
+    source: "Halaman 4.8, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Sumber Hukum Internasional",
+    q: "Agar suatu kebiasaan internasional dapat dianggap sebagai sumber hukum (hukum kebiasaan internasional), unsur psikologis (<em>opinio juris</em>) apa yang harus dipenuhi?",
+    opts: ["Adanya praktik yang dilakukan oleh satu negara kuat secara terus-menerus selama satu dekade.", "Adanya perasaan atau kesadaran dari negara-negara bahwa praktik tersebut merupakan sebuah kewajiban hukum yang mengikat.", "Adanya dokumen tertulis yang ditandatangani oleh menteri luar negeri sebagai bukti kesetujuan.", "Praktik tersebut memberikan keuntungan ekonomi yang signifikan bagi masyarakat internasional.", "Praktik tersebut dilakukan hanya oleh negara-negara yang tergabung dalam blok militer tertentu."],
+    correct: 1,
+    source: "Halaman 4.20, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Subjek Hukum Internasional",
+    q: "Dalam menentukan tindak pidana korporasi, dikenal ajaran \"pelaku fungsional\" (<em>functionele dader</em>). Apa inti dari ajaran ini?",
+    opts: ["Korporasi hanya dapat dihukum jika seluruh pegawainya setuju untuk melakukan kejahatan secara bersama-sama.", "Kesalahan (kesengajaan/kealpaan) pengurus atau pegawai korporasi diidentifikasikan sebagai kesalahan korporasi itu sendiri.", "Korporasi tidak dapat dimintai pertanggungjawaban pidana karena korporasi tidak memiliki raga fisik untuk dipenjara.", "Tanggung jawab pidana korporasi sepenuhnya dialihkan kepada pemegang saham terbesar secara pribadi.", "Korporasi hanya boleh dijatuhi sanksi administratif berupa pencabutan izin usaha, bukan denda pidana."],
+    correct: 1,
+    source: "Halaman 4.36, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Subjek Hukum Internasional",
+    q: "International Criminal Court (ICC) memiliki yurisdiksi atas individu, sementara International Court of Justice (ICJ) memiliki kompetensi untuk mengadili...",
+    opts: ["Korporasi multinasional yang melakukan pelanggaran kontrak dagang.", "Organisasi non-pemerintah yang terlibat dalam aksi kemanusiaan.", "Negara sebagai subjek hukum internasional dalam sengketa antarnegara.", "Individu yang melakukan kejahatan pembunuhan biasa di wilayah laut lepas.", "Para komandan militer yang melakukan pemberontakan terhadap pemerintah sah."],
+    correct: 2,
+    source: "Halaman 4.39, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Subjek Hukum Internasional",
+    q: "Mengapa individu dianggap sebagai subjek hukum internasional dalam kerangka Konvensi Genosida 1948?",
+    opts: ["Karena konvensi tersebut memberikan hak bagi individu untuk menuntut negaranya di pengadilan nasional mana pun.", "Karena individu dibebani tanggung jawab secara langsung atas tindakan pemusnahan kelompok etnis atau agama, tanpa memandang jabatannya.", "Karena individu diwajibkan membayar iuran tahunan kepada PBB untuk pencegahan kejahatan.", "Karena konvensi tersebut memberikan kewarganegaraan ganda bagi seluruh korban genosida.", "Karena individu diperbolehkan membentuk pasukan militer sendiri untuk melindungi kelompoknya."],
+    correct: 1,
+    source: "Halaman 4.34, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Subjek Hukum Internasional",
+    q: "Berdasarkan Konvensi Montevideo 1933, sebuah entitas dapat dikatakan sebagai negara jika memenuhi empat unsur. Manakah di bawah ini yang <em>bukan</em> merupakan unsur tersebut?",
+    opts: ["Memiliki penduduk yang tetap.", "Memiliki wilayah tertentu.", "Memiliki pemerintahan yang berdaulat.", "Memiliki kemampuan menjalin hubungan dengan negara lain.", "Memiliki cadangan emas yang cukup di bank sentral."],
+    correct: 4,
+    source: "Halaman 4.42, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "HAM & Peradilan Internasional",
+    q: "Apa konsekuensi logis dari prinsip <em>obligations erga omnes</em> dalam penegakan HAM internasional?",
+    opts: ["Penegakan HAM hanya menjadi tanggung jawab negara tempat terjadinya pelanggaran.", "Negara-negara lain tidak berhak mencampuri urusan pelanggaran HAM di sebuah negara berdaulat.", "Penegakan HAM merupakan kewajiban bagi setiap negara untuk melindungi kepentingan umat manusia secara keseluruhan dan tidak dapat diingkari.", "Setiap individu wajib memiliki paspor internasional yang dikeluarkan oleh PBB.", "Pelanggaran HAM harus diselesaikan melalui jalur diplomasi rahasia antar kepala negara."],
+    correct: 2,
+    source: "Halaman 2.47, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "HAM & Peradilan Internasional",
+    q: "Apa alasan utama munculnya model pengadilan campuran (<em>hybrid tribunal</em>) dalam penyelesaian pelanggaran HAM berat?",
+    opts: ["Karena peradilan internasional permanen (ICC) dianggap terlalu murah dan prosedurnya terlalu cepat.", "Karena pengadilan nasional sering dianggap tidak mampu atau tidak mau memberikan keadilan, sementara peradilan internasional murni sangat mahal dan jauh dari jangkauan korban lokal.", "Karena PBB mewajibkan setiap negara yang baru merdeka untuk memiliki dua sistem peradilan yang berbeda.", "Untuk memberikan kekebalan hukum bagi hakim-hakim lokal dari pengaruh hukum internasional.", "Agar pelaku kejahatan dapat memilih hakim yang berasal dari negara sekutunya saja."],
+    correct: 1,
+    source: "Halaman 5.7 & 5.21, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "HAM & Peradilan Internasional",
+    q: "Mengapa keterlibatan hakim internasional dalam <em>hybrid tribunal</em> dianggap memberikan keuntungan bagi sistem hukum domestik negara yang bersangkutan?",
+    opts: ["Hakim internasional dapat memberikan gaji yang lebih besar bagi staf peradilan lokal.", "Aparatur penegak hukum lokal dapat belajar standar keadilan internasional dan mengadopsi prinsip-prinsip hukum internasional dalam proses peradilan.", "Hakim internasional secara otomatis akan membebaskan seluruh terdakwa yang memiliki motif politik.", "Hakim internasional bertugas untuk menggantikan seluruh undang-undang nasional dengan hukum negara asalnya.", "Kehadiran pihak internasional menjamin bahwa bahasa yang digunakan dalam sidang hanyalah bahasa Inggris."],
+    correct: 1,
+    source: "Halaman 5.7, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "HAM & Peradilan Internasional",
+    q: "Dalam pembentukan <em>Special Court for Sierra Leone</em>, terdapat perbedaan cara pembentukan dibanding dengan ICTY atau ICTR. Perbedaan tersebut adalah...",
+    opts: ["Dibentuk oleh Majelis Umum PBB secara sepihak tanpa persetujuan pemerintah lokal.", "Dibentuk berdasarkan perjanjian antara Pemerintah Sierra Leone dan PBB, bukan melalui resolusi Dewan Keamanan berdasarkan Bab VII Piagam PBB.", "Hanya mengadili kejahatan ekonomi seperti pencucian uang dari hasil tambang berlian.", "Seluruh hakimnya wajib berasal dari negara-negara di kawasan Asia Tenggara.", "Tidak menggunakan hukum internasional sama sekali, hanya hukum adat Sierra Leone."],
+    correct: 1,
+    source: "Halaman 5.25, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "HAM & Peradilan Internasional",
+    q: "Special Panels for Serious Crimes di Dili memiliki karakteristik unik dalam penerapan hukum materielnya. Hukum manakah yang digunakan untuk mengadili kasus pembunuhan biasa yang terjadi pada tahun 1999?",
+    opts: ["Statuta Roma 1998 secara murni.", "Hukum nasional Portugal sebagai mantan penjajah Timor Leste.", "Kitab Undang-Undang Hukum Pidana (KUHP) Indonesia.", "Peraturan militer PBB yang berlaku di wilayah konflik.", "Hukum adat suku-suku di wilayah Dili dan Suai."],
+    correct: 2,
+    source: "Halaman 5.33 & 5.39, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "HAM & Peradilan Internasional",
+    q: "Mengapa Pemerintah Kamboja mengikutsertakan pihak internasional dalam <em>Extraordinary Chambers in the Courts of Cambodia</em> (ECCC)?",
+    opts: ["Karena Kamboja tidak memiliki gedung pengadilan yang memadai untuk menyelenggarakan sidang.", "Karena kesadaran akan lemahnya sistem hukum nasional dan kuatnya dimensi internasional dalam kejahatan genosida yang dilakukan Khmer Merah.", "Untuk memohon bantuan militer tambahan dari PBB dalam menjaga perbatasan.", "Agar seluruh pimpinan Khmer Merah yang sudah meninggal dapat diadili secara simbolis.", "Karena PBB memberikan kompensasi tunai bagi setiap hakim lokal yang ikut serta."],
+    correct: 1,
+    source: "Halaman 5.36, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "HAM & Peradilan Internasional",
+    q: "Apa yang dimaksud dengan pelanggaran HAM yang \"meluas\" (<em>widespread</em>) menurut pendapat Cecilia Medina Quiroga?",
+    opts: ["Pelanggaran yang dilakukan oleh satu orang terhadap tetangganya dalam jangka waktu lama.", "Pelanggaran yang menjadi alat pencapaian kebijakan pemerintah yang dilakukan dalam kuantitas tertentu terhadap sektor penduduk yang luas secara terus-menerus.", "Pelanggaran lalu lintas yang terjadi serentak di seluruh ibu kota negara.", "Tindakan pencurian yang terjadi di pasar-pasar tradisional di berbagai kota.", "Setiap tindakan yang mengganggu ketenangan umum di satu rukun tetangga."],
+    correct: 1,
+    source: "Halaman 5.11, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "HAM & Peradilan Internasional",
+    q: "Manakah hambatan utama yang dihadapi dalam pelaksanaan <em>Special Panels</em> di Dili berkaitan dengan sumber daya?",
+    opts: ["Kelebihan dana yang tidak dapat diserap oleh sistem administrasi peradilan.", "Terbatasnya dana serta keterbatasan hakim dan penasihat hukum dalam memahami kerangka hukum yang sangat beragam (banyak sumber hukum).", "Tidak adanya saksi yang mau memberikan keterangan karena ancaman dari pihak asing.", "Penolakan dari PBB untuk menyediakan tenaga ahli di bidang forensik.", "Pengaruh politik yang terlalu kuat dari negara-negara di Uni Eropa."],
+    correct: 1,
+    source: "Halaman 5.46, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "HAM & Peradilan Internasional",
+    q: "Berdasarkan prinsip <em>exhaustion of local remedies</em>, penyelesaian pelanggaran HAM berat seharusnya...",
+    opts: ["Langsung dibawa ke Mahkamah Internasional tanpa melalui pengadilan nasional.", "Diselesaikan melalui mekanisme nasional terlebih dahulu sebelum melibatkan lembaga internasional.", "Diserahkan sepenuhnya kepada komisi kebenaran dan rekonsiliasi tanpa proses hukum.", "Diselesaikan oleh dewan adat di tempat kejadian perkara.", "Ditunda sampai pelaku kejahatan menyerahkan diri secara sukarela."],
+    correct: 1,
+    source: "Halaman 5.16, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Yurisdiksi & Kedaulatan",
+    q: "Yurisdiksi legislatif (<em>legislative jurisdiction</em>) sebuah negara berdaulat mencakup kewenangan untuk...",
+    opts: ["Memaksakan berlakunya ketentuan hukum nasional melalui tindakan kepolisian.", "Membuat dan menetapkan peraturan perundang-undangan terhadap orang, benda, dan perbuatan di wilayah teritorialnya.", "Memeriksa dan memutus perkara pidana di pengadilan internasional.", "Mengambil alih kepemimpinan negara lain yang sedang dalam kondisi krisis ekonomi.", "Memberikan grasi kepada terpidana kasus korupsi di negara tetangga."],
+    correct: 1,
+    source: "Halaman 6.4, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Yurisdiksi & Kedaulatan",
+    q: "Dalam teori hukum internasional diplomatik, muncul perdebatan yurisdiksi atas gedung kedutaan asing. Jika terjadi pencurian di dalam gedung kedutaan Negara A yang berlokasi di Negara B, yurisdiksi manakah yang dimiliki oleh Negara B sebagai negara penerima?",
+    opts: ["Yurisdiksi ekstrateritorial karena gedung tersebut dianggap wilayah Negara A.", "Yurisdiksi teritorial, namun pelaksanaannya dibatasi oleh kekebalan diplomatik yang dimiliki gedung tersebut (tidak boleh dimasuki tanpa izin).", "Yurisdiksi eksklusif, di mana polisi Negara B bebas masuk kapan saja untuk melakukan penggeledahan.", "Negara B tidak memiliki yurisdiksi sama sekali karena kedaulatannya hilang di area tersebut.", "Yurisdiksi universal, sehingga seluruh negara di dunia boleh ikut mengadili pelaku pencurian tersebut."],
+    correct: 1,
+    source: "Halaman 6.7 & 6.8 (Analisis Pasal 22 Konvensi Wina 1961)",
+    explanation: ""
+  },
+  {
+    topic: "Hukum Laut & Udara",
+    q: "Berdasarkan UNCLOS 1982, lebar laut teritorial sebuah negara ditetapkan maksimal 12 mil laut. Hak apa yang dimiliki kapal asing saat melintasi wilayah tersebut?",
+    opts: ["Hak untuk melakukan penangkapan ikan secara bebas tanpa izin.", "Hak lintas damai (innocent passage), yaitu melintas secara terus-menerus dan cepat tanpa merugikan kedamaian dan keamanan negara pantai.", "Hak untuk melakukan penelitian ilmiah tanpa melapor kepada otoritas setempat.", "Hak untuk berhenti dan membuang sauh di mana pun tanpa alasan mendesak.", "Hak untuk melakukan latihan militer dengan menggunakan senjata api."],
+    correct: 1,
+    source: "Halaman 6.18, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Hukum Laut & Udara",
+    q: "Negara pantai memiliki yurisdiksi terbatas di Zona Tambahan (<em>Contiguous Zone</em>). Apa fokus utama yurisdiksi di wilayah tersebut?",
+    opts: ["Eksplorasi seluruh sumber daya mineral di dasar laut.", "Pencegahan dan penghukuman pelanggaran peraturan bea cukai, fiskal, imigrasi, dan kesehatan (saniter).", "Pelarangan total terhadap seluruh kapal asing yang melintas.", "Pembangunan pangkalan militer permanen untuk pengawasan laut lepas.", "Pengaturan kuota penangkapan ikan bagi nelayan tradisional."],
+    correct: 1,
+    source: "Halaman 6.23, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Hukum Laut & Udara",
+    q: "Apa syarat utama pelaksanaan hak pengejaran seketika (<em>hot pursuit</em>) oleh negara pantai terhadap kapal asing di laut lepas?",
+    opts: ["Pengejaran dimulai setelah kapal asing tersebut sudah berada di tengah laut lepas.", "Pengejaran dilakukan oleh kapal sipil milik nelayan lokal.", "Pengejaran harus dimulai saat kapal asing berada di perairan pedalaman/teritorial/zona tambahan dan dilakukan secara terus-menerus tanpa terputus.", "Kapal asing tersebut harus sudah menenggelamkan kapal patroli negara pantai terlebih dahulu.", "Harus ada izin tertulis dari Sekretaris Jenderal PBB sebelum pengejaran dimulai."],
+    correct: 2,
+    source: "Halaman 6.29, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Hukum Laut & Udara",
+    q: "Mengapa pembajakan di laut lepas (<em>piracy</em>) dianggap sebagai <em>delict jure gentium</em>?",
+    opts: ["Karena dilakukan oleh perusahaan besar yang memiliki izin dari negara tertentu.", "Karena pembajakan dianggap sebagai ancaman bagi seluruh umat manusia dan pelakunya dipandang sebagai musuh bersama umat manusia (hostis humanis generis).", "Karena pembajakan hanya terjadi di wilayah perbatasan antara dua negara maju.", "Karena pelakunya selalu merupakan warga negara yang tidak memiliki kewarganegaraan.", "Karena sanksi pembajakan selalu berupa kerja paksa di pertambangan bawah laut."],
+    correct: 1,
+    source: "Halaman 6.26 & 6.33",
+    explanation: ""
+  },
+  {
+    topic: "Hukum Laut & Udara",
+    q: "Konvensi Den Haag 1970 secara khusus mengatur tentang kejahatan \"hijacking\". Apa unsur utama dari kejahatan ini?",
+    opts: ["Penempatan bahan peledak di bandara udara internasional.", "Penguasaan pesawat udara yang sedang dalam penerbangan secara melawan hukum dengan kekerasan, ancaman kekerasan, atau intimidasi.", "Pencurian bagasi penumpang di area pengambilan barang.", "Penjualan tiket pesawat palsu melalui media elektronik.", "Pemberian informasi cuaca yang salah kepada pilot oleh petugas menara pengawas."],
+    correct: 1,
+    source: "Halaman 6.31, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Yurisdiksi & Kedaulatan",
+    q: "Belgia pernah menerapkan yurisdiksi universal dalam kasus Ariel Sharon (tragedi Sabra dan Shatila). Dasar hukum apa yang digunakan Belgia untuk menuntut warga negara asing atas kejahatan di luar wilayahnya?",
+    opts: ["Perjanjian bilateral khusus antara Belgia dan Israel tentang pertukaran tawanan.", "Undang-Undang Belgia tahun 1993/1999 yang mengizinkan pengadilan nasionalnya mengadili genosida, kejahatan perang, dan kemanusiaan di mana pun dilakukan.", "Resolusi khusus dari Majelis Umum PBB yang menunjuk Belgia sebagai polisi dunia.", "Deklarasi sepihak dari para pengungsi Palestina yang memberikan kedaulatannya kepada Belgia.", "Hukum adat masyarakat Eropa yang mewajibkan setiap negara mengadili menteri pertahanan negara lain."],
+    correct: 1,
+    source: "Halaman 6.11, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Kerja Sama Internasional",
+    q: "ICPO Interpol bukan merupakan \"polisi dunia\" yang memiliki kekuasaan hukum menembus batas wilayah negara lain. Bagaimana cara Interpol bekerja di tiap negara anggotanya?",
+    opts: ["Interpol mengirimkan agen bersenjata dari Lyon ke tiap negara untuk melakukan penangkapan secara langsung.", "Kerja sama dilakukan melalui National Central Bureau (NCB) yang diangkat oleh pemerintah masing-masing negara sebagai penghubung permanen.", "Interpol memiliki penjara sendiri di wilayah laut internasional untuk menahan buronan.", "Setiap polisi di dunia secara otomatis menjadi bawahan langsung Sekretaris Jenderal Interpol.", "Interpol berhak mengubah undang-undang pidana nasional sebuah negara agar sesuai dengan keinginan PBB."],
+    correct: 1,
+    source: "Halaman 7.12, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Kerja Sama Internasional",
+    q: "Manakah di bawah ini yang merupakan fungsi dari <em>Red Notice</em> (Wanted Notice) yang dikeluarkan oleh Interpol?",
+    opts: ["Meminta informasi mengenai identitas atau aktivitas ilegal seseorang yang diduga residivis.", "Meminta lokasi keberadaan seseorang untuk kepentingan pencarian orang hilang atau gangguan jiwa.", "Meminta penahanan atau penangkapan seseorang yang dicari untuk diekstradisikan berdasarkan surat perintah penangkapan yang sah.", "Memberikan peringatan mengenai munculnya senjata jenis baru yang membahayakan.", "Meminta informasi tentang penemuan mayat yang identitasnya tidak dikenal."],
+    correct: 2,
+    source: "Halaman 7.14 & 7.22",
+    explanation: ""
+  },
+  {
+    topic: "Kerja Sama Internasional",
+    q: "Organisasi ICPO Interpol dilarang keras untuk mencampuri urusan yang bersifat politik, militer, keagamaan, atau rasial. Hal ini diatur dalam Anggaran Dasar Interpol pada Pasal...",
+    opts: ["Pasal 1", "Pasal 2", "Pasal 3", "Pasal 4", "Pasal 5"],
+    correct: 2,
+    source: "Halaman 7.13, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Ekstradisi",
+    q: "Dalam konteks ekstradisi, apa yang dimaksud dengan asas <em>double criminality</em> (kejahatan ganda)?",
+    opts: ["Pelaku kejahatan harus memiliki dua kewarganegaraan yang berbeda agar dapat diekstradisikan.", "Perbuatan yang dimintakan ekstradisi harus dianggap sebagai tindak pidana menurut hukum negara peminta dan negara diminta.", "Pelaku kejahatan harus dijatuhi dua jenis hukuman yang berbeda (denda dan penjara).", "Ekstradisi hanya boleh dilakukan jika pelaku melakukan dua jenis kejahatan yang berbeda dalam satu waktu.", "Negara peminta wajib memberikan kompensasi finansial dua kali lipat kepada negara diminta."],
+    correct: 1,
+    source: "Halaman 7.49, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Ekstradisi",
+    q: "Asas <em>specialist</em> dalam perjanjian ekstradisi bertujuan untuk menjamin kepastian hukum bagi pelaku yang diserahkan. Hal ini berarti...",
+    opts: ["Pelaku hanya boleh diadili oleh hakim yang memiliki spesialisasi di bidang hukum internasional.", "Negara peminta hanya boleh mengadili pelaku atas kejahatan yang dijadikan dasar permintaan ekstradisi saja.", "Pelaku berhak mendapatkan fasilitas penjara yang spesial dan mewah di negara peminta.", "Ekstradisi hanya berlaku untuk jenis kejahatan yang sangat spesifik seperti pembajakan pesawat.", "Pelaku harus didampingi oleh pengacara spesialis dari organisasi Interpol selama persidangan."],
+    correct: 1,
+    source: "Halaman 7.50, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Ekstradisi",
+    q: "Mengapa pembunuhan atau percobaan pembunuhan terhadap kepala negara atau anggota keluarganya (Klausula Attentat) tidak dianggap sebagai kejahatan politik dalam perjanjian ekstradisi?",
+    opts: ["Agar pelaku tersebut mendapatkan perlindungan diplomatik dari negara ketiga.", "Agar sifat politik dari kejahatan tersebut dihilangkan sehingga pelaku tetap dapat diekstradisikan dan diadili.", "Karena kepala negara dianggap sebagai simbol suci yang tidak berkaitan dengan politik.", "Untuk menjamin bahwa pelaku akan dijatuhi hukuman mati secara otomatis tanpa sidang.", "Karena PBB mewajibkan setiap pembunuh raja untuk dibuang ke pengasingan permanen."],
+    correct: 1,
+    source: "Halaman 7.65, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Ekstradisi",
+    q: "Apa perbedaan mendasar antara sistem hukum <em>Anglo Saxon</em> (Common Law) dan <em>Eropa Kontinental</em> (Civil Law) dalam persyaratan permintaan ekstradisi?",
+    opts: ["Sistem Civil Law mewajibkan adanya alat bukti yang lengkap, sementara Common Law tidak.", "Sistem Common Law mewajibkan adanya alat-alat bukti dari kejahatan yang dilakukan untuk menentukan apakah permintaan dikabulkan, sedangkan Civil Law memandang cukup dengan identitas dan uraian yuridis.", "Common Law hanya menerima permintaan ekstradisi melalui jalur laut, sementara Civil Law melalui jalur udara.", "Sistem Civil Law melarang ekstradisi bagi warga negaranya sendiri, sementara Common Law mewajibkannya.", "Tidak ada perbedaan karena keduanya sama-sama tunduk pada instruksi Sekretaris Jenderal PBB."],
+    correct: 1,
+    source: "Halaman 7.69, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Kerja Sama Internasional",
+    q: "Dalam <em>Mutual Legal Assistance</em> (MLA), Indonesia menetapkan menteri yang bertanggung jawab di bidang hukum dan HAM sebagai <em>Central Authority</em>. Apa peran utamanya?",
+    opts: ["Menangkap pelaku kejahatan internasional secara mandiri di wilayah asing.", "Menjadi koordinator dalam pengajuan dan penerimaan permintaan bantuan timbal balik dalam masalah pidana dari/ke negara asing.", "Menjatuhkan vonis penjara bagi warga negara asing yang melanggar kontrak bisnis.", "Memberikan paspor diplomatik bagi seluruh aparat penegak hukum Indonesia.", "Memimpin rapat tahunan para menteri pertahanan di kawasan ASEAN."],
+    correct: 1,
+    source: "Halaman 7.35, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Kerja Sama Internasional",
+    q: "Apa pertimbangan utama dilakukannya pemindahan narapidana (<em>Transfer of Sentenced Person</em> - TSP) antarnegara?",
+    opts: ["Untuk mengurangi kepadatan penjara di negara maju agar biaya operasional menurun.", "Alasan kemanusiaan, seperti perbedaan bahasa, budaya, dan agama agar narapidana lebih mudah menjalani proses rehabilitasi di negara asalnya.", "Agar narapidana tersebut dapat dibebaskan lebih cepat tanpa perlu menyelesaikan masa hukumannya.", "Untuk memberikan kesempatan bagi narapidana melakukan upaya pelarian di negara asalnya.", "Karena PBB mewajibkan setiap narapidana asing untuk dikembalikan ke negaranya dalam waktu 24 jam setelah vonis."],
+    correct: 1,
+    source: "Halaman 7.37, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "ICC & Statuta Roma",
+    q: "International Criminal Court (ICC) bersifat komplementer terhadap yurisdiksi nasional. Kapan ICC dapat mengambil alih sebuah kasus kejahatan internasional dari tangan pengadilan nasional?",
+    opts: ["Setiap kali ada permintaan dari organisasi masyarakat sipil internasional.", "Apabila negara yang bersangkutan dinilai \"unwilling\" (tidak mau) atau \"unable\" (tidak mampu) untuk melaksanakan investigasi atau penuntutan secara sungguh-sungguh.", "Apabila jumlah korban kejahatan tersebut kurang dari sepuluh orang.", "Hanya jika negara tersebut bukan merupakan anggota tetap Dewan Keamanan PBB.", "Apabila pelaku kejahatan adalah warga negara dari negara maju yang memiliki hak veto."],
+    correct: 1,
+    source: "Halaman 8.14, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "ICC & Statuta Roma",
+    q: "Manakah di antara situasi berikut yang dikategorikan sebagai \"unwillingness\" (ketidakmauan) negara menurut Pasal 17 Statuta Roma?",
+    opts: ["Sistem pengadilan nasional mengalami keruntuhan total akibat bencana alam dahsyat.", "Negara tidak mampu menghadirkan terdakwa atau saksi-saksi kunci karena keterbatasan fasilitas.", "Proses peradilan nasional ditujukan untuk melindungi pelaku dari pertanggungjawaban pidana atau tidak dilakukan secara merdeka/memihak.", "Negara belum meratifikasi Statuta Roma sehingga tidak memiliki undang-undang tentang genosida.", "Jaksa nasional sedang sibuk menangani kasus korupsi skala besar sehingga kasus HAM tertunda."],
+    correct: 2,
+    source: "Halaman 8.15, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "ICC & Statuta Roma",
+    q: "Berdasarkan amandemen Kampala 2010, kejahatan agresi didefinisikan sebagai tindakan seseorang yang secara efektif mengontrol politik atau militer sebuah negara untuk...",
+    opts: ["Melakukan pencurian data rahasia intelijen negara lain melalui serangan siber.", "Merencanakan atau melaksanakan penggunaan kekuatan bersenjata terhadap kedaulatan, integritas wilayah, atau kemerdekaan politik negara lain yang melanggar Piagam PBB.", "Menghentikan bantuan kemanusiaan kepada negara tetangga yang sedang mengalami krisis pangan.", "Melakukan kampanye hitam di media internasional untuk menjatuhkan reputasi presiden negara lain.", "Memberikan suaka diplomatik bagi pemimpin oposisi yang melarikan diri dari negaranya."],
+    correct: 1,
+    source: "Halaman 8.12, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "ICC & Statuta Roma",
+    q: "Siapa sajakah pihak yang memiliki hak untuk mengajukan perkara ke ICC menurut Pasal 13 Statuta Roma?",
+    opts: ["Korban kejahatan secara langsung melalui surat pribadi kepada hakim ICC.", "Negara peserta, Dewan Keamanan PBB, dan Jaksa Penuntut ICC atas inisiatif sendiri (proprio motu).", "Seluruh organisasi internasional yang terdaftar di bawah naungan PBB.", "Komandan militer yang ingin membersihkan namanya dari tuduhan kejahatan perang.", "Perusahaan multinasional yang asetnya disita oleh pemerintah negara setempat."],
+    correct: 1,
+    source: "Halaman 8.15, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "ICC & Statuta Roma",
+    q: "Kewenangan \"<em>proprio motu</em>\" yang dimiliki Jaksa Penuntut ICC (OTP) memungkinkan jaksa untuk...",
+    opts: ["Menghapus hukuman bagi terdakwa yang bersedia bekerja sama sebagai informan.", "Memulai investigasi atas kejahatan internasional berdasarkan inisiatif sendiri tanpa harus menunggu laporan dari negara atau Dewan Keamanan PBB.", "Mengambil alih kepemimpinan kepolisian nasional di negara peserta selama proses penyidikan.", "Menunjuk pengacara pribadi bagi pelaku kejahatan genosida agar proses sidang lebih cepat.", "Mengeluarkan uang tunai dari kas ICC untuk membayar kompensasi langsung kepada korban."],
+    correct: 1,
+    source: "Halaman 8.21, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Pengadilan HAM Indonesia",
+    q: "Pengadilan HAM di Indonesia (berdasarkan UU No. 26 Tahun 2000) mengenal dua jenis pengadilan. Manakah yang digunakan untuk mengadili pelanggaran HAM berat yang terjadi <em>sebelum</em> undang-undang tersebut diundangkan?",
+    opts: ["Pengadilan HAM Permanen di tiap ibu kota provinsi.", "Pengadilan Militer Luar Biasa di bawah kendali panglima TNI.", "Pengadilan HAM Ad Hoc yang dibentuk atas usul DPR dengan keputusan presiden.", "Komisi Kebenaran dan Rekonsiliasi yang bersifat non-yudisial.", "Pengadilan Negeri biasa dengan tambahan hakim dari unsur kepolisian."],
+    correct: 2,
+    source: "Halaman 8.25 & 8.35, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Pengadilan HAM Indonesia",
+    q: "Apa perbedaan sistem sanksi pidana dalam UU No. 26 Tahun 2000 tentang Pengadilan HAM dibandingkan dengan Kitab Undang-Undang Hukum Pidana (KUHP) Indonesia?",
+    opts: ["UU No. 26/2000 tidak mengenal hukuman mati, sedangkan KUHP mengenalnya.", "Sanksi dalam UU No. 26/2000 mengatur batas minimum dan maksimum pidana, dengan pidana penjara maksimal 25 tahun (lebih tinggi dari KUHP yang 20 tahun).", "KUHP mengatur batas minimum penjara 10 tahun untuk semua jenis pencurian ringan.", "UU No. 26/2000 hanya memberikan sanksi administratif berupa teguran tertulis dari presiden.", "Tidak ada perbedaan sistem sanksi karena UU No. 26/2000 sepenuhnya merujuk pada KUHP."],
+    correct: 1,
+    source: "Halaman 8.29, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Pengadilan HAM Indonesia",
+    q: "Mengapa delik dalam KUHP (seperti pembunuhan biasa) dikategorikan sebagai <em>ordinary crime</em>, sementara pelanggaran HAM berat dikategorikan sebagai <em>extraordinary crime</em>?",
+    opts: ["Karena ordinary crime dilakukan oleh banyak orang, sedangkan extraordinary crime hanya oleh satu orang.", "Karena pelanggaran HAM berat bersifat sistematis, meluas, dan dilakukan dalam konteks kekuasaan pemerintah atau difasilitasi pemerintah, serta bersumber dari hukum internasional.", "Karena extraordinary crime hanya boleh diadili di luar angkasa menurut hukum internasional.", "Karena sanksi untuk ordinary crime selalu berupa hukuman seumur hidup tanpa pengecualian.", "Karena extraordinary crime tidak memerlukan alat bukti sama sekali untuk mempidana pelaku."],
+    correct: 1,
+    source: "Halaman 8.28 & 8.30, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Pengadilan HAM Indonesia",
+    q: "Pasal 46 UU No. 26 Tahun 2000 menyatakan bahwa untuk pelanggaran HAM berat tidak berlaku ketentuan mengenai kedaluwarsa. Apa kaitan logis prinsip ini dengan asas retroaktif?",
+    opts: ["Agar pelaku kejahatan memiliki waktu lebih lama untuk melarikan diri ke luar negeri.", "Karena pelanggaran HAM berat di masa lalu tetap harus dapat dituntut meskipun sudah lewat waktu, demi keadilan bagi korban dan penghapusan impunitas.", "Agar jaksa dapat mengumpulkan biaya perkara yang lebih besar dari keluarga pelaku.", "Karena saksi-saksi dalam kasus HAM biasanya memiliki umur yang sangat panjang.", "Agar pengadilan dapat menunda persidangan sampai pelaku tersebut meninggal dunia."],
+    correct: 1,
+    source: "Halaman 8.36, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Pengadilan HAM Indonesia",
+    q: "Kejahatan genosida menurut Pasal 8 UU No. 26 Tahun 2000 mencakup perbuatan yang dilakukan dengan maksud menghancurkan seluruh atau sebagian kelompok tertentu. Kelompok manakah yang <em>tidak</em> secara spesifik disebutkan dalam pasal tersebut?",
+    opts: ["Kelompok bangsa dan ras.", "Kelompok etnis.", "Kelompok agama.", "Kelompok profesi atau serikat buruh.", "Seluruh jawaban A, B, C benar dan disebutkan dalam pasal."],
+    correct: 3,
+    source: "Halaman 8.27, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Pertanggungjawaban Komando",
+    q: "Prinsip pertanggungjawaban komando berkembang setelah Perang Dunia II, salah satunya melalui kasus Jenderal Tomoyuki Yamashita. Mengapa ia dijatuhi hukuman mati meskipun ia mengaku tidak mengetahui kekejaman pasukannya karena komunikasi terputus?",
+    opts: ["Karena Yamashita secara pribadi memimpin pembantaian tersebut di lapangan.", "Karena hakim menerapkan asas \"strict liability\" (tanggung jawab mutlak), di mana seorang komandan wajib memikul tanggung jawab atas kegagalan melakukan upaya perlindungan wajar terhadap penduduk.", "Karena ia menolak untuk memberikan kompensasi finansial kepada para korban.", "Karena ia terbukti memerintahkan penggunaan senjata nuklir secara ilegal.", "Karena pasukannya terdiri dari tentara bayaran yang tidak memiliki kewarganegaraan."],
+    correct: 1,
+    source: "Halaman 9.5 & 9.51, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Pertanggungjawaban Komando",
+    q: "Manakah di bawah ini yang merupakan unsur utama pertanggungjawaban komando menurut Pasal 7 ayat (3) Statuta ICTY?",
+    opts: ["Adanya hubungan \"superior-subordinate\", atasan tahu/seharusnya tahu kejahatan terjadi, dan atasan gagal mengambil langkah untuk mencegah/menghukum.", "Pelaku kejahatan harus merupakan anggota keluarga dekat dari komandan yang bersangkutan.", "Komandan harus sedang berada di lokasi kejadian saat pembantaian berlangsung.", "Harus ada perintah tertulis yang ditandatangani oleh kepala negara sebelum komandan bisa dihukum.", "Kejahatan tersebut harus memberikan keuntungan wilayah yang luas bagi negara komandan tersebut."],
+    correct: 0,
+    source: "Halaman 9.6 & 9.21",
+    explanation: ""
+  },
+  {
+    topic: "Pertanggungjawaban Komando",
+    q: "Apa perbedaan mendasar antara pertanggungjawaban komando (<em>commander responsibility</em>) dengan pertanggungjawaban pidana individual?",
+    opts: ["Pertanggungjawaban individual hanya untuk militer, sedangkan komando hanya untuk sipil.", "Pertanggungjawaban individual didasarkan pada perbuatan langsung pelaku, sedangkan komando didasarkan pada kelalaian/kegagalan pemegang komando dalam mengendalikan bawahannya secara efektif.", "Komando hanya berlaku saat situasi damai, sedangkan individual berlaku saat perang.", "Pertanggungjawaban komando tidak mengenal sanksi penjara, hanya denda administratif.", "Individual bersifat kolektif satu batalyon, sedangkan komando bersifat rahasia."],
+    correct: 1,
+    source: "Halaman 9.9, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Pertanggungjawaban Komando",
+    q: "Menurut Hugo Grotius dalam \"De Jure Belli Ac Pacis\", seseorang terlibat dalam sebuah kejahatan apabila...",
+    opts: ["Ia memberikan senjata kepada pelaku meskipun tidak tahu tujuannya.", "Ia mengetahui suatu kejahatan dan dapat serta mampu mencegahnya, tetapi gagal dalam melakukannya.", "Ia merupakan warga negara dari pelaku kejahatan tersebut.", "Ia menolak untuk memberikan suaka kepada korban kejahatan.", "Ia memuji tindakan kejahatan tersebut dalam sebuah tulisan di koran."],
+    correct: 1,
+    source: "Halaman 9.12, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Pertanggungjawaban Komando",
+    q: "Pasal 28 Statuta Roma membedakan standar \"<em>mens rea</em>\" (pengetahuan) antara atasan militer dan atasan sipil. Apa standar bagi atasan militer?",
+    opts: ["Hanya bertanggung jawab jika ia secara sadar memberikan perintah pembantaian.", "Bertanggung jawab jika ia mengetahui atau disebabkan oleh keadaan pada waktu itu \"seharusnya mengetahui\" (should have known) bawahannya melakukan kejahatan.", "Tidak bertanggung jawab jika ia sedang tidak bertugas di markas besar.", "Hanya bertanggung jawab jika bawahannya melarikan diri ke luar negeri.", "Wajib bertanggung jawab tanpa perlu pembuktian unsur pengetahuan sama sekali."],
+    correct: 1,
+    source: "Halaman 8.19 & 9.18, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Pertanggungjawaban Komando",
+    q: "Dalam peradilan HAM ad hoc Timor Timur, terdakwa AKBP Gatot Subyaktoro (mantan Kapolres Suai) dinyatakan tidak memenuhi unsur pertanggungjawaban komando militer menurut majelis hakim. Apa alasannya?",
+    opts: ["Karena ia terbukti sedang berada di Jakarta saat kejadian berlangsung.", "Karena ia adalah anggota Polri yang memiliki kewenangan membina ketentraman masyarakat, bukan komandan militer yang mengendalikan pasukan dalam komando efektif militer.", "Karena ia sudah mengundurkan diri dari jabatannya satu hari sebelum kejadian.", "Karena ia tidak memiliki senjata api saat serangan terjadi di Gereja Ave Maria.", "Karena ia bukan merupakan warga negara asli Timor Timur."],
+    correct: 1,
+    source: "Halaman 9.34, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Pertanggungjawaban Komando",
+    q: "Apa yang dimaksud dengan komando secara <em>de facto</em> dalam doktrin pertanggungjawaban komando?",
+    opts: ["Komando yang didasarkan pada surat keputusan pengangkatan resmi dari presiden.", "Kemampuan kontrol secara efektif (duty to control) seorang pemegang komando terhadap anak buahnya dalam realitas lapangan, terlepas dari ada atau tidaknya jabatan formal.", "Jabatan komandan yang hanya berlaku selama masa peperangan aktif berlangsung.", "Hak seseorang untuk memerintah karena ia memiliki kekayaan paling besar di kelompoknya.", "Kewenangan seorang pensiunan jenderal untuk memberikan nasehat strategi kepada tentara aktif."],
+    correct: 1,
+    source: "Halaman 9.22, Paragraf 1",
+    explanation: ""
+  },
+  {
+    topic: "Pertanggungjawaban Komando",
+    q: "Hakim dalam persidangan IMTN menolak pembelaan terdakwa Nazi yang menyatakan tidak pernah menerima laporan dari lapangan. Dasar pertimbangan hakim adalah...",
+    opts: ["Karena hakim memiliki saksi mata yang melihat terdakwa membaca laporan setiap hari.", "Karena pasukan Jerman dikenal memiliki kedisiplinan dan sistem komunikasi/pelaporan yang sangat baik, sehingga tidak logis jika komandan tidak tahu apa yang terjadi.", "Karena terdakwa terbukti membuang seluruh dokumen laporan ke dalam sungai.", "Karena hukum internasional mewajibkan setiap komandan memiliki kemampuan membaca pikiran bawahannya.", "Karena negara pemenang perang berhak mengabaikan seluruh pembelaan dari pihak yang kalah."],
+    correct: 1,
+    source: "Halaman 9.44, Paragraf 1",
+    explanation: ""
+  }
+]
+};
+document.addEventListener('DOMContentLoaded', () => {
+  QuizEngine.init(QUIZ_DATA);
+  const obs = new MutationObserver(() => {
+    const bar = document.getElementById('quiz-top-bar');
+    const main = document.getElementById('quiz-main-screen');
+    if (bar && main) bar.style.display = main.style.display !== 'none' ? 'flex' : 'none';
+  });
+  const target = document.getElementById('quiz-main-screen');
+  if (target) obs.observe(target, { attributes: true, attributeFilter: ['style'] });
+});
+</script>
+</body>
+</html>

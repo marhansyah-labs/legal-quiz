@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz 2 — Modul 1–9 Advance — LeksaLaw</title>
+<link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/app.css">
+<link rel="stylesheet" href="../assets/css/quiz.css">
+</head>
+<body>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<div class="app-shell">
+  <aside class="sidebar" id="app-sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-logo">⚖️</div>
+      <div class="sidebar-name">LeksaLaw<small>Platform Belajar Hukum</small></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Menu Utama</div>
+      <a class="nav-item" href="../index.html"><span class="nav-icon">🏠</span><span class="nav-label">Dashboard</span></a>
+      <div class="nav-section-label">Pembelajaran</div>
+      <div id="nav-semesters"></div>
+      <div class="nav-section-label">Lainnya</div>
+      <a class="nav-item" href="../nilai.html"><span class="nav-icon">📊</span><span class="nav-label">Nilai & Progress</span></a>
+      <a class="nav-item" href="../favorit.html"><span class="nav-icon">⭐</span><span class="nav-label">Favorit</span></a>
+    </nav>
+    <div style="padding:12px 16px;border-top:1px solid rgba(255,255,255,0.08)">
+      <div style="font-size:11px;color:#475569;text-align:center">LeksaLaw v1.0 · Offline</div>
+    </div>
+  </aside>
+  <div class="main-content" id="main-content">
+    <header class="top-header">
+      <button class="header-toggle" id="sidebar-toggle">☰</button>
+      <div class="header-breadcrumb">
+        <a href="../index.html" style="color:var(--text-muted);text-decoration:none">Dashboard</a>
+        <span class="breadcrumb-sep">›</span>
+        <span style="color:var(--text-muted)">Advokasi Kebijakan Publik</span>
+        <span class="breadcrumb-sep">›</span>
+        <span class="breadcrumb-current">Quiz 2 — Modul 1–9 Advance</span>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" id="theme-btn" title="Ganti Tema">🌙</button>
+      </div>
+    </header>
+    <div class="quiz-top-bar" id="quiz-top-bar" style="display:none">
+      <span class="quiz-progress-text" id="progress-label">Soal 1 / 1</span>
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quiz-progress-fill" style="width:0%"></div></div>
+      <span id="quiz-label" style="font-size:12px;color:var(--text-muted);white-space:nowrap"></span>
+    </div>
+
+    <!-- SETUP -->
+    <div id="quiz-setup-screen">
+      <div class="quiz-setup">
+        <div class="setup-card">
+          <a href="../index.html" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text-muted);margin-bottom:20px;text-decoration:none" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color='var(--text-muted)'">← Kembali ke Dashboard</a>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-muted);margin-bottom:6px">Advokasi Kebijakan Publik</div>
+          <h1 class="setup-title" id="setup-quiz-title">Quiz 2 — Modul 1–9 Advance</h1>
+          <p class="setup-sub" id="setup-quiz-course"></p>
+          <div id="score-history" style="display:none" class="score-history"></div>
+          <div class="setup-stat-row">
+            <div class="setup-stat"><div class="n" id="setup-stat-q">—</div><div class="l">Total Soal</div></div>
+            <div class="setup-stat"><div class="n" id="setup-stat-t">—</div><div class="l">Topik</div></div>
+            <div class="setup-stat"><div class="n" id="setup-stat-level">sedang</div><div class="l">Tingkat</div></div>
+          </div>
+          <hr class="divider">
+          <div style="font-size:13px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px">Mode Pengerjaan</div>
+          <div class="mode-opts">
+            <label class="mode-opt selected">
+              <input type="radio" name="mode" value="study" checked>
+              <div><div class="mode-opt-name">📖 Mode Belajar</div><div class="mode-opt-desc">Feedback & penjelasan langsung setelah tiap jawaban</div></div>
+            </label>
+            <label class="mode-opt">
+              <input type="radio" name="mode" value="exam">
+              <div><div class="mode-opt-name">📝 Mode Ujian</div><div class="mode-opt-desc">Hasil & pembahasan muncul di akhir saja</div></div>
+            </label>
+          </div>
+          <hr class="divider">
+          <label class="shuffle-toggle">
+            <input type="checkbox" id="opt-shuffle">
+            <div>
+              <div class="shuffle-toggle-label">🔀 Acak Soal & Pilihan Jawaban</div>
+              <div class="shuffle-toggle-desc">Urutan soal dan opsi akan diacak setiap sesi</div>
+            </div>
+          </label>
+          <button class="btn-start-quiz" id="btn-start-quiz">Mulai Quiz →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUIZ MAIN -->
+    <div id="quiz-main-screen" style="display:none">
+      <div class="page-content" style="padding-top:16px;padding-bottom:100px">
+        <div class="quiz-layout">
+          <div><div id="q-container"></div></div>
+          <div class="quiz-sidebar-panel">
+            <div class="quiz-nav-card">
+              <div class="quiz-nav-title">Navigasi Soal</div>
+              <div class="nav-grid" id="nav-grid"></div>
+              <div class="nav-legend">
+                <div class="legend-item"><div class="legend-dot dot-answered"></div>Dijawab</div>
+                <div class="legend-item"><div class="legend-dot dot-flagged"></div>Ragu</div>
+                <div class="legend-item"><div class="legend-dot dot-unanswered"></div>Belum</div>
+              </div>
+            </div>
+            <div class="quiz-nav-card">
+              <div class="quiz-nav-title">Aksi</div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <button onclick="QuizEngine.finish()" class="btn btn-primary btn-sm" style="justify-content:center">✓ Selesai & Lihat Hasil</button>
+                <button onclick="if(confirm('Mulai ulang quiz?'))QuizEngine.restart()" class="btn btn-secondary btn-sm" style="justify-content:center">🔁 Mulai Ulang</button>
+              </div>
+            </div>
+            <div class="quiz-nav-card" style="font-size:12px;color:var(--text-muted)">
+              <div class="quiz-nav-title">Pintasan Keyboard</div>
+              <div style="display:flex;flex-direction:column;gap:5px">
+                <div><kbd style="background:var(--bg);border:1px solid var(--border);padding:1px 5px;border-radius:4px;font-size:10px">1–5</kbd> Pilih jawaban</div>
+                <div><kbd style="background:var(--bg);border:1px solid var(--border);padding:1px 5px;border-radius:4px;font-size:10px">←→</kbd> Navigasi soal</div>
+                <div><kbd style="background:var(--bg);border:1px solid var(--border);padding:1px 5px;border-radius:4px;font-size:10px">F</kbd> Tandai ragu</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULT -->
+    <div id="quiz-result-screen" style="display:none">
+      <div class="result-screen">
+        <div class="result-card">
+          <div class="score-center">
+            <div class="score-circle">
+              <div class="score-pct" id="result-pct">0%</div>
+              <div class="score-lbl">Skor Akhir</div>
+            </div>
+            <div class="score-detail" id="result-detail"></div>
+            <div class="score-verdict" id="result-verdict"></div>
+          </div>
+          <hr class="divider">
+          <div class="result-section-title">📊 Performa Per Topik</div>
+          <div id="result-topics"></div>
+          <div class="result-section-title">❌ Ringkasan Jawaban Salah</div>
+          <div id="result-wrongs"></div>
+          <div class="result-actions">
+            <button class="btn btn-primary" onclick="QuizEngine.restart()">🔁 Ulangi Quiz</button>
+            <button class="btn btn-secondary" onclick="QuizEngine.review()">📋 Tinjau Jawaban</button>
+            <a href="../index.html" class="btn btn-secondary">🏠 Dashboard</a>
+            <button class="btn btn-secondary" onclick="window.print()">🖨️ Cetak</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER NAV -->
+<div class="quiz-footer" id="quiz-footer">
+  <div class="footer-inner">
+    <button class="btn btn-secondary" id="btn-prev" onclick="QuizEngine.prev()">← Sebelumnya</button>
+    <button class="btn-flag-toggle" id="btn-flag-toggle" onclick="QuizEngine.toggleFlag()">🚩 Tandai Ragu</button>
+    <button class="btn btn-primary" id="btn-next" onclick="QuizEngine.next()">Berikutnya →</button>
+    <button class="btn-finish-quiz" id="btn-finish" style="display:none" onclick="QuizEngine.finish()">Selesai ✓</button>
+  </div>
+</div>
+<div class="toast" id="app-toast"></div>
+
+<script src="../data/config.js"></script>
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/quiz-engine.js"></script>
+<script>
+const QUIZ_DATA = {
+  quizId: "AKP_Q2",
+  courseId: "AKP",
+  courseName: "Advokasi Kebijakan Publik",
+  title: "Quiz 2 — Modul 1–9 Advance",
+  level: "sedang",
+  questions: [
+  {
+    topic: "Modul 1: Konsep & Definisi Kebijakan Publik",
+    q: "Menurut Thomas R. Dye, kebijakan publik didefinisikan sebagai \"apapun yang dipilih pemerintah untuk dilakukan atau tidak dilakukan\". Namun, Nugroho memberikan penekanan berbeda yang menyatakan bahwa kebijakan publik itu mudah dipahami karena erat kaitannya dengan…",
+    opts: ["Intervensi pemerintah yang bersifat memaksa", "Hubungan antara lembaga pemerintah dan lingkungannya", "Pencapaian cita-cita nasional", "Distribusi kekuasaan antara kelompok penekan", "Proses pengalokasian norma secara sah"],
+    correct: 2,
+    source: "Modul 1, Hal. 1.5, Par. 2",
+    explanation: "Nugroho menekankan bahwa esensi kebijakan publik berkaitan dengan pencapaian cita-cita nasional, sehingga tingkat pencapaiannya dapat diukur secara jelas."
+  },
+  {
+    topic: "Modul 1: Konsep & Definisi Kebijakan Publik",
+    q: "Terdapat karakteristik kebijakan publik yang bersifat \"negatif\". Dalam konteks yang dijelaskan oleh Solichin Abdul Wahab, kebijakan bersifat negatif apabila…",
+    opts: ["Kebijakan tersebut melarang masyarakat melakukan aktivitas ekonomi tertentu", "Pejabat pemerintah memilih untuk tidak melaksanakan apapun dalam menyelesaikan masalah yang butuh campur tangan", "Adanya dampak yang tidak diharapkan (unintended consequences) bagi masyarakat luas", "Kebijakan tersebut hanya menguntungkan elit politik dan mengabaikan rakyat", "Kebijakan tersebut bertentangan dengan norma kesusilaan masyarakat"],
+    correct: 1,
+    source: "Modul 1, Hal. 1.7, Par. 3",
+    explanation: "Karakteristik kebijakan negatif menurut Wahab adalah keputusan pejabat untuk tidak bertindak atau tidak melakukan intervensi pada masalah yang seharusnya membutuhkan campur tangan pemerintah."
+  },
+  {
+    topic: "Modul 1: Konsep & Definisi Kebijakan Publik",
+    q: "Dalam mempelajari kebijakan publik, terdapat alasan ilmiah (scientific reason). Apabila kebijakan dipandang sebagai \"variabel bebas\" (independent variable), maka fokus utama studinya adalah…",
+    opts: ["Faktor-faktor lingkungan yang mempengaruhi isi kebijakan", "Bagaimana distribusi kekuasaan antar kelompok menentukan substansi kebijakan", "Pengaruh kebijakan terhadap sistem politik dan keadaan sosial masyarakat", "Proses perumusan keputusan kolektif oleh para aktor politik", "Bagaimana urbanisasi menentukan muatan kebijakan"],
+    correct: 2,
+    source: "Modul 1, Hal. 1.10, Par. 1",
+    explanation: "Sebagai variabel bebas, studi kebijakan fokus pada dampak atau pengaruh yang ditimbulkan oleh kebijakan terhadap lingkungan dan sistem politik."
+  },
+  {
+    topic: "Modul 1: Konsep & Definisi Kebijakan Publik",
+    q: "Model formulasi kebijakan \"Teori Permainan\" (Game Theory) memiliki karakteristik yang sangat abstrak dan deduktif. Keberhasilan kebijakan dalam model ini tidak hanya ditentukan oleh aktor pembuat kebijakan, melainkan juga oleh…",
+    opts: ["Kemampuan birokrasi dalam melayani masyarakat", "Preferensi politik para elit yang berkuasa", "Strategi defensif untuk menghindari serangan lawan", "Aktor-aktor lain termasuk yang berada di luar jangkauan kendali pembuat kebijakan", "Efisiensi ekonomi dalam membandingkan pengorbanan dan hasil"],
+    correct: 3,
+    source: "Modul 1, Hal. 1.25, Par. 3",
+    explanation: "Model ini melihat proses kebijakan dalam kondisi kompetitif di mana hasil akhir bergantung pada pilihan bebas dari berbagai aktor, termasuk aktor luar."
+  },
+  {
+    topic: "Modul 1: Konsep & Definisi Kebijakan Publik",
+    q: "Dalam sistem kebijakan publik menurut Mustopadidjaja AR, terdapat unsur \"Input\" yang timbul karena faktor lingkungan kebijakan. Unsur input ini berupa…",
+    opts: ["Serangkaian tindakan untuk memecahkan masalah", "Tuntutan, keinginan masyarakat, atau peluang yang harus segera diatasi", "Hubungan antara empat elemen dalam pola kelembagaan", "Perilaku kelompok sasaran yang ingin dipengaruhi", "Proses politis yang melibatkan kelompok kepentingan yang bertentangan"],
+    correct: 1,
+    source: "Modul 1, Hal. 1.34, Par. 2",
+    explanation: "Input didefinisikan sebagai masalah kebijakan yang muncul dari lingkungan, baik berupa tuntutan maupun peluang yang diharapkan diatasi melalui kebijakan publik."
+  },
+  {
+    topic: "Modul 1: Konsep & Definisi Kebijakan Publik",
+    q: "William N. Dunn membagi proses analisis kebijakan menjadi aktivitas yang bersifat politis dan intelektual. Manakah di bawah ini yang dikategorikan sebagai aktivitas yang lebih bersifat intelektual?",
+    opts: ["Adopsi kebijakan", "Implementasi kebijakan", "Penilaian kebijakan", "Forecasting dan monitoring", "Mobilisasi dukungan massa"],
+    correct: 3,
+    source: "Modul 1, Hal. 1.36, Par. 1",
+    explanation: "Dunn membedakan aktivitas intelektual seperti perumusan masalah, forecasting, rekomendasi, monitoring, dan evaluasi dari aktivitas yang bersifat politis seperti adopsi dan implementasi."
+  },
+  {
+    topic: "Modul 1: Konsep & Definisi Kebijakan Publik",
+    q: "Dilema kebijakan publik sering terjebak dalam persoalan \"prisoner-dilemma\" sebagaimana dinyatakan Dennis Muller. Hal ini berarti…",
+    opts: ["Masyarakat tidak memiliki informasi yang cukup tentang dampak kebijakan", "Adanya pertentangan antara kepentingan eksekutif dan legislatif", "Individu ingin berbuat demi kelompoknya, namun demi kepentingan pribadi sering merugikan kelompoknya sendiri", "Pemerintah tidak mampu mengoordinasikan penyediaan jasa publik yang besar", "Pilihan antara dua kemungkinan yang sama-sama menguntungkan masyarakat"],
+    correct: 2,
+    source: "Modul 1, Hal. 1.48, Par. 3",
+    explanation: "Prisoner-dilemma dalam kebijakan publik merujuk pada situasi di mana kepentingan pribadi individu mengalahkan komitmen kolektif, sehingga merugikan kelompoknya sendiri."
+  },
+  {
+    topic: "Modul 1: Konsep & Definisi Kebijakan Publik",
+    q: "Instansi administratif memiliki peran strategis dalam sistem politik sehingga muncul diktum yang menyatakan \"kebijakan tergantung pada kemurahan administraturnya\". Hal ini dikarenakan…",
+    opts: ["Administrasi memiliki otoritas hukum tertinggi untuk menetapkan UU", "Administrasi hanya bertugas melaksanakan perintah dari lembaga legislatif", "Instansi administrasi adalah sumber utama usulan UU dan aktif mendesakkan penggunaannya", "Pejabat administrasi tidak terpengaruh oleh kepentingan politik luar", "Lembaga peradilan selalu mengikuti interpretasi dari instansi administratif"],
+    correct: 2,
+    source: "Modul 1, Hal. 1.51, Par. 3",
+    explanation: "Instansi administratif berperan penting karena mereka bukan hanya pelaksana, tapi sumber utama usulan regulasi dan aktif memperjuangkan implementasinya."
+  },
+  {
+    topic: "Modul 2: Implementasi & Kelembagaan Kebijakan",
+    q: "Huntington (1968) berpendapat bahwa perbedaan signifikan antar negara bukan pada ideologinya, melainkan pada kemampuan menjalankan pemerintahan. Indikator utama kemampuan ini adalah…",
+    opts: ["Kualitas visi dan misi yang dirancang oleh presiden", "Ketepatan strategi komunikasi antar lembaga negara", "Kemampuan menjalankan setiap kebijakan/keputusan yang dirancang birokrasi atau presiden", "Jumlah anggaran yang tersedia untuk program pembangunan", "Partisipasi masyarakat dalam setiap tahapan pemilu"],
+    correct: 2,
+    source: "Modul 2, Hal. 2.6, Par. 1",
+    explanation: "Kemampuan negara dilihat dari efektivitasnya dalam mengeksekusi atau mengimplementasikan kebijakan yang telah dibuat."
+  },
+  {
+    topic: "Modul 2: Implementasi & Kelembagaan Kebijakan",
+    q: "Dalam pelaksanaan kebijakan publik, terdapat pendekatan \"Struktural\". Jika sebuah institusi dianggap tidak sesuai dengan perubahan yang diinginkan kebijakan, maka langkah \"planning for change\" dilakukan untuk…",
+    opts: ["Melaksanakan perubahan di dalam internal institusi", "Mengubah prioritas anggaran dalam dokumen perencanaan", "Menghadapi perubahan yang datang dari luar institusi (eksternal)", "Mengorganisir sumber daya manusia agar memenuhi kualifikasi jabatan", "Mempercepat tahapan prosedur operasional standar (SOP)"],
+    correct: 2,
+    source: "Modul 2, Hal. 2.7, Par. 4",
+    explanation: "Planning for change secara spesifik ditujukan agar organisasi mampu beradaptasi dengan perubahan lingkungan eksternal."
+  },
+  {
+    topic: "Modul 2: Implementasi & Kelembagaan Kebijakan",
+    q: "George R. Terry mengemukakan enam sumber daya manajemen. Dalam kebijakan publik, sumber daya \"Machine\" (Information) berperan melalui…",
+    opts: ["Penggunaan peralatan berat dalam proyek infrastruktur", "Pengelolaan persuratan, alat komunikasi fisik/elektronik, dokumentasi, dan arsip", "Pengadaan sarana transportasi bagi pelaksana lapangan", "Pengesahan kebijakan oleh atasan sesuai peraturan", "Mobilisasi dukungan masyarakat secara spontan"],
+    correct: 1,
+    source: "Modul 2, Hal. 2.9, Par. 4",
+    explanation: "Machine dalam konteks kebijakan publik diterjemahkan sebagai arus informasi dan manajemen dokumentasi/arsip."
+  },
+  {
+    topic: "Modul 2: Implementasi & Kelembagaan Kebijakan",
+    q: "Model implementasi Edward III menekankan variabel \"Disposisi\". Watak pelaksana yang paling krusial untuk menumbuhkan rasa percaya dan menurunkan penolakan masyarakat adalah…",
+    opts: ["Komitmen dan kejujuran", "Tegas dan hirarkis", "Demokratis", "Energik dan sesuai target", "Profesional dan otonom"],
+    correct: 2,
+    source: "Modul 2, Hal. 2.12, Par. 1",
+    explanation: "Sikap demokratis pelaksana kebijakan akan memberikan kesan baik dan menumbuhkan kepedulian dari kelompok sasaran."
+  },
+  {
+    topic: "Modul 2: Implementasi & Kelembagaan Kebijakan",
+    q: "Frederickson (1997) melihat konsep \"publik\" dari lima perspektif. Perspektif yang melihat masyarakat memberikan tekanan pelayanan karena jumlah mereka yang besar namun tidak saling berkaitan disebut sebagai publik sebagai…",
+    opts: ["Manifestasi interaksi kelompok", "Pemilih rasional", "Representasi kepentingan umum", "Pengguna (User)", "Masyarakat berdaulat"],
+    correct: 3,
+    source: "Modul 2, Hal. 2.15, Par. 4",
+    explanation: "Publik sebagai pengguna adalah kumpulan individu yang memberikan tekanan pada birokrasi untuk mendapatkan pelayanan."
+  },
+  {
+    topic: "Modul 2: Implementasi & Kelembagaan Kebijakan",
+    q: "Harmonisasi kebijakan bertujuan untuk menyelaraskan regulasi agar tidak terjadi tumpang tindih (overlapping). Hal ini merupakan konsekuensi dari diterapkannya asas…",
+    opts: ["Supremasi Politik", "Hierarki Peraturan Perundang-undangan", "Kedaulatan Rakyat", "Desentralisasi Kekuasaan", "Efisiensi Birokrasi"],
+    correct: 1,
+    source: "Modul 2, Hal. 2.21, Par. 3",
+    explanation: "Asas hierarki menuntut peraturan yang lebih rendah tidak bertentangan dengan yang lebih tinggi, sehingga diperlukan harmonisasi vertikal dan horizontal."
+  },
+  {
+    topic: "Modul 2: Implementasi & Kelembagaan Kebijakan",
+    q: "Bromley (1989) menjelaskan tiga level perubahan kelembagaan. Level yang ditandai dengan adanya badan legislatif dan badan hukum untuk merumuskan tata kehidupan yang diinginkan disebut…",
+    opts: ["Level Organisasional", "Level Operasional", "Level Kebijakan (Policy Level)", "Level Konstitusional", "Level Kolektif"],
+    correct: 2,
+    source: "Modul 2, Hal. 2.28, Par. 1",
+    explanation: "Level kebijakan ditandai dengan peran legislatif dalam merumuskan arah dan aturan dasar kehidupan bermasyarakat."
+  },
+  {
+    topic: "Modul 2: Implementasi & Kelembagaan Kebijakan",
+    q: "Perbedaan mendasar antara paradigma New Public Management (NPM) dan New Public Service (NPS) dalam memandang masyarakat adalah…",
+    opts: ["NPM memandang masyarakat sebagai klien, NPS memandang sebagai pemilik", "NPM memandang sebagai pemilik, NPS memandang sebagai pelanggan", "NPM memandang sebagai pelanggan (customer), NPS memandang sebagai pemilik (owner)", "NPM memandang sebagai warga negara, NPS memandang sebagai subjek pajak", "NPM memandang sebagai partisipan, NPS memandang sebagai pengguna layanan"],
+    correct: 2,
+    source: "Modul 2, Hal. 2.47, Par. 1",
+    explanation: "NPM mengadopsi nilai bisnis dengan melihat publik sebagai konsumen, sementara NPS mendudukkan publik sebagai pemilik kedaulatan negara."
+  },
+  {
+    topic: "Modul 3: Konsep & Strategi Advokasi",
+    q: "Advokasi kebijakan sering didefinisikan sebagai usaha sistematis untuk mempengaruhi negara. Menurut Mulyadi & Gedeona (2017), advokasi merupakan alat dalam aksi sosial, politik, dan kultural yang dilakukan dengan cara…",
+    opts: ["Melakukan lobi rahasia dengan pengambil keputusan", "Mendulang massa untuk mendesak perubahan atau pencabutan kebijakan yang menekan rakyat kecil", "Memberikan bantuan dana kepada kelompok masyarakat marjinal", "Menyusun naskah akademik yang bersifat murni akademis", "Melakukan revolusi bersenjata untuk mengganti sistem pemerintahan"],
+    correct: 1,
+    source: "Modul 3, Hal. 3.5, Par. 3",
+    explanation: "Advokasi dilakukan secara terencana melalui mobilisasi dukungan massa untuk mendesak pemegang keputusan mengubah kebijakan yang tidak adil."
+  },
+  {
+    topic: "Modul 3: Konsep & Strategi Advokasi",
+    q: "Salah satu unsur advokasi menurut Sharma (2008) adalah \"Mengembangkan dan menyampaikan pesan\". Seorang politisi biasanya akan lebih tergerak hatinya jika pesan yang disampaikan menekankan pada…",
+    opts: ["Data statistik yang sangat teknis dan rumit", "Jumlah konstituen di wilayahnya yang menaruh kepedulian terhadap masalah tersebut", "Kerugian finansial negara secara makro", "Persetujuan dari lembaga donor internasional", "Landasan teologis dari kebijakan yang diusulkan"],
+    correct: 1,
+    source: "Modul 3, Hal. 3.9, Par. 1",
+    explanation: "Politisi cenderung responsif terhadap isu yang didukung oleh basis pemilih (konstituen) mereka di daerah."
+  },
+  {
+    topic: "Modul 3: Konsep & Strategi Advokasi",
+    q: "Dalam melakukan advokasi, penting untuk membentuk \"Lingkaran Inti\". Organisasi lingkaran inti ini biasanya dibagi menjadi tiga fungsi, di mana \"Divisi kerja basis\" (ground work unit) bertugas sebagai…",
+    opts: ["Juru bicara, perunding, dan pelobi dalam proses legislasi", "Penyedia dukungan dana, logistik, dan data", "Dapur gerakan yang membangun basis massa dan pendidikan politik kader", "Mediator antara kelompok kepentingan dan pemerintah", "Pengawas pelaksanaan kebijakan di tingkat lapangan"],
+    correct: 2,
+    source: "Modul 3, Hal. 3.19, Par. 4",
+    explanation: "Divisi basis adalah penggerak akar rumput yang menyiapkan massa dan ideologi gerakan."
+  },
+  {
+    topic: "Modul 3: Konsep & Strategi Advokasi",
+    q: "Tujuan advokasi kebijakan adalah melakukan perubahan ke arah yang lebih adil dalam tiga dimensi. Dimensi yang dimaknai sebagai perangkat kelembagaan negara untuk menegakkan hukum seadil-adilnya disebut…",
+    opts: ["Substansi", "Kultur", "Struktur", "Prosedur", "Lingkungan"],
+    correct: 2,
+    source: "Modul 3, Hal. 3.22, Par. 2",
+    explanation: "Struktur merujuk pada kesiapan dan integritas lembaga negara dalam menjalankan aturan secara adil."
+  },
+  {
+    topic: "Modul 3: Konsep & Strategi Advokasi",
+    q: "Mengapa riset yang dilakukan untuk advokasi kebijakan berbeda dengan riset akademis murni?",
+    opts: ["Riset advokasi tidak memerlukan metodologi yang jelas", "Riset advokasi lebih mementingkan manfaat praktis daripada nilai orisinalitas dan formalitas baku", "Riset advokasi hanya boleh dilakukan oleh LSM, bukan universitas", "Riset advokasi dilarang menggunakan data statistik formal", "Riset advokasi tidak perlu dipertanggungjawabkan hasilnya"],
+    correct: 1,
+    source: "Modul 3, Hal. 3.21, Par. 1",
+    explanation: "Riset advokasi adalah riset terapan yang bertujuan untuk mendukung argumentasi dan langkah-langkah praktis dalam proses advokasi."
+  },
+  {
+    topic: "Modul 3: Konsep & Strategi Advokasi",
+    q: "Dalam langkah-langkah advokasi, kapan \"Konsep Alternatif\" perlu diajukan?",
+    opts: ["Di tahap awal sebelum masalah diidentifikasi", "Ketika terdapat kesulitan dalam membuat penolakan berupa pencabutan kebijakan yang sudah ada", "Saat melakukan unjuk rasa di depan gedung DPR", "Setelah proses litigasi di pengadilan dinyatakan menang", "Hanya jika diminta oleh pembuat kebijakan"],
+    correct: 1,
+    source: "Modul 3, Hal. 3.27, Par. 4",
+    explanation: "Solusi alternatif diperlukan sebagai jalan tengah jika pembatalan total kebijakan sulit dicapai, sehingga tetap ada perbaikan yang adil."
+  },
+  {
+    topic: "Modul 3: Konsep & Strategi Advokasi",
+    q: "Strategi advokasi melalui media memiliki fokus pada pembentukan opini publik. Kerja sama ini akan lebih efektif jika bermitra dengan media yang…",
+    opts: ["Hanya memiliki jangkauan lokal agar lebih fokus", "Memiliki jejaring luas dan jangkauan nasional", "Bersedia dibayar untuk menyebarkan informasi apapun", "Tidak memiliki kaitan dengan isu yang sedang diadvokasi", "Membatasi akses tanya jawab dengan publik"],
+    correct: 1,
+    source: "Modul 3, Hal. 3.39, Par. 2",
+    explanation: "Media dengan jangkauan nasional memberikan tekanan opini yang lebih kuat terhadap pemerintah pusat."
+  },
+  {
+    topic: "Modul 3: Konsep & Strategi Advokasi",
+    q: "Dalam \"Model A\" dari John Hopkins University, terdapat langkah \"Kesinambungan\" (Continuity). Tujuan utama langkah ini adalah…",
+    opts: ["Mengakhiri aktivitas advokasi setelah tujuan tercapai", "Memantau pelaksanaan kebijakan baru dan menyesuaikan data argumentasi seiring perubahan", "Mencari sumber dana baru dari donor internasional", "Mengganti seluruh anggota tim inti dengan tenaga baru", "Melakukan aksi demonstrasi secara terus-menerus tanpa henti"],
+    correct: 1,
+    source: "Modul 3, Hal. 3.44, Par. 3",
+    explanation: "Advokasi adalah proses kontinu untuk memastikan kebijakan yang diubah tetap dijalankan sesuai kesepakatan dan siap menghadapi tantangan baru."
+  },
+  {
+    topic: "Modul 4: Aktor & Partisipasi dalam Advokasi",
+    q: "Sabatier (1988) mengemukakan konsep \"Advocacy Coalition\". Yang dimaksud dengan koalisi ini adalah kelompok yang…",
+    opts: ["Terdiri hanya dari pejabat pemerintah tingkat tinggi", "Menentang setiap kebijakan yang dikeluarkan oleh negara", "Dapat memutuskan kebijakan dalam suatu subsistem berdasarkan kepercayaan dan tujuan bersama", "Dibentuk secara spontan oleh masyarakat saat terjadi krisis", "Memiliki otoritas hukum untuk mengadili pelanggaran kebijakan"],
+    correct: 2,
+    source: "Modul 4, Hal. 4.5, Par. 1",
+    explanation: "Koalisi advokasi melibatkan berbagai aktor (pemerintah, swasta, masyarakat) yang terhubung karena kesamaan nilai dan tujuan dalam isu tertentu."
+  },
+  {
+    topic: "Modul 4: Aktor & Partisipasi dalam Advokasi",
+    q: "James E. Anderson membedakan aktor kebijakan menjadi \"Official Policy-maker\" dan \"Non-governmental Participants\". Lembaga yang termasuk dalam official policy-maker dengan tugas utama mempertahankan dan menegakkan peraturan adalah…",
+    opts: ["Legislatif", "Eksekutif", "Yudikatif", "Kelompok Kepentingan", "Partai Politik"],
+    correct: 2,
+    source: "Modul 4, Hal. 4.7, Par. 1",
+    explanation: "Lembaga yudikatif (MA, MK, KY) bertugas mengawasi agar tidak terjadi penyelewengan dalam pelaksanaan aturan."
+  },
+  {
+    topic: "Modul 4: Aktor & Partisipasi dalam Advokasi",
+    q: "Menurut Kingdon (1995), birokrat dianggap sebagai aktor strategis dalam pelaksanaan advokasi kebijakan karena…",
+    opts: ["Mereka dipilih langsung oleh rakyat dalam pemilu", "Memiliki keterampilan, pengetahuan lembaga sesuai masa kerja, dan peranan strategis operasional", "Mempunyai kewenangan untuk membatalkan keputusan presiden", "Mereka tidak terikat pada aturan formal organisasi", "Birokrat adalah pemilik modal yang mendanai kebijakan"],
+    correct: 1,
+    source: "Modul 4, Hal. 4.9, Par. 2",
+    explanation: "Birokrasi adalah pilar pokok karena mereka memiliki data teknis dan pengalaman panjang dalam menjalankan pemerintahan."
+  },
+  {
+    topic: "Modul 4: Aktor & Partisipasi dalam Advokasi",
+    q: "Partai politik seringkali berperan sebagai \"Interest Aggregator\" atau kumpulan kepentingan. Dalam konteks advokasi, fungsi ini berarti…",
+    opts: ["Melakukan lobi langsung kepada hakim di pengadilan", "Mengubah permintaan khusus dari berbagai kelompok kepentingan menjadi alternatif kebijakan umum", "Menyediakan dana kampanye bagi LSM yang mendukung mereka", "Memaksa masyarakat untuk mengikuti visi misi partai tanpa dialog", "Menjalankan peran sebagai pelaksana teknis kebijakan di lapangan"],
+    correct: 1,
+    source: "Modul 4, Hal. 4.11, Par. 1",
+    explanation: "Partai politik menyerap berbagai aspirasi yang berserak untuk dijadikan platform kebijakan yang lebih makro."
+  },
+  {
+    topic: "Modul 4: Aktor & Partisipasi dalam Advokasi",
+    q: "Terdapat tiga jenis komunitas dalam aktor advokasi. Komunitas yang terbentuk karena keinginan untuk saling mengenal secara geografis guna membantu perkembangan lingkungan sekitarnya disebut…",
+    opts: ["Komunitas berdasarkan minat", "Komunitas berdasarkan komuni", "Komunitas berdasarkan lokasi", "Komunitas berdasarkan profesi", "Komunitas berdasarkan etnis"],
+    correct: 2,
+    source: "Modul 4, Hal. 4.14, Par. 2",
+    explanation: "Contohnya adalah komunitas pedagang kaki lima atau masyarakat di wilayah tertentu yang berinteraksi karena kedekatan tempat."
+  },
+  {
+    topic: "Modul 4: Aktor & Partisipasi dalam Advokasi",
+    q: "Syarat utama agar partisipasi masyarakat di daerah dapat berkembang maksimal adalah adanya \"Awareness\" (Kepedulian). Hal ini penting agar…",
+    opts: ["Masyarakat selalu setuju dengan apapun keputusan pemerintah", "Masyarakat tidak salah dalam bertindak dan mampu memberikan masukan substantif kepada pemerintah", "Pemerintah dapat memobilisasi massa dengan lebih mudah", "Seluruh anggaran pembangunan dapat diserahkan kepada masyarakat", "Masyarakat dapat mengambil alih tugas-tugas eksekutif secara penuh"],
+    correct: 1,
+    source: "Modul 4, Hal. 4.21, Par. 4",
+    explanation: "Pemahaman terhadap substansi bidang yang dipartisipasikan mencegah partisipasi yang bersifat hanya seremonial atau keliru arah."
+  },
+  {
+    topic: "Modul 4: Aktor & Partisipasi dalam Advokasi",
+    q: "Dalam kasus korupsi buku ajar di Sleman (2004-2005), aktor yang menjadi fasilitator masyarakat dalam melakukan pengawalan kasus adalah…",
+    opts: ["BEM KM UGM", "Bupati Sleman", "DPRD Sleman", "LSM seperti PuKAT, ICM, dan IDEA", "Radar Jogja"],
+    correct: 3,
+    source: "Modul 4, Hal. 4.31, Par. 2",
+    explanation: "LSM berperan sebagai jembatan dan pendamping teknis bagi masyarakat dalam mengawasi penyelewengan kebijakan."
+  },
+  {
+    topic: "Modul 4: Aktor & Partisipasi dalam Advokasi",
+    q: "Matriks Perencanaan Partisipasi (Participation Planning Matrix) oleh Bryson (2004) memiliki kolom \"Empower\". Janji yang diberikan kepada stakeholder dalam tingkat ini adalah…",
+    opts: ["Akan terus memberikan informasi", "Memberikan feedback tentang bagaimana input mereka mempengaruhi keputusan", "Menjamin pemikiran mereka masuk dalam alternatif keputusan", "Memasukkan nasihat dan rekomendasi mereka semaksimal mungkin", "Kami akan melaksanakan keputusan Anda"],
+    correct: 4,
+    source: "Modul 4, Hal. 4.38, Tabel 4.1",
+    explanation: "Tingkat tertinggi partisipasi (Empower) memberikan kuasa penuh kepada stakeholder untuk menentukan keputusan yang akan dijalankan pemerintah."
+  },
+  {
+    topic: "Modul 5: Komunikasi, Lobi & Riset Advokasi",
+    q: "Advokasi kebijakan memerlukan strategi komunikasi yang efektif. Aspek \"Concise\" dalam komunikasi advokasi berarti pesan harus disampaikan secara…",
+    opts: ["Benar dan didukung fakta", "Lengkap dan menyeluruh", "Ringkas namun padat isi", "Sopan dan menghargai audiens", "Berani dan penuh tekanan"],
+    correct: 2,
+    source: "Modul 5, Hal. 5.6, Par. 1",
+    explanation: "Concise memastikan pesan tidak bertele-tele sehingga mudah ditangkap intisarinya oleh pengambil keputusan yang sibuk."
+  },
+  {
+    topic: "Modul 5: Komunikasi, Lobi & Riset Advokasi",
+    q: "Lobi Politik secara hakikatnya merupakan komunikasi interpersonal. Oleh karena itu, keberhasilannya sangat ditentukan oleh kemampuan pelobi untuk…",
+    opts: ["Melakukan demonstrasi dengan massa yang besar", "Mengundang wartawan dalam jumlah banyak", "Mengenal sasaran secara mendalam (kebiasaan, nilai, hobi, kelemahan)", "Menyusun laporan riset setebal ratusan halaman", "Mengancam pengambil keputusan dengan sanksi hukum"],
+    correct: 2,
+    source: "Modul 5, Hal. 5.8, Par. 2",
+    explanation: "Lobi adalah seni membangun hubungan pribadi untuk mempengaruhi keputusan melalui pendekatan personal."
+  },
+  {
+    topic: "Modul 5: Komunikasi, Lobi & Riset Advokasi",
+    q: "Materi advokasi harus memenuhi persyaratan \"Realistis\". Artinya, program atau aktivitas pelayanan yang ditawarkan…",
+    opts: ["Harus didukung oleh opini masyarakat yang sangat vokal", "Layak dilaksanakan secara ekonomi, teknis, dan politis karena dukungan sumber daya memadai", "Merupakan keinginan utama dari pimpinan organisasi advokasi", "Tidak memerlukan anggaran sama sekali dari pemerintah", "Sudah pernah dilaksanakan di negara maju tanpa kegagalan"],
+    correct: 1,
+    source: "Modul 5, Hal. 5.12, Par. 2",
+    explanation: "Realistis memastikan usulan advokasi tidak hanya indah di atas kertas tapi dapat diimplementasikan sesuai kapasitas yang ada."
+  },
+  {
+    topic: "Modul 5: Komunikasi, Lobi & Riset Advokasi",
+    q: "Terdapat perbedaan antara strategi advokasi \"Fisik\" dan \"Non-fisik\". Strategi advokasi fisik dicirikan dengan…",
+    opts: ["Penggunaan media massa untuk membentuk opini", "Penonjolan kekuatan melalui tindakan masif dalam pengambilan keputusan (seperti demonstrasi/boikot)", "Pendekatan kooperatif dengan pengambil kebijakan sebelum aturan disahkan", "Pengiriman surat petisi secara daring kepada instansi pemerintah", "Melakukan riset aksi bersama masyarakat di laboratorium"],
+    correct: 1,
+    source: "Modul 5, Hal. 5.18, Par. 1",
+    explanation: "Strategi fisik mengandalkan tekanan massa secara langsung untuk memaksa perubahan kebijakan."
+  },
+  {
+    topic: "Modul 5: Komunikasi, Lobi & Riset Advokasi",
+    q: "Dalam kerangka tahapan advokasi UNICEF, salah satu pertanyaan kunci dalam \"Monitoring dan Evaluasi\" adalah…",
+    opts: ["Siapa saja pihak yang terkait dalam topik tersebut?", "Bagaimana mengembangkan pesan yang akan didengarkan?", "Bagaimana cara mengukur efektivitas dan efisiensi dari proses yang dilakukan?", "Sumber daya apa saja yang saat ini dimiliki?", "Strategi apa yang sesuai agar pesan didengarkan?"],
+    correct: 2,
+    source: "Modul 5, Hal. 5.20, Tabel 5.2",
+    explanation: "Evaluasi dalam model UNICEF fokus pada pengukuran capaian dibandingkan dengan rencana awal."
+  },
+  {
+    topic: "Modul 5: Komunikasi, Lobi & Riset Advokasi",
+    q: "Riset Aksi (Action Research) memiliki karakteristik yang membedakannya dengan riset konvensional. Dalam riset aksi, praktisi atau peneliti bersifat…",
+    opts: ["Bebas nilai (value-free)", "Sebagai pengamat yang berdiri di luar situasi masyarakat", "Memiliki landasan ideologi/politik tertentu dan memihak kelompok yang dirugikan", "Hanya bertugas mengumpulkan data mentah dari peserta", "Mengabaikan pengetahuan umum masyarakat"],
+    correct: 2,
+    source: "Modul 5, Hal. 5.25, Tabel 5.3",
+    explanation: "Riset aksi bersifat subjektif-transformatif, di mana peneliti melebur dengan masyarakat untuk mendorong perubahan."
+  },
+  {
+    topic: "Modul 5: Komunikasi, Lobi & Riset Advokasi",
+    q: "Salah satu prinsip Riset Aksi adalah \"Triangulasi\". Hal ini berarti…",
+    opts: ["Riset harus dilakukan oleh tiga orang peneliti ahli", "Menggunakan berbagai perspektif, teknik, dan instrumen yang berbeda untuk memahami kondisi yang sama", "Melakukan riset dalam tiga siklus waktu yang berbeda (pagi, siang, malam)", "Membagi wilayah riset menjadi tiga zona geografis", "Hanya menggunakan data sekunder sebagai sumber utama"],
+    correct: 1,
+    source: "Modul 5, Hal. 5.28, Par. 1",
+    explanation: "Triangulasi memastikan validitas data melalui pemeriksaan silang dari berbagai sudut pandang dan metode."
+  },
+  {
+    topic: "Modul 5: Komunikasi, Lobi & Riset Advokasi",
+    q: "Dalam implementasi riset kebijakan, langkah \"Mengurai karakteristik setiap alternatif kebijakan\" dilakukan dengan cara…",
+    opts: ["Memilih langsung satu alternatif yang paling murah biayanya", "Membandingkan kelebihan dan kekurangan setiap alternatif serta prediksi dampaknya jika dipilih", "Menunggu instruksi dari atasan mengenai alternatif mana yang disukai", "Menghapus alternatif yang ditentang oleh kelompok oposisi", "Melakukan monitoring terhadap implementasi kebijakan yang sudah berjalan"],
+    correct: 1,
+    source: "Modul 5, Hal. 5.34, Par. 2",
+    explanation: "Langkah ini merupakan analisis mendalam terhadap berbagai opsi sebelum keputusan final diambil."
+  },
+  {
+    topic: "Modul 6: Formulasi, Hukum & Teknik Advokasi",
+    q: "Suatu persoalan publik akan menjadi \"Agenda Kebijakan\" apabila memenuhi kriteria tertentu. Manakah di bawah ini yang merupakan kriteria tersebut?",
+    opts: ["Masalah tersebut hanya diketahui oleh para ahli di universitas", "Persoalan tersebut mampu membangkitkan orang banyak untuk melakukan tindakan dan rakyat punya hasrat politik untuk memperjuangkannya", "Masalah tersebut tidak mendapatkan tanggapan dari produsen kebijakan", "Persoalan tersebut merupakan masalah pribadi salah satu elit politik", "Masalah tersebut bersifat rutin dan tidak memiliki urgensi mendesak"],
+    correct: 1,
+    source: "Modul 6, Hal. 6.6, Par. 3",
+    explanation: "Agenda kebijakan membutuhkan dukungan massa dan kemauan politik dari para pengambil keputusan."
+  },
+  {
+    topic: "Modul 6: Formulasi, Hukum & Teknik Advokasi",
+    q: "Dalam pendekatan formulasi kebijakan publik, terdapat paham \"Corporatism\". Paham ini menekankan bahwa pembuatan kebijakan merupakan…",
+    opts: ["Hasil eksplorasi ilmiah para ilmuwan", "Dominasi pilihan masyarakat luas melalui pasar", "Persekongkolan segelintir elit yang tertata", "Kompetisi terbuka antar berbagai kelompok kepentingan", "Upaya kelompok marjinal untuk merebut kekuasaan"],
+    correct: 2,
+    source: "Modul 6, Hal. 6.7, Par. 4",
+    explanation: "Korporatisme melihat kebijakan sebagai hasil kesepakatan terbatas antar elit organisasi besar dengan pemerintah."
+  },
+  {
+    topic: "Modul 6: Formulasi, Hukum & Teknik Advokasi",
+    q: "Salah satu aspek hukum dalam kebijakan publik adalah \"Budaya Hukum\" (culture of law). Yang termasuk dalam cakupan budaya hukum adalah…",
+    opts: ["Uraian tertulis kebijakan dalam bentuk UU", "Perangkat kelembagaan dan aparat pelaksana aturan", "Persepsi, pemahaman, dan reaksi rakyat terhadap aplikasi isi serta tata laksana hukum", "Prosedur perekrutan aparat birokrasi", "Naskah akademik yang disusun oleh tim ahli"],
+    correct: 2,
+    source: "Modul 6, Hal. 6.11, Par. 3",
+    explanation: "Budaya hukum menyangkut sisi sosiologis tentang bagaimana hukum diterima dan dijalankan di masyarakat."
+  },
+  {
+    topic: "Modul 6: Formulasi, Hukum & Teknik Advokasi",
+    q: "Aktivitas advokasi melalui jalur \"Paralegal\" mencakup proses-proses…",
+    opts: ["Legislasi dan Jurisdiksi", "Penyusunan naskah akademik di parlemen", "Politik-birokrasi serta sosialisasi-mobilisasi", "Sidang gugatan warga negara di pengadilan negeri", "Pemungutan suara di lembaga legislatif"],
+    correct: 2,
+    source: "Modul 6, Hal. 6.18, Par. 3",
+    explanation: "Jalur paralegal adalah jalur di luar prosedur formal hukum, yang menggunakan tekanan politik dan opini publik."
+  },
+  {
+    topic: "Modul 6: Formulasi, Hukum & Teknik Advokasi",
+    q: "Teknik negosiasi \"Kooptasi\" dalam advokasi kebijakan dilakukan dengan cara…",
+    opts: ["Mengambil alih konsep lawan dan menjadikannya bagian dari konsep kita", "Menurunkan posisi konsep lawan di bawah konsep kita", "Menaikkan konsep lawan menjadi konsep yang lebih tinggi namun tidak dapat mengatur konsep kita", "Memecah belah kelompok lawan agar mereka saling bertarung", "Memberikan informasi menyesatkan kepada lawan agar mereka ragu"],
+    correct: 2,
+    source: "Modul 6, Hal. 6.26, Par. 1",
+    explanation: "Kooptasi adalah strategi merangkul ide lawan namun tetap mempertahankan kontrol pada konsep inti kita."
+  },
+  {
+    topic: "Modul 6: Formulasi, Hukum & Teknik Advokasi",
+    q: "Menurut Kirst-Ashman (1993), terdapat jenis \"Legislative Advocacy\". Keberhasilan strategi ini sangat dipengaruhi oleh faktor…",
+    opts: ["Jumlah massa yang melakukan blokade jalan", "Kegunaan undang-undang dan popularitas rancangan tersebut di kalangan rakyat", "Kedekatan personal antara pelobi dengan hakim agung", "Besaran dana suap yang diberikan kepada anggota dewan", "Kemampuan praktisi dalam menggunakan media sosial secara anonim"],
+    correct: 1,
+    source: "Modul 6, Hal. 6.31, Par. 2",
+    explanation: "Dukungan publik dan relevansi manfaat UU menjadi modal utama dalam meyakinkan komite legislatif."
+  },
+  {
+    topic: "Modul 6: Formulasi, Hukum & Teknik Advokasi",
+    q: "Penyampaian pesan advokasi melalui \"Teori S-O-R\" (Stimulus-Organisme-Respons) menekankan bahwa perubahan sikap pemerintah akan positif jika…",
+    opts: ["Stimulus yang diberikan bersifat menekan dan mengancam", "Organisme (komunikan) merasa takut terhadap tekanan massa", "Stimulus yang diberikan positif, seperti tutur kata sopan dan niat membantu menemukan masalah", "Respons yang dihasilkan adalah penolakan dari pihak oposisi", "Pesan hanya disampaikan melalui media massa arus utama"],
+    correct: 2,
+    source: "Modul 6, Hal. 6.35, Par. 1",
+    explanation: "Pendekatan psikologis melalui stimulus positif lebih efektif dalam membangun dialog yang produktif dengan pejabat publik."
+  },
+  {
+    topic: "Modul 6: Formulasi, Hukum & Teknik Advokasi",
+    q: "\"Mixed-Scanning Theory\" dalam formulasi kebijakan dianggap sebagai model hibrida. Keunggulan utama model ini menurut Amitai Etzioni adalah…",
+    opts: ["Selalu menghasilkan keputusan yang paling sempurna tanpa cacat", "Membutuhkan waktu yang sangat singkat karena hanya mengubah kebijakan lama", "Setiap unsur pada keputusan fundamental dan inkremental saling menciptakan keseimbangan (counter balance)", "Tidak memerlukan data atau informasi yang lengkap dari lapangan", "Hanya menguntungkan kelompok kapitalis yang memiliki sumber daya besar"],
+    correct: 2,
+    source: "Modul 6, Hal. 6.16, Par. 3",
+    explanation: "Model ini menggabungkan visi makro (rasional) dengan langkah-langkah praktis kecil (inkremental) untuk menutupi kelemahan masing-masing model."
+  },
+  {
+    topic: "Modul 7: Aksi, Nilai & Perencanaan Advokasi",
+    q: "Aksi dalam ilmu kebijakan didefinisikan sebagai \"gerak\". Apabila dianalogikan, gerak ini merupakan landasan berpikir rasional yang mendasari perubahan pada dimensi berikut, kecuali…",
+    opts: ["Volume", "Tempat", "Energi", "Waktu", "Struktur Organisasi"],
+    correct: 4,
+    source: "Modul 7, Hal. 7.5, Par. 2",
+    explanation: "Secara fisik dan filosofis, aksi (gerak) merubah volume, tempat, energi, dan waktu."
+  },
+  {
+    topic: "Modul 7: Aksi, Nilai & Perencanaan Advokasi",
+    q: "Pernyataan advokatif dalam aksi kebijakan memiliki karakteristik \"Prospektif\". Hal ini berarti pernyataan tersebut…",
+    opts: ["Dibuat berdasarkan data sejarah di masa lampau", "Dirancang sebelum dilakukannya tindakan (ex-ante)", "Hanya fokus pada kesalahan pelaksanaan kebijakan di lapangan", "Mengandung nilai-nilai estetika yang tinggi dalam bahasanya", "Bergantung sepenuhnya pada keputusan pengadilan yang sudah inkrah"],
+    correct: 1,
+    source: "Modul 7, Hal. 7.11, Par. 2",
+    explanation: "Prospektif artinya berorientasi ke masa depan sebagai rencana sebelum aksi dilakukan."
+  },
+  {
+    topic: "Modul 7: Aksi, Nilai & Perencanaan Advokasi",
+    q: "\"Nilai Ekstrinsik\" dipahami sebagai…",
+    opts: ["Nilai yang dipandang menjadi tujuan akhir dari advokasi itu sendiri", "Nilai yang hanya berlaku bagi individu secara pribadi", "Nilai yang bernilai karena akan membentuk atau memicu lahirnya nilai-nilai lain", "Nilai yang dipaksakan oleh pihak luar kepada masyarakat", "Nilai yang tidak memiliki kaitan dengan moralitas publik"],
+    correct: 2,
+    source: "Modul 7, Hal. 7.12, Par. 1",
+    explanation: "Nilai ekstrinsik adalah instrumen untuk mencapai nilai lain yang lebih luas (seperti kesehatan sebagai syarat kebebasan)."
+  },
+  {
+    topic: "Modul 7: Aksi, Nilai & Perencanaan Advokasi",
+    q: "Elemen advokasi \"SMART\" sangat penting dalam menentukan tujuan. Huruf \"R\" dalam SMART merujuk pada kriteria…",
+    opts: ["Reliable (Dapat dipercaya)", "Result-oriented (Berorientasi pada hasil)", "Rational (Masuk akal)", "Responsive (Cepat tanggap)", "Radical (Mendasar)"],
+    correct: 1,
+    source: "Modul 7, Hal. 7.16, Par. 3",
+    explanation: "Tujuan advokasi harus jelas hasil akhirnya yang ingin dicapai untuk masyarakat."
+  },
+  {
+    topic: "Modul 7: Aksi, Nilai & Perencanaan Advokasi",
+    q: "Terdapat dua jenis audiens dalam advokasi. Audiens yang bukan pengambil keputusan, namun memiliki kemampuan yang berpengaruh (influential) terhadap pengambilan keputusan disebut sebagai…",
+    opts: ["Audiens Primer", "Audiens Kunci", "Audiens Sekunder", "Audiens Target", "Audiens Pasif"],
+    correct: 2,
+    source: "Modul 7, Hal. 7.17, Par. 2",
+    explanation: "Audiens sekunder adalah pihak-pihak yang dapat membujuk atau menekan audiens kunci."
+  },
+  {
+    topic: "Modul 7: Aksi, Nilai & Perencanaan Advokasi",
+    q: "Seorang Lobbyist harus memiliki kemampuan \"Atmosphere Setting\". Contoh praktek ini adalah…",
+    opts: ["Mengatur suhu ruangan saat rapat berlangsung", "Mempengaruhi pro-kontra masyarakat terhadap isu tertentu melalui pengkondisian opini sebelum pembahasan regulasi", "Menghias kantor pemerintahan agar terlihat lebih ramah publik", "Menyediakan konsumsi yang mewah bagi para anggota legislatif", "Mengatur jadwal kunjungan kerja pejabat ke luar negeri"],
+    correct: 1,
+    source: "Modul 7, Hal. 7.23, Par. 1",
+    explanation: "Mengatur suasana adalah langkah strategis untuk membuat isu yang diperjuangkan terlihat penting dan mendesak di mata publik."
+  },
+  {
+    topic: "Modul 7: Aksi, Nilai & Perencanaan Advokasi",
+    q: "Dalam penyusunan Policy Brief, terdapat tahap \"Merit Review\". Tujuan utama dari tahap ini adalah untuk memastikan…",
+    opts: ["Kualitas keilmuan sudah sesuai dengan standar akademis murni", "Dokumen mudah dipahami oleh orang awam dan relevan dengan proses pengambilan kebijakan", "Anggaran penelitian sudah terserap secara maksimal", "Tidak ada kesalahan pengetikan (editorial) dalam dokumen", "Dokumen tersebut sudah disetujui oleh seluruh anggota koalisi"],
+    correct: 1,
+    source: "Modul 7, Hal. 7.26, Par. 2",
+    explanation: "Merit review melibatkan peneliti, pengambil kebijakan, dan stakeholder untuk menguji kebermanfaatan praktis dokumen."
+  },
+  {
+    topic: "Modul 7: Aksi, Nilai & Perencanaan Advokasi",
+    q: "Pemanfaatan media sosial oleh \"Kelompok Konstituen\" (komunitas peduli hak perempuan) menunjukkan bahwa media sosial berfungsi sebagai…",
+    opts: ["Alat untuk menyebarkan berita bohong secara masif", "Ruang publik baru untuk memengaruhi pembentukan kebijakan, perencanaan, dan penganggaran", "Media hiburan bagi warga desa di waktu luang", "Pengganti seluruh peran media massa konvensional", "Sarana untuk melakukan kampanye politik praktis bagi partai tertentu"],
+    correct: 1,
+    source: "Modul 8, Hal. 8.12, Par. 2",
+    explanation: "Media sosial menjadi platform distribusi data dan informasi penting secara cepat kepada pembuat kebijakan."
+  },
+  {
+    topic: "Modul 8: Demokrasi, Konsultasi & Partisipasi Publik",
+    q: "Level partisipasi masyarakat dalam advokasi kebijakan terdiri dari empat tingkatan. Tingkatan di mana pemerintah melakukan kerja sama agar opini publik menjadi pertimbangan utama disebut…",
+    opts: ["Information Exchange", "Consultation", "Engagement", "Collaboration", "Empowerment"],
+    correct: 2,
+    source: "Modul 8, Hal. 8.8, Tabel 8.3",
+    explanation: "Engagement melibatkan masyarakat secara lebih dalam dibandingkan konsultasi, melalui dialog publik dan e-deliberation."
+  },
+  {
+    topic: "Modul 8: Demokrasi, Konsultasi & Partisipasi Publik",
+    q: "Demokrasi Permusyawaratan (Deliberatif) menggunakan pendekatan \"Talk-centric\". Hal ini berbeda dengan pendekatan \"Voting-centric\" karena…",
+    opts: ["Output kebijakan ditentukan berdasarkan kuantitas suara terbanyak", "Keputusan diambil hanya oleh elit politik tanpa mendengarkan warga", "Output kebijakan ditentukan berdasarkan kekuatan argumen dan opini hasil diskusi", "Masyarakat dilarang untuk berbicara di depan umum", "Semua warga negara wajib memberikan suara dalam setiap rapat desa"],
+    correct: 2,
+    source: "Modul 8, Hal. 8.10, Par. 4",
+    explanation: "Deliberasi mengedepankan rasionalitas argumen untuk mencapai mufakat, bukan sekadar adu banyak suara."
+  },
+  {
+    topic: "Modul 8: Demokrasi, Konsultasi & Partisipasi Publik",
+    q: "Salah satu syarat terciptanya demokrasi permusyawaratan adalah \"Inclusion\". Hal ini mencakup…",
+    opts: ["Keterbukaan pandangan dan nilai yang beragam serta peluang yang adil untuk berkontribusi", "Kemampuan untuk menyingkirkan kelompok minoritas dari diskusi", "Kewajiban bagi semua orang untuk memiliki pendapat yang sama", "Pembatasan akses informasi bagi masyarakat umum", "Dominasi satu kelompok kepentingan yang paling kuat modalnya"],
+    correct: 0,
+    source: "Modul 8, Hal. 8.11, Par. 2",
+    explanation: "Inclusion memastikan semua suara, terutama kelompok marjinal, didengarkan dalam proses kebijakan."
+  },
+  {
+    topic: "Modul 8: Demokrasi, Konsultasi & Partisipasi Publik",
+    q: "Apa perbedaan utama antara \"Sosialisasi\" dan \"Konsultasi Publik\" dilihat dari proses informasinya?",
+    opts: ["Sosialisasi bersifat dua arah, Konsultasi Publik bersifat searah", "Sosialisasi dikuasai pakar, Konsultasi Publik dikuasai negara", "Sosialisasi bersifat searah (informasi dari negara ke warga), Konsultasi Publik bersifat dialogis (interaktif dua arah)", "Sosialisasi hanya untuk warga desa, Konsultasi Publik untuk warga kota", "Tidak ada perbedaan karena keduanya memiliki subjek yang sama"],
+    correct: 2,
+    source: "Modul 8, Hal. 8.14, Tabel 8.6",
+    explanation: "Konsultasi publik menuntut adanya feedback dan input dari masyarakat, bukan sekadar pemberitahuan aturan."
+  },
+  {
+    topic: "Modul 8: Demokrasi, Konsultasi & Partisipasi Publik",
+    q: "Dalam kriteria Konsultasi Publik (KP) yang ideal, terdapat dimensi \"Partiality to the Marginalized\". Indikator utama dari dimensi ini adalah…",
+    opts: ["Sejauh mana data statistik resmi digunakan pemerintah", "Sejauh mana opini kelompok rentan, perempuan, dan anak-anak dijadikan masukan", "Berapa jumlah anggaran yang dihabiskan untuk acara konsultasi", "Ketegasan pemerintah dalam menolak masukan dari luar", "Kecepatan dalam menetapkan keputusan akhir"],
+    correct: 1,
+    source: "Modul 8, Hal. 8.17, Tabel 8.8",
+    explanation: "KP yang bermakna harus memihak pada mereka yang biasanya tidak memiliki akses suara di pemerintahan."
+  },
+  {
+    topic: "Modul 8: Demokrasi, Konsultasi & Partisipasi Publik",
+    q: "Mengapa peran Advokator sebagai \"Fasilitator Konsultasi Publik\" harus bersifat independen?",
+    opts: ["Agar dapat membela kepentingan pemerintah secara penuh", "Agar tidak memiliki hambatan psikologis terhadap pegawai negeri dan mampu menjembatani perbedaan secara adil", "Karena fasilitator dibayar oleh pihak swasta", "Agar dapat memaksa masyarakat menyetujui draf kebijakan tanpa kritik", "Karena fasilitator tidak perlu memiliki pengetahuan tentang kebijakan tersebut"],
+    correct: 1,
+    source: "Modul 8, Hal. 8.35, Par. 3",
+    explanation: "Independensi menjamin proses diskusi berjalan terbuka tanpa ada rasa sungkan atau tekanan dari pihak manapun."
+  },
+  {
+    topic: "Modul 8: Demokrasi, Konsultasi & Partisipasi Publik",
+    q: "\"Jembatan Politik\" dalam aktivitas advokasi dipahami sebagai seni yang…",
+    opts: ["Menghubungkan hubungan secara horizontal (antar instansi/masyarakat) dan vertikal (antara wilayah dan pusat)", "Membangun infrastruktur fisik berupa jembatan di daerah konflik", "Mempertemukan para politisi untuk melakukan transaksi kekuasaan", "Memisahkan antara kepentingan publik dan kepentingan negara", "Menjamin kemenangan salah satu calon dalam pemilihan kepala daerah"],
+    correct: 0,
+    source: "Modul 8, Hal. 8.42, Par. 2",
+    explanation: "Jembatan politik mengisi ruang kosong koordinasi antar berbagai jenjang dan sektor kekuasaan."
+  },
+  {
+    topic: "Modul 8: Demokrasi, Konsultasi & Partisipasi Publik",
+    q: "Terdapat perbedaan antara \"Dukungan\" dan \"Komitmen\" dalam hasil advokasi. Komitmen dianggap lebih kuat karena menunjukkan…",
+    opts: ["Sikap positif atau persetujuan secara lisan saja", "Keterikatan atau kesediaan untuk bertindak sesuai janji, baik berupa regulasi maupun anggaran", "Keinginan masyarakat untuk tidak mematuhi kebijakan baru", "Jumlah orang yang menandatangani petisi", "Adanya liputan media massa yang luas terhadap isu tersebut"],
+    correct: 1,
+    source: "Modul 8, Hal. 8.33, Par. 4",
+    explanation: "Komitmen adalah bentuk nyata dari dukungan yang sudah masuk ke dalam sistem tindakan formal pemerintah."
+  },
+  {
+    topic: "Modul 9: Policy Brief, Policy Paper & Praktik Advokasi",
+    q: "Niskanen mengemukakan alasan politisi meminta saran analis kebijakan. Salah satunya adalah kebutuhan informasi untuk menjelaskan \"Perubahan kondisi jika tidak dilakukan perubahan kebijakan\". Hal ini memerlukan kemampuan…",
+    opts: ["Deskripsi data statistik sederhana", "Negosiasi dengan ahli dari pihak lawan", "Analisis dampak dan forecasting yang tinggi", "Penulisan pidato politik yang retoris", "Mobilisasi dukungan partai politik"],
+    correct: 2,
+    source: "Modul 9, Hal. 9.6, Par. 4",
+    explanation: "Politisi butuh argumen kuat untuk meyakinkan publik bahwa kebijakan baru benar-benar diperlukan."
+  },
+  {
+    topic: "Modul 9: Policy Brief, Policy Paper & Praktik Advokasi",
+    q: "Dalam fase praktik advokasi menurut Fahrudin (2010), terdapat tahap \"Tindakan Kebijakan\". Tahap ini sering disebut sebagai \"Celah Peluang\" (window of opportunity) karena…",
+    opts: ["Masalah baru saja muncul dan belum ada yang tahu", "Terjadi saat masalah diidentifikasi, solusi diterima, dan ada kemauan politik secara bersamaan", "Merupakan saat di mana anggaran negara sedang melimpah", "Terjadi ketika seluruh pejabat pemerintah sedang berlibur", "Merupakan waktu di mana masyarakat tidak memperhatikan kebijakan pemerintah"],
+    correct: 1,
+    source: "Modul 9, Hal. 9.9, Par. 3",
+    explanation: "Momentum emas di mana semua faktor pendukung perubahan kebijakan bertemu di satu titik waktu yang singkat."
+  },
+  {
+    topic: "Modul 9: Policy Brief, Policy Paper & Praktik Advokasi",
+    q: "Skema Advokasi Terpadu (Topatimasang, 2001) mencakup proses \"Sosialisasi dan Mobilisasi\". Output akhir dari proses ini adalah terbentuknya…",
+    opts: ["Isi/Naskah Hukum", "Tata Laksana Hukum", "Budaya Hukum", "Struktur Organisasi Baru", "Putusan Pengadilan (Yurisprudensi)"],
+    correct: 2,
+    source: "Modul 9, Hal. 9.10, Gambar 9.2",
+    explanation: "Melalui kampanye dan pendidikan politik, kesadaran hukum masyarakat dibangun sehingga menjadi budaya baru."
+  },
+  {
+    topic: "Modul 9: Policy Brief, Policy Paper & Praktik Advokasi",
+    q: "Dalam skema advokasi, tindakan hukum \"Citizen Law Suit\" dikategorikan ke dalam proses…",
+    opts: ["Politik dan Birokrasi", "Sosialisasi dan Mobilisasi", "Legislasi dan Yuridiksi", "Pengorganisasian Basis", "Pendidikan Politik"],
+    correct: 2,
+    source: "Modul 9, Hal. 9.11, Par. 2",
+    explanation: "Gugatan warga negara adalah instrumen hukum formal untuk merubah naskah atau implementasi kebijakan melalui pengadilan."
+  },
+  {
+    topic: "Modul 9: Policy Brief, Policy Paper & Praktik Advokasi",
+    q: "Policy Brief didefinisikan oleh Young dan Quinn (2002) sebagai dokumen yang berfokus pada isu spesifik dan menjelaskan pilihan rasional pada tingkat…",
+    opts: ["Seminar Akademis", "Debat Politik/Kebijakan", "Sidang Pengadilan", "Rapat Internal Perusahaan", "Konferensi Pers"],
+    correct: 1,
+    source: "Modul 9, Hal. 9.14, Par. 2",
+    explanation: "Policy brief adalah instrumen komunikasi untuk mempengaruhi proses politik praktis dengan argumen yang kuat."
+  },
+  {
+    topic: "Modul 9: Policy Brief, Policy Paper & Praktik Advokasi",
+    q: "Apa yang membedakan Policy Brief dengan buletin atau selebaran biasa?",
+    opts: ["Policy Brief tidak perlu menggunakan data fakta", "Policy Brief berorientasi pada pengguna dan menjelaskan logika kebijakan (penyebab, masalah, dan rangkaian tindakan)", "Buletin lebih sulit dipahami daripada Policy Brief", "Policy Brief hanya boleh ditulis oleh menteri", "Policy Brief harus berisi minimal 100 halaman"],
+    correct: 1,
+    source: "Modul 9, Hal. 9.16, Par. 4",
+    explanation: "Brief memiliki struktur analisis masalah yang sistematis untuk membantu pengambilan keputusan secara cepat."
+  },
+  {
+    topic: "Modul 9: Policy Brief, Policy Paper & Praktik Advokasi",
+    q: "Komponen \"Executive Summary\" dalam Policy Brief idealnya ditulis sebanyak…",
+    opts: ["1.500 kata", "Maksimal 150 kata", "Sesuai dengan jumlah bab dalam dokumen", "Minimal 10 halaman", "Satu kalimat tanya saja"],
+    correct: 1,
+    source: "Modul 9, Hal. 9.20, Par. 2",
+    explanation: "Ringkasan eksekutif harus padat agar pembaca yang sangat sibuk dapat menangkap inti usulan dalam waktu singkat."
+  },
+  {
+    topic: "Modul 9: Policy Brief, Policy Paper & Praktik Advokasi",
+    q: "Dalam kerangka Policy Brief, bagian \"Opsi Kebijakan\" harus memberikan gambaran mengenai…",
+    opts: ["Kesalahan-kesalahan di masa lalu tanpa solusi", "Tindakan yang dapat dan tidak dapat dilakukan, beserta minimal tiga kemungkinan tindakan", "Profil lengkap seluruh anggota tim peneliti", "Biaya operasional pembuatan dokumen", "Daftar pustaka yang sangat panjang dari berbagai buku"],
+    correct: 1,
+    source: "Modul 9, Hal. 9.19, Par. 1",
+    explanation: "Opsi kebijakan memberikan pilihan kepada pembuat keputusan agar mereka tidak merasa dipaksa pada satu pilihan saja."
+  },
+  {
+    topic: "Modul 9: Policy Brief, Policy Paper & Praktik Advokasi",
+    q: "Menurut Scotten (2011), Policy Paper (Makalah Kebijakan) didefinisikan sebagai…",
+    opts: ["Tulisan opini pribadi tentang kebijakan yang tidak disukai", "Artikel penelitian yang berfokus pada isu tertentu dan memberikan rekomendasi jelas kepada pembuat kebijakan", "Ringkasan berita harian dari berbagai media massa", "Dokumen rahasia yang tidak boleh diketahui publik", "Kumpulan peraturan perundang-undangan yang sudah berlaku"],
+    correct: 1,
+    source: "Modul 9, Hal. 9.23, Par. 2",
+    explanation: "Policy paper adalah dokumen strategis yang berbasis riset untuk mendukung rekomendasi kebijakan."
+  },
+  {
+    topic: "Modul 9: Policy Brief, Policy Paper & Praktik Advokasi",
+    q: "Dalam model kertas kebijakan William N. Dunn, Bab IV mengenai \"Alternatif Kebijakan\" mencakup subbagian…",
+    opts: ["Ukuran efektivitas dan solusi yang tersedia", "Hasil sebelum pemecahan masalah", "Perbandingan dampak politik serta hambatan dan fasilitasi politik", "Definisi masalah dan pelaku utama", "Kerangka kerja strategi implementasi"],
+    correct: 2,
+    source: "Modul 9, Hal. 9.24, Par. 1",
+    explanation: "Bab ini menganalisis sisi politis dari berbagai pilihan kebijakan untuk melihat kelayakannya."
+  },
+  {
+    topic: "Modul 9: Policy Brief, Policy Paper & Praktik Advokasi",
+    q: "Pada studi kasus di Kabupaten Bogor, apa kendala utama yang diidentifikasi dalam rancangan peraturan daerah tentang RDTR Parung Panjang?",
+    opts: ["Luas wilayah yang terlalu sempit untuk industri", "Belum diaturnya Hak, Kewajiban, dan Peran serta masyarakat", "Terlalu banyaknya pasal yang mengatur sanksi perdata", "Sudah sesuai sepenuhnya dengan UU Cipta Kerja", "Kurangnya keterlibatan pihak asing dalam investasi"],
+    correct: 1,
+    source: "Modul 9, Hal. 9.27, Par. 3",
+    explanation: "Absennya hak dan peran masyarakat dalam draf tersebut menjadi masalah krusial karena partisipasi adalah wajib menurut UU."
+  }
+]
+};
+document.addEventListener('DOMContentLoaded', () => {
+  QuizEngine.init(QUIZ_DATA);
+  const obs = new MutationObserver(() => {
+    const bar = document.getElementById('quiz-top-bar');
+    const main = document.getElementById('quiz-main-screen');
+    if (bar && main) bar.style.display = main.style.display !== 'none' ? 'flex' : 'none';
+  });
+  const target = document.getElementById('quiz-main-screen');
+  if (target) obs.observe(target, { attributes: true, attributeFilter: ['style'] });
+});
+</script>
+</body>
+</html>
